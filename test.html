@@ -1,0 +1,84 @@
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <title>Notie Test Page</title>
+        
+        <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+        
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: 'Lato', sans-serif;
+            }
+            .div-ext {
+                height: 100%;
+                width: 100%;
+                display: table;
+                text-align: center;
+            }
+            .div-int {
+                display: table-cell;
+                vertical-align: middle;
+            }
+            button {
+                cursor: pointer;
+                font-size: 16px;
+                border: 2px solid #d3d3d3;
+                border-radius: 5px;
+                background-color: transparent;
+            }
+        </style>
+        
+        
+    </head>
+    
+    
+    
+    <body>
+        
+        <div class="div-ext">
+            <div class="div-int">
+                
+                <span>Test notie with these buttons:</span>
+                <br>
+                <button onclick="success();">Success</button>
+                <button onclick="warning();">Warning</button>
+                <button onclick="error();">Error</button>
+                <button onclick="confirm();">Confirm</button>
+                <br>
+                <br>
+                <span>Official page:</span>
+                <br>
+                <a href="https://jaredreich.com/projects/notie" target="_blank">https://jaredreich.com/projects/notie</a>
+                
+            </div>
+        </div>
+        
+        <script>
+            
+            function success() {
+                notie(1, 'success - this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text, this is a crapton of text', 1);
+            }
+            
+            function warning() {
+                notie(2, 'warning', 1);
+            }
+            
+            function error() {
+                notie(3, 'error', 1);
+            }
+            
+            function confirm() {
+                alert('confirm');
+            }
+            
+        </script>
+        
+        <!-- JavaScript -->
+		<script src="notie.js"></script>
+        
+    </body>
+    
+</html>
