@@ -1,6 +1,7 @@
 # notie.js
 
 notie.js is a clean and simple notification library (alert/growl style) for javascript, with no dependencies.
+<<<<<<< Updated upstream
 Demo: https://jaredreich.com/projects/notie
 
 ## Usage
