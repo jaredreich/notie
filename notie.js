@@ -116,7 +116,7 @@ function notie_show(type, message, seconds) {
     notie_outer.style.top = -10000;
     notie_outer.style.display = 'table';
     notie_height = notie_outer.offsetHeight;
-    notie_outer.style.top = -notie_height;
+    notie_outer.style.top = '-' + notie_height + 'px';
     
     notie_timeout1 = setTimeout(function() {
         
@@ -141,8 +141,8 @@ function notie_show(type, message, seconds) {
 }
 
 function notie_hide(callback) {
-            
-    notie_outer.style.top = -notie_outer.offsetHeight;
+    
+    notie_outer.style.top = '-' + notie_outer.offsetHeight + 'px';
 
     setTimeout(function() {
 
