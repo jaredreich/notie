@@ -6,10 +6,11 @@ Demo: https://jaredreich.com/projects/notie
 ![Alt text](/demo.gif?raw=true "Demo")
 
 * Pure javascript, no dependencies, only one file to include
-* Change the colors to match your brand
+* Change the colors to match your style/brand
 * Font size auto-adjusts based on screen size
-* Turn off bottom shadown for flat design, on for material design
+* Turn off bottom shadow for flat design, on for material design
 * Easily customizable
+* Fun and easy to use! :D
 
 ## Usage
 In your html:
@@ -29,12 +30,13 @@ For example:
 notie(1, 'Success!', 1.5);
 notie(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2);
 notie(3, 'Error.', 2.5);
+
 notie_confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
     notie(1, 'Good choice!', 2);
 });
 notie_confirm('Are you sure?', 'Yes', 'Cancel', function() {
     notie_confirm('Are you <b>really</b> sure?', 'Yes', 'Cancel', function() {
-        notie_confirm('Are you <b>really</b> <u>really</u> sure?', 'Yes', 'Cancel', function() {
+        notie_confirm('Are you really <b>really</b> sure?', 'Yes', 'Cancel', function() {
             notie(1, 'Okay, jeez...', 2);
         });
     });
@@ -42,7 +44,7 @@ notie_confirm('Are you sure?', 'Yes', 'Cancel', function() {
 ```
 
 ## Options
-At the top of notie.js you can change all the colors to match your brand, turn on or off the bottom shadow, and change the large and small font sizes that auto adjust based on screen width.
+At the top of notie.js you can change all the colors to match your style/brand, turn on or off the bottom shadow, and change the large and small font sizes that auto adjust based on screen width.
 ```css
 var notie_shadow = true;
 var notie_font_size_small = '18px';
