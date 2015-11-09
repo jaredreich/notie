@@ -1,20 +1,29 @@
 // SETTINGS
 // *********************************************
+var notie_shadow = true;
 var notie_font_size_small = '18px';
 var notie_font_size_big = '24px';
+
 var notie_color_text = 'white';
 var notie_color_success = '#57bf57';
 var notie_color_warning = '#D6A14D';
 var notie_color_error = '#E1715B';
-var notie_color_confirm_text = 'white';
-var notie_color_confirm_background = '#4D82D6';
-var notie_color_confirm_yes = '#57bf57';
-var notie_color_confirm_no = '#E1715B';
+
+var notie_confirm_color_text = 'white';
+var notie_confirm_color_background = '#4D82D6';
+var notie_confirm_color_yes = '#57bf57';
+var notie_confirm_color_no = '#E1715B';
 // *********************************************
 
 
 
-// Create notie elements
+
+
+
+// NOTIE
+// *********************************************
+
+// notie elements and styling
 var notie_outer = document.createElement('div');
 notie_outer.style.position = 'fixed';
 notie_outer.style.top = '0';
@@ -24,6 +33,7 @@ notie_outer.style.height = 'auto';
 notie_outer.style.width = '100%';
 notie_outer.style.display = 'none';
 notie_outer.style.textAlign = 'center';
+notie_outer.style.cursor = 'default';
 notie_outer.style.MozTransition = '';
 notie_outer.style.WebkitTransition = '';
 notie_outer.style.transition = '';
@@ -63,38 +73,40 @@ function notie(type, message, seconds) {
         notie_was_clicked_counter--;
     }, 300);
     
-    console.log(notie_was_clicked_counter);
-    
     if (notie_was_clicked_counter == 1) {
         
         if (notie_is_showing) {
-
+            
             clearTimeout(notie_timeout1);
             clearTimeout(notie_timeout2);
 
             notie_hide(function() {
                 notie_show(type, message, seconds);
             });
-
-
+            
         }
         else {
-
             notie_show(type, message, seconds);
-
         }
         
     }
-    
-    
-    
-    
     
 }
 
 function notie_show(type, message, seconds) {
     
     notie_is_showing = true;
+    
+    var duration = 0;
+    if (typeof seconds == 'undefined') {
+        var duration = 3000;
+    }
+    else if (seconds < 1) {
+        duration = 1000;
+    }
+    else {
+        duration = seconds * 1000;
+    }
     
     // Set notie type (background color)
     switch(type) {
@@ -120,6 +132,7 @@ function notie_show(type, message, seconds) {
     
     notie_timeout1 = setTimeout(function() {
         
+        if (notie_shadow) { notie_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
         notie_outer.style.MozTransition = 'all 0.3s ease';
         notie_outer.style.WebkitTransition = 'all 0.3s ease';
         notie_outer.style.transition = 'all 0.3s ease';
@@ -132,11 +145,9 @@ function notie_show(type, message, seconds) {
                 // Nothing
             });
             
-        }, 2000);
+        }, duration);
         
     }, 20);
-    
-    
     
 }
 
@@ -146,6 +157,7 @@ function notie_hide(callback) {
 
     setTimeout(function() {
 
+        if (notie_shadow) { notie_outer.style.boxShadow = ''; }
         notie_outer.style.MozTransition = '';
         notie_outer.style.WebkitTransition = '';
         notie_outer.style.transition = '';
@@ -160,103 +172,186 @@ function notie_hide(callback) {
 
 
 
+// NOTIE_CONFIRM
+// *********************************************
 
-
-
-// Create notie_confirm elements
+// notie_confirm elements and styling
 var notie_confirm_outer = document.createElement('div');
+notie_confirm_outer.style.position = 'fixed';
+notie_confirm_outer.style.top = '0';
+notie_confirm_outer.style.left = '0';
+notie_confirm_outer.style.zIndex = '999999998';
+notie_confirm_outer.style.height = 'auto';
+notie_confirm_outer.style.width = '100%';
+notie_confirm_outer.style.display = 'none';
+notie_confirm_outer.style.textAlign = 'center';
+notie_confirm_outer.style.MozTransition = '';
+notie_confirm_outer.style.WebkitTransition = '';
+notie_confirm_outer.style.transition = '';
 
+var notie_confirm_backdrop = document.createElement('div');
+notie_confirm_backdrop.style.position = 'fixed';
+notie_confirm_backdrop.style.top = '0';
+notie_confirm_backdrop.style.left = '0';
+notie_confirm_backdrop.style.zIndex = '999999997';
+notie_confirm_backdrop.style.height = '100%';
+notie_confirm_backdrop.style.width = '100%';
+notie_confirm_backdrop.style.display = 'none';
+notie_confirm_backdrop.style.backgroundColor = 'white';
+notie_confirm_backdrop.style.MozTransition = 'all 0.3s ease';
+notie_confirm_backdrop.style.WebkitTransition = 'all 0.3s ease';
+notie_confirm_backdrop.style.transition = 'all 0.3s ease';
+notie_confirm_backdrop.style.opacity = '0';
+notie_confirm_backdrop.onclick = function() { notie_confirm_hide(); }
 
+var notie_confirm_inner = document.createElement('div');
+notie_confirm_inner.style.boxSizing = 'border-box';
+notie_confirm_inner.style.width = '100%';
+notie_confirm_inner.style.padding = '20px';
+notie_confirm_inner.style.display = 'block';
+notie_confirm_inner.style.cursor = 'default';
+notie_confirm_inner.style.backgroundColor = notie_confirm_color_background;
+notie_confirm_outer.appendChild(notie_confirm_inner);
 
-function notie_confirm(title, yes_text, no_text, yes_callback, first, last) {
+var notie_confirm_yes = document.createElement('div');
+notie_confirm_yes.style.cssFloat = 'left';
+notie_confirm_yes.style.height = '50px';
+notie_confirm_yes.style.lineHeight = '50px';
+notie_confirm_yes.style.width = '50%';
+notie_confirm_yes.style.cursor = 'pointer';
+notie_confirm_yes.style.backgroundColor = notie_confirm_color_yes;
+notie_confirm_outer.appendChild(notie_confirm_yes);
+
+var notie_confirm_no = document.createElement('div');
+notie_confirm_no.style.cssFloat = 'right';
+notie_confirm_no.style.height = '50px';
+notie_confirm_no.style.lineHeight = '50px';
+notie_confirm_no.style.width = '50%';
+notie_confirm_no.style.cursor = 'pointer';
+notie_confirm_no.style.backgroundColor = notie_confirm_color_no;
+notie_confirm_no.onclick = function() { notie_confirm_hide(); }
+notie_confirm_outer.appendChild(notie_confirm_no);
+
+// Initialize notie_confirm text
+var notie_confirm_text = document.createElement('span');
+notie_confirm_text.style.color = notie_confirm_color_text;
+if (window.innerWidth <= 600) { notie_confirm_text.style.fontSize = notie_font_size_small; }
+else { notie_confirm_text.style.fontSize = notie_font_size_big; }
+window.addEventListener('resize', function(){
+    if (window.innerWidth <= 600) { notie_confirm_text.style.fontSize = notie_font_size_small; }
+    else { notie_confirm_text.style.fontSize = notie_font_size_big; }
+}, true);
+notie_confirm_inner.appendChild(notie_confirm_text);
+
+var notie_confirm_yes_text = document.createElement('span');
+notie_confirm_yes_text.style.color = notie_confirm_color_text;
+if (window.innerWidth <= 600) { notie_confirm_yes_text.style.fontSize = notie_font_size_small; }
+else { notie_confirm_yes_text.style.fontSize = notie_font_size_big; }
+window.addEventListener('resize', function(){
+    if (window.innerWidth <= 600) { notie_confirm_yes_text.style.fontSize = notie_font_size_small; }
+    else { notie_confirm_yes_text.style.fontSize = notie_font_size_big; }
+}, true);
+notie_confirm_yes.appendChild(notie_confirm_yes_text);
+
+var notie_confirm_no_text = document.createElement('span');
+notie_confirm_no_text.style.color = notie_confirm_color_text;
+if (window.innerWidth <= 600) { notie_confirm_no_text.style.fontSize = notie_font_size_small; }
+else { notie_confirm_no_text.style.fontSize = notie_font_size_big; }
+window.addEventListener('resize', function(){
+    if (window.innerWidth <= 600) { notie_confirm_no_text.style.fontSize = notie_font_size_small; }
+    else { notie_confirm_no_text.style.fontSize = notie_font_size_big; }
+}, true);
+notie_confirm_no.appendChild(notie_confirm_no_text);
+
+// Attach notie_confirm elements to the body element
+document.body.appendChild(notie_confirm_outer);
+document.body.appendChild(notie_confirm_backdrop);
+
+// Declare variables
+var notie_confirm_height = 0;
+var notie_confirm_is_showing = false;
+
+function notie_confirm(title, yes_text, no_text, yes_callback) {
     
-    scroll_disable();
+    notie_confirm_show(title, yes_text, no_text, yes_callback);
     
 }
-
-
-
-
-
-
-
-/*
-function notie_confirm(title, yes_text, cancel_text, yes_callback, first, last) {
+function notie_confirm_show(title, yes_text, no_text, yes_callback) {
     
     scroll_disable();
     
-    // Colors
-    var notie_color_outer = '#84B2A8';
-    var notie_color_yes = '#709A91';
-    var notie_color_cancel = '#D1776A';
-    var notie_color_text = '#FFFFFF';
-    var notie_color_backdrop = 'rgba(255,255,255,0.5)';
-    
-    var height = 0;
-    
-    $('<div id="notie-confirm" style="position:fixed;z-index:9999999;left:0px;width:100%;text-align:center;background-color:'+notie_color_outer+';display:none;-webkit-transition: all 0.3s ease;-moz-transition: all 0.3s ease;-o-transition: all 0.3s ease;-ms-transition: all 0.3s ease;transition: all 0.3s ease;"><div style="width:100%;"><h2 style="padding:10px;color:'+notie_color_text+';">'+title+'</h2></div><div id="notie-confirm-cancel" style="display:table;height:60px;width:50%;background-color:'+notie_color_cancel+';float:left;cursor:pointer;"><div style="display:table-cell;vertical-align:middle;"><h2 style="color:'+notie_color_text+'">'+cancel_text+'</h2></div></div><div id="notie-confirm-yes" style="display:table;height:60px;width:50%;background-color:'+notie_color_yes+';float:right;cursor:pointer;"><div style="display:table-cell;vertical-align:middle;"><h2 style="color:'+notie_color_text+'">'+yes_text+'</h2></div></div></div>').appendTo('body');
-    
-    if (first == true) {
-        $('<div id="notie-confirm-backdrop" style="position:fixed;z-index:9999998;top:0px;left:0px;height:100%;width:100%;background-color:'+notie_color_backdrop+';display:none;"></div>').appendTo('body');
-    }
-    
-    height = $('#notie-confirm').outerHeight();
-    $('#notie-confirm').css('top', -height + 'px');
-    $('#notie-confirm').css('display', 'table');
-    
-    setTimeout(function() {
-        
-        $('#notie-confirm').css('top', '0px');
-        $('#notie-confirm-backdrop').fadeIn(300);
-        
+    // Yes callback function
+    notie_confirm_yes.onclick = function() {
+        notie_confirm_hide();
         setTimeout(function() {
-            
-            $('#notie-confirm-yes').on('click', function() {
-                
-                notie_confirm_hide(height, last);
-                
-                setTimeout(function() {
-                    yes_callback();
-                }, 320);
-            });
-            $('#notie-confirm-cancel').on('click', function() {
-                notie_confirm_hide(height, true);
-            });
-
-            $('#notie-confirm-backdrop').on('click', function(e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-
-                notie_confirm_hide(height, true);
-            });
-
-        }, 300);
-        
-    }, 50);
-    
-}
-function notie_confirm_hide(height, last) {
-    
-    $('#notie-confirm').css('top', -height + 'px');
-    
-    if (last == true) {
-        $('#notie-confirm-backdrop').fadeOut(300);
+            yes_callback();
+        }, 310);
     }
     
-    setTimeout(function() {     
+    function notie_confirm_show_inner() {
         
-        $('#notie-confirm').remove();
+        // Set notie_confirm text
+        notie_confirm_text.innerHTML = title;
+        notie_confirm_yes_text.innerHTML = yes_text;
+        notie_confirm_no_text.innerHTML = no_text;
+
+        // Get notie_confirm's height
+        notie_confirm_outer.style.top = -10000;
+        notie_confirm_outer.style.display = 'table';
+        notie_confirm_height = notie_confirm_outer.offsetHeight;
+        notie_confirm_outer.style.top = '-' + notie_confirm_height + 'px';
+        notie_confirm_backdrop.style.display = 'block';
+
+        setTimeout(function() {
+
+            if (notie_shadow) { notie_confirm_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
+            notie_confirm_outer.style.MozTransition = 'all 0.3s ease';
+            notie_confirm_outer.style.WebkitTransition = 'all 0.3s ease';
+            notie_confirm_outer.style.transition = 'all 0.3s ease';
+
+            notie_confirm_outer.style.top = 0;
+            notie_confirm_backdrop.style.opacity = '0.75';
+            
+            setTimeout(function() {
+                notie_confirm_is_showing = true;
+            }, 310);
+            
+        }, 20);
+        
+    }
+    
+    if (notie_confirm_is_showing) {
+        notie_confirm_hide();
+        setTimeout(function() {
+            notie_confirm_show_inner();
+        }, 310);
+    }
+    else {
+        notie_confirm_show_inner();
+    }
+    
+}
+
+function notie_confirm_hide() {
+    
+    notie_confirm_outer.style.top = '-' + notie_confirm_outer.offsetHeight + 'px';
+    notie_confirm_backdrop.style.opacity = '0';
+
+    setTimeout(function() {
+
+        if (notie_shadow) { notie_confirm_outer.style.boxShadow = ''; }
+        notie_confirm_outer.style.MozTransition = '';
+        notie_confirm_outer.style.WebkitTransition = '';
+        notie_confirm_outer.style.transition = '';
+        notie_confirm_backdrop.style.display = 'none';
+        
         scroll_enable();
         
-        if (last == true) {
-            $('#notie-confirm-backdrop').remove();
-        }
-        
-        
-    }, 300);
+        notie_confirm_is_showing = false;
+
+    }, 310);
     
 }
-*/
 
 
 // Scroll Disable and Enable

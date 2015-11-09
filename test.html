@@ -28,6 +28,7 @@
                 border: 2px solid #d3d3d3;
                 border-radius: 5px;
                 background-color: transparent;
+                outline: 0;
             }
         </style>
         
@@ -63,7 +64,7 @@
             }
             
             function warning() {
-                notie(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 1);
+                notie(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 4);
             }
             
             function error() {
@@ -71,7 +72,9 @@
             }
             
             function confirm() {
-                alert('confirm');
+                notie_confirm('Are  you sure you want to do that?<br><b>That\'s a bold move...</b>', 'Yes', 'Cancel', function() {
+                    notie(1, 'Good choice!', 2);
+                });
             }
             
         </script>
