@@ -4,15 +4,17 @@ var notie_shadow = true;
 var notie_font_size_small = '18px';
 var notie_font_size_big = '24px';
 
+var notie_color_success_background = '#57BF57';
+var notie_color_warning_background = '#E3B771';
+var notie_color_error_background = '#E1715B';
 var notie_color_text = 'white';
-var notie_color_success = '#57BF57';
-var notie_color_warning = '#E3B771';
-var notie_color_error = '#E1715B';
 
-var notie_confirm_color_text = 'white';
 var notie_confirm_color_background = '#4D82D6';
-var notie_confirm_color_yes = '#57bf57';
-var notie_confirm_color_no = '#E1715B';
+var notie_confirm_color_yes_background = '#57bf57';
+var notie_confirm_color_no_background = '#E1715B';
+var notie_confirm_color_text = 'white';
+var notie_confirm_color_yes_text = 'white';
+var notie_confirm_color_no_text = 'white';
 // *********************************************
 
 
@@ -111,13 +113,13 @@ function notie_show(type, message, seconds) {
     // Set notie type (background color)
     switch(type) {
         case 1:
-            notie_outer.style.backgroundColor = notie_color_success;
+            notie_outer.style.backgroundColor = notie_color_success_background;
             break;
         case 2:
-            notie_outer.style.backgroundColor = notie_color_warning;
+            notie_outer.style.backgroundColor = notie_color_warning_background;
             break;
         case 3:
-            notie_outer.style.backgroundColor = notie_color_error;
+            notie_outer.style.backgroundColor = notie_color_error_background;
             break;
     }
     
@@ -219,7 +221,7 @@ notie_confirm_yes.style.height = '50px';
 notie_confirm_yes.style.lineHeight = '50px';
 notie_confirm_yes.style.width = '50%';
 notie_confirm_yes.style.cursor = 'pointer';
-notie_confirm_yes.style.backgroundColor = notie_confirm_color_yes;
+notie_confirm_yes.style.backgroundColor = notie_confirm_color_yes_background;
 notie_confirm_outer.appendChild(notie_confirm_yes);
 
 var notie_confirm_no = document.createElement('div');
@@ -228,7 +230,7 @@ notie_confirm_no.style.height = '50px';
 notie_confirm_no.style.lineHeight = '50px';
 notie_confirm_no.style.width = '50%';
 notie_confirm_no.style.cursor = 'pointer';
-notie_confirm_no.style.backgroundColor = notie_confirm_color_no;
+notie_confirm_no.style.backgroundColor = notie_confirm_color_no_background;
 notie_confirm_no.onclick = function() { notie_confirm_hide(); }
 notie_confirm_outer.appendChild(notie_confirm_no);
 
@@ -244,7 +246,7 @@ window.addEventListener('resize', function(){
 notie_confirm_inner.appendChild(notie_confirm_text);
 
 var notie_confirm_yes_text = document.createElement('span');
-notie_confirm_yes_text.style.color = notie_confirm_color_text;
+notie_confirm_yes_text.style.color = notie_confirm_color_yes_text;
 if (window.innerWidth <= 600) { notie_confirm_yes_text.style.fontSize = notie_font_size_small; }
 else { notie_confirm_yes_text.style.fontSize = notie_font_size_big; }
 window.addEventListener('resize', function(){
@@ -254,7 +256,7 @@ window.addEventListener('resize', function(){
 notie_confirm_yes.appendChild(notie_confirm_yes_text);
 
 var notie_confirm_no_text = document.createElement('span');
-notie_confirm_no_text.style.color = notie_confirm_color_text;
+notie_confirm_no_text.style.color = notie_confirm_color_no_text;
 if (window.innerWidth <= 600) { notie_confirm_no_text.style.fontSize = notie_font_size_small; }
 else { notie_confirm_no_text.style.fontSize = notie_font_size_big; }
 window.addEventListener('resize', function(){
