@@ -5,8 +5,8 @@ var notie_font_size_small = '18px';
 var notie_font_size_big = '24px';
 
 var notie_color_text = 'white';
-var notie_color_success = '#57bf57';
-var notie_color_warning = '#D6A14D';
+var notie_color_success = '#57BF57';
+var notie_color_warning = '#E3B771';
 var notie_color_error = '#E1715B';
 
 var notie_confirm_color_text = 'white';
