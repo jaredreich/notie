@@ -1,3 +1,19 @@
+/*
+ * notie.js - A clean and simple notification plugin (alert/growl style) for javascript, with no dependencies.
+ *
+ * Copyright (c) 2015 Jared Reich
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ * Project home:
+ * https://jaredreich.com/projects/notie
+ *
+ * Version:  1.0
+ *
+*/
+
+
 // SETTINGS
 // *********************************************
 var notie_shadow = true;
