@@ -357,13 +357,14 @@ function notie_confirm_hide() {
 
 
 // Scroll Disable and Enable
+var scroll_disable_function = function(e) { e.preventDefault(); }
 function scroll_disable() {
     document.body.style.height = '100%;';
     document.body.style.overflow = 'hidden';
-    document.body.addEventListener('touchmove', function(e) { e.preventDefault(); }, false);
+    document.ontouchstart = function(e){ e.preventDefault(); }
 }
 function scroll_enable() {
     document.body.style.height = '';
     document.body.style.overflow = '';
-    document.body.removeEventListener('touchmove', function(e) { e.preventDefault(); }, false);
+    document.ontouchstart = function(e){ return true; }
 }
