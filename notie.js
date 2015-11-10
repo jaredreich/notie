@@ -13,24 +13,25 @@
  *
 */
 
+var notie = function(){
 
 // SETTINGS
 // *********************************************
-var notie_shadow = true;
-var notie_font_size_small = '18px';
-var notie_font_size_big = '24px';
+var shadow = true;
+var font_size_small = '18px';
+var font_size_big = '24px';
 
-var notie_color_success_background = '#57BF57';
-var notie_color_warning_background = '#E3B771';
-var notie_color_error_background = '#E1715B';
-var notie_color_text = 'white';
+var color_success_background = '#57BF57';
+var color_warning_background = '#E3B771';
+var color_error_background = '#E1715B';
+var color_text = 'white';
 
-var notie_confirm_color_background = '#4D82D6';
-var notie_confirm_color_yes_background = '#57bf57';
-var notie_confirm_color_no_background = '#E1715B';
-var notie_confirm_color_text = 'white';
-var notie_confirm_color_yes_text = 'white';
-var notie_confirm_color_no_text = 'white';
+var confirm_color_background = '#4D82D6';
+var confirm_color_yes_background = '#57bf57';
+var confirm_color_no_background = '#E1715B';
+var confirm_color_text = 'white';
+var confirm_color_yes_text = 'white';
+var confirm_color_no_text = 'white';
 // *********************************************
 
 
@@ -42,78 +43,78 @@ var notie_confirm_color_no_text = 'white';
 // *********************************************
 
 // notie elements and styling
-var notie_outer = document.createElement('div');
-notie_outer.style.position = 'fixed';
-notie_outer.style.top = '0';
-notie_outer.style.left = '0';
-notie_outer.style.zIndex = '999999999';
-notie_outer.style.height = 'auto';
-notie_outer.style.width = '100%';
-notie_outer.style.display = 'none';
-notie_outer.style.textAlign = 'center';
-notie_outer.style.cursor = 'default';
-notie_outer.style.MozTransition = '';
-notie_outer.style.WebkitTransition = '';
-notie_outer.style.transition = '';
-var notie_inner = document.createElement('div');
-notie_inner.style.padding = '20px';
-notie_inner.style.display = 'table-cell';
-notie_inner.style.verticalAlign = 'middle';
-notie_outer.appendChild(notie_inner);
+var outer = document.createElement('div');
+outer.style.position = 'fixed';
+outer.style.top = '0';
+outer.style.left = '0';
+outer.style.zIndex = '999999999';
+outer.style.height = 'auto';
+outer.style.width = '100%';
+outer.style.display = 'none';
+outer.style.textAlign = 'center';
+outer.style.cursor = 'default';
+outer.style.MozTransition = '';
+outer.style.WebkitTransition = '';
+outer.style.transition = '';
+var inner = document.createElement('div');
+inner.style.padding = '20px';
+inner.style.display = 'table-cell';
+inner.style.verticalAlign = 'middle';
+outer.appendChild(inner);
 
 // Initialize notie text
-var notie_text = document.createElement('span');
-notie_text.style.color = notie_color_text;
-if (window.innerWidth <= 600) { notie_text.style.fontSize = notie_font_size_small; }
-else { notie_text.style.fontSize = notie_font_size_big; }
+var text = document.createElement('span');
+text.style.color = color_text;
+if (window.innerWidth <= 600) { text.style.fontSize = font_size_small; }
+else { text.style.fontSize = font_size_big; }
 window.addEventListener('resize', function(){
-    if (window.innerWidth <= 600) { notie_text.style.fontSize = notie_font_size_small; }
-    else { notie_text.style.fontSize = notie_font_size_big; }
+    if (window.innerWidth <= 600) { text.style.fontSize = font_size_small; }
+    else { text.style.fontSize = font_size_big; }
 }, true);
-notie_inner.appendChild(notie_text);
+inner.appendChild(text);
 
 // Attach notie to the body element
-document.body.appendChild(notie_outer);
+document.body.appendChild(outer);
 
 // Declare variables
-var notie_height = 0;
-var notie_is_showing = false;
-var notie_timeout0;
-var notie_timeout1;
-var notie_timeout2;
-var notie_was_clicked_counter = 0;
+var height = 0;
+var is_showing = false;
+var timeout0;
+var timeout1;
+var timeout2;
+var was_clicked_counter = 0;
 
-function notie(type, message, seconds) {
+function alert(type, message, seconds) {
     
-    notie_was_clicked_counter++;
+    was_clicked_counter++;
     
-    notie_timeout0 = setTimeout(function() {
-        notie_was_clicked_counter--;
+    timeout0 = setTimeout(function() {
+        was_clicked_counter--;
     }, 300);
     
-    if (notie_was_clicked_counter == 1) {
+    if (was_clicked_counter == 1) {
         
-        if (notie_is_showing) {
+        if (is_showing) {
             
-            clearTimeout(notie_timeout1);
-            clearTimeout(notie_timeout2);
+            clearTimeout(timeout1);
+            clearTimeout(timeout2);
 
-            notie_hide(function() {
-                notie_show(type, message, seconds);
+            hide(function() {
+                show(type, message, seconds);
             });
             
         }
         else {
-            notie_show(type, message, seconds);
+            show(type, message, seconds);
         }
         
     }
     
 }
 
-function notie_show(type, message, seconds) {
+function show(type, message, seconds) {
     
-    notie_is_showing = true;
+    is_showing = true;
     
     var duration = 0;
     if (typeof seconds == 'undefined') {
@@ -129,37 +130,37 @@ function notie_show(type, message, seconds) {
     // Set notie type (background color)
     switch(type) {
         case 1:
-            notie_outer.style.backgroundColor = notie_color_success_background;
+            outer.style.backgroundColor = color_success_background;
             break;
         case 2:
-            notie_outer.style.backgroundColor = notie_color_warning_background;
+            outer.style.backgroundColor = color_warning_background;
             break;
         case 3:
-            notie_outer.style.backgroundColor = notie_color_error_background;
+            outer.style.backgroundColor = color_error_background;
             break;
     }
     
     // Set notie text
-    notie_text.innerHTML = message;
+    text.innerHTML = message;
     
     // Get notie's height
-    notie_outer.style.top = -10000;
-    notie_outer.style.display = 'table';
-    notie_height = notie_outer.offsetHeight;
-    notie_outer.style.top = '-' + notie_height + 'px';
+    outer.style.top = -10000;
+    outer.style.display = 'table';
+    height = outer.offsetHeight;
+    outer.style.top = '-' + height + 'px';
     
-    notie_timeout1 = setTimeout(function() {
+    timeout1 = setTimeout(function() {
         
-        if (notie_shadow) { notie_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
-        notie_outer.style.MozTransition = 'all 0.3s ease';
-        notie_outer.style.WebkitTransition = 'all 0.3s ease';
-        notie_outer.style.transition = 'all 0.3s ease';
+        if (shadow) { outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
+        outer.style.MozTransition = 'all 0.3s ease';
+        outer.style.WebkitTransition = 'all 0.3s ease';
+        outer.style.transition = 'all 0.3s ease';
         
-        notie_outer.style.top = 0;
+        outer.style.top = 0;
         
-        notie_timeout2 = setTimeout(function() {
+        timeout2 = setTimeout(function() {
             
-            notie_hide(function() {
+            hide(function() {
                 // Nothing
             });
             
@@ -169,18 +170,18 @@ function notie_show(type, message, seconds) {
     
 }
 
-function notie_hide(callback) {
+function hide(callback) {
     
-    notie_outer.style.top = '-' + notie_outer.offsetHeight + 'px';
+    outer.style.top = '-' + outer.offsetHeight + 'px';
 
     setTimeout(function() {
 
-        if (notie_shadow) { notie_outer.style.boxShadow = ''; }
-        notie_outer.style.MozTransition = '';
-        notie_outer.style.WebkitTransition = '';
-        notie_outer.style.transition = '';
+        if (shadow) { outer.style.boxShadow = ''; }
+        outer.style.MozTransition = '';
+        outer.style.WebkitTransition = '';
+        outer.style.transition = '';
 
-        notie_is_showing = false;
+        is_showing = false;
 
         callback();
 
@@ -190,182 +191,182 @@ function notie_hide(callback) {
 
 
 
-// NOTIE_CONFIRM
+// CONFIRM
 // *********************************************
 
-// notie_confirm elements and styling
-var notie_confirm_outer = document.createElement('div');
-notie_confirm_outer.style.position = 'fixed';
-notie_confirm_outer.style.top = '0';
-notie_confirm_outer.style.left = '0';
-notie_confirm_outer.style.zIndex = '999999998';
-notie_confirm_outer.style.height = 'auto';
-notie_confirm_outer.style.width = '100%';
-notie_confirm_outer.style.display = 'none';
-notie_confirm_outer.style.textAlign = 'center';
-notie_confirm_outer.style.MozTransition = '';
-notie_confirm_outer.style.WebkitTransition = '';
-notie_confirm_outer.style.transition = '';
+// confirm elements and styling
+var confirm_outer = document.createElement('div');
+confirm_outer.style.position = 'fixed';
+confirm_outer.style.top = '0';
+confirm_outer.style.left = '0';
+confirm_outer.style.zIndex = '999999998';
+confirm_outer.style.height = 'auto';
+confirm_outer.style.width = '100%';
+confirm_outer.style.display = 'none';
+confirm_outer.style.textAlign = 'center';
+confirm_outer.style.MozTransition = '';
+confirm_outer.style.WebkitTransition = '';
+confirm_outer.style.transition = '';
 
-var notie_confirm_backdrop = document.createElement('div');
-notie_confirm_backdrop.style.position = 'fixed';
-notie_confirm_backdrop.style.top = '0';
-notie_confirm_backdrop.style.left = '0';
-notie_confirm_backdrop.style.zIndex = '999999997';
-notie_confirm_backdrop.style.height = '100%';
-notie_confirm_backdrop.style.width = '100%';
-notie_confirm_backdrop.style.display = 'none';
-notie_confirm_backdrop.style.backgroundColor = 'white';
-notie_confirm_backdrop.style.MozTransition = 'all 0.3s ease';
-notie_confirm_backdrop.style.WebkitTransition = 'all 0.3s ease';
-notie_confirm_backdrop.style.transition = 'all 0.3s ease';
-notie_confirm_backdrop.style.opacity = '0';
-notie_confirm_backdrop.onclick = function() { notie_confirm_hide(); }
+var confirm_backdrop = document.createElement('div');
+confirm_backdrop.style.position = 'fixed';
+confirm_backdrop.style.top = '0';
+confirm_backdrop.style.left = '0';
+confirm_backdrop.style.zIndex = '999999997';
+confirm_backdrop.style.height = '100%';
+confirm_backdrop.style.width = '100%';
+confirm_backdrop.style.display = 'none';
+confirm_backdrop.style.backgroundColor = 'white';
+confirm_backdrop.style.MozTransition = 'all 0.3s ease';
+confirm_backdrop.style.WebkitTransition = 'all 0.3s ease';
+confirm_backdrop.style.transition = 'all 0.3s ease';
+confirm_backdrop.style.opacity = '0';
+confirm_backdrop.onclick = function() { confirm_hide(); }
 
-var notie_confirm_inner = document.createElement('div');
-notie_confirm_inner.style.boxSizing = 'border-box';
-notie_confirm_inner.style.width = '100%';
-notie_confirm_inner.style.padding = '20px';
-notie_confirm_inner.style.display = 'block';
-notie_confirm_inner.style.cursor = 'default';
-notie_confirm_inner.style.backgroundColor = notie_confirm_color_background;
-notie_confirm_outer.appendChild(notie_confirm_inner);
+var confirm_inner = document.createElement('div');
+confirm_inner.style.boxSizing = 'border-box';
+confirm_inner.style.width = '100%';
+confirm_inner.style.padding = '20px';
+confirm_inner.style.display = 'block';
+confirm_inner.style.cursor = 'default';
+confirm_inner.style.backgroundColor = confirm_color_background;
+confirm_outer.appendChild(confirm_inner);
 
-var notie_confirm_yes = document.createElement('div');
-notie_confirm_yes.style.cssFloat = 'left';
-notie_confirm_yes.style.height = '50px';
-notie_confirm_yes.style.lineHeight = '50px';
-notie_confirm_yes.style.width = '50%';
-notie_confirm_yes.style.cursor = 'pointer';
-notie_confirm_yes.style.backgroundColor = notie_confirm_color_yes_background;
-notie_confirm_outer.appendChild(notie_confirm_yes);
+var confirm_yes = document.createElement('div');
+confirm_yes.style.cssFloat = 'left';
+confirm_yes.style.height = '50px';
+confirm_yes.style.lineHeight = '50px';
+confirm_yes.style.width = '50%';
+confirm_yes.style.cursor = 'pointer';
+confirm_yes.style.backgroundColor = confirm_color_yes_background;
+confirm_outer.appendChild(confirm_yes);
 
-var notie_confirm_no = document.createElement('div');
-notie_confirm_no.style.cssFloat = 'right';
-notie_confirm_no.style.height = '50px';
-notie_confirm_no.style.lineHeight = '50px';
-notie_confirm_no.style.width = '50%';
-notie_confirm_no.style.cursor = 'pointer';
-notie_confirm_no.style.backgroundColor = notie_confirm_color_no_background;
-notie_confirm_no.onclick = function() { notie_confirm_hide(); }
-notie_confirm_outer.appendChild(notie_confirm_no);
+var confirm_no = document.createElement('div');
+confirm_no.style.cssFloat = 'right';
+confirm_no.style.height = '50px';
+confirm_no.style.lineHeight = '50px';
+confirm_no.style.width = '50%';
+confirm_no.style.cursor = 'pointer';
+confirm_no.style.backgroundColor = confirm_color_no_background;
+confirm_no.onclick = function() { confirm_hide(); }
+confirm_outer.appendChild(confirm_no);
 
-// Initialize notie_confirm text
-var notie_confirm_text = document.createElement('span');
-notie_confirm_text.style.color = notie_confirm_color_text;
-if (window.innerWidth <= 600) { notie_confirm_text.style.fontSize = notie_font_size_small; }
-else { notie_confirm_text.style.fontSize = notie_font_size_big; }
+// Initialize confirm text
+var confirm_text = document.createElement('span');
+confirm_text.style.color = confirm_color_text;
+if (window.innerWidth <= 600) { confirm_text.style.fontSize = font_size_small; }
+else { confirm_text.style.fontSize = font_size_big; }
 window.addEventListener('resize', function(){
-    if (window.innerWidth <= 600) { notie_confirm_text.style.fontSize = notie_font_size_small; }
-    else { notie_confirm_text.style.fontSize = notie_font_size_big; }
+    if (window.innerWidth <= 600) { confirm_text.style.fontSize = font_size_small; }
+    else { confirm_text.style.fontSize = font_size_big; }
 }, true);
-notie_confirm_inner.appendChild(notie_confirm_text);
+confirm_inner.appendChild(confirm_text);
 
-var notie_confirm_yes_text = document.createElement('span');
-notie_confirm_yes_text.style.color = notie_confirm_color_yes_text;
-if (window.innerWidth <= 600) { notie_confirm_yes_text.style.fontSize = notie_font_size_small; }
-else { notie_confirm_yes_text.style.fontSize = notie_font_size_big; }
+var confirm_yes_text = document.createElement('span');
+confirm_yes_text.style.color = confirm_color_yes_text;
+if (window.innerWidth <= 600) { confirm_yes_text.style.fontSize = font_size_small; }
+else { confirm_yes_text.style.fontSize = font_size_big; }
 window.addEventListener('resize', function(){
-    if (window.innerWidth <= 600) { notie_confirm_yes_text.style.fontSize = notie_font_size_small; }
-    else { notie_confirm_yes_text.style.fontSize = notie_font_size_big; }
+    if (window.innerWidth <= 600) { confirm_yes_text.style.fontSize = font_size_small; }
+    else { confirm_yes_text.style.fontSize = font_size_big; }
 }, true);
-notie_confirm_yes.appendChild(notie_confirm_yes_text);
+confirm_yes.appendChild(confirm_yes_text);
 
-var notie_confirm_no_text = document.createElement('span');
-notie_confirm_no_text.style.color = notie_confirm_color_no_text;
-if (window.innerWidth <= 600) { notie_confirm_no_text.style.fontSize = notie_font_size_small; }
-else { notie_confirm_no_text.style.fontSize = notie_font_size_big; }
+var confirm_no_text = document.createElement('span');
+confirm_no_text.style.color = confirm_color_no_text;
+if (window.innerWidth <= 600) { confirm_no_text.style.fontSize = font_size_small; }
+else { confirm_no_text.style.fontSize = font_size_big; }
 window.addEventListener('resize', function(){
-    if (window.innerWidth <= 600) { notie_confirm_no_text.style.fontSize = notie_font_size_small; }
-    else { notie_confirm_no_text.style.fontSize = notie_font_size_big; }
+    if (window.innerWidth <= 600) { confirm_no_text.style.fontSize = font_size_small; }
+    else { confirm_no_text.style.fontSize = font_size_big; }
 }, true);
-notie_confirm_no.appendChild(notie_confirm_no_text);
+confirm_no.appendChild(confirm_no_text);
 
-// Attach notie_confirm elements to the body element
-document.body.appendChild(notie_confirm_outer);
-document.body.appendChild(notie_confirm_backdrop);
+// Attach confirm elements to the body element
+document.body.appendChild(confirm_outer);
+document.body.appendChild(confirm_backdrop);
 
 // Declare variables
-var notie_confirm_height = 0;
-var notie_confirm_is_showing = false;
+var confirm_height = 0;
+var confirm_is_showing = false;
 
-function notie_confirm(title, yes_text, no_text, yes_callback) {
+function confirm(title, yes_text, no_text, yes_callback) {
     
-    notie_confirm_show(title, yes_text, no_text, yes_callback);
+    confirm_show(title, yes_text, no_text, yes_callback);
     
 }
-function notie_confirm_show(title, yes_text, no_text, yes_callback) {
+function confirm_show(title, yes_text, no_text, yes_callback) {
     
     scroll_disable();
     
     // Yes callback function
-    notie_confirm_yes.onclick = function() {
-        notie_confirm_hide();
+    confirm_yes.onclick = function() {
+        confirm_hide();
         setTimeout(function() {
             yes_callback();
         }, 310);
     }
     
-    function notie_confirm_show_inner() {
+    function confirm_show_inner() {
         
-        // Set notie_confirm text
-        notie_confirm_text.innerHTML = title;
-        notie_confirm_yes_text.innerHTML = yes_text;
-        notie_confirm_no_text.innerHTML = no_text;
+        // Set confirm text
+        confirm_text.innerHTML = title;
+        confirm_yes_text.innerHTML = yes_text;
+        confirm_no_text.innerHTML = no_text;
 
-        // Get notie_confirm's height
-        notie_confirm_outer.style.top = -10000;
-        notie_confirm_outer.style.display = 'table';
-        notie_confirm_height = notie_confirm_outer.offsetHeight;
-        notie_confirm_outer.style.top = '-' + notie_confirm_height + 'px';
-        notie_confirm_backdrop.style.display = 'block';
+        // Get confirm's height
+        confirm_outer.style.top = -10000;
+        confirm_outer.style.display = 'table';
+        confirm_height = confirm_outer.offsetHeight;
+        confirm_outer.style.top = '-' + confirm_height + 'px';
+        confirm_backdrop.style.display = 'block';
 
         setTimeout(function() {
 
-            if (notie_shadow) { notie_confirm_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
-            notie_confirm_outer.style.MozTransition = 'all 0.3s ease';
-            notie_confirm_outer.style.WebkitTransition = 'all 0.3s ease';
-            notie_confirm_outer.style.transition = 'all 0.3s ease';
+            if (shadow) { confirm_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
+            confirm_outer.style.MozTransition = 'all 0.3s ease';
+            confirm_outer.style.WebkitTransition = 'all 0.3s ease';
+            confirm_outer.style.transition = 'all 0.3s ease';
 
-            notie_confirm_outer.style.top = 0;
-            notie_confirm_backdrop.style.opacity = '0.75';
+            confirm_outer.style.top = 0;
+            confirm_backdrop.style.opacity = '0.75';
             
             setTimeout(function() {
-                notie_confirm_is_showing = true;
+                confirm_is_showing = true;
             }, 310);
             
         }, 20);
         
     }
     
-    if (notie_confirm_is_showing) {
-        notie_confirm_hide();
+    if (confirm_is_showing) {
+        confirm_hide();
         setTimeout(function() {
-            notie_confirm_show_inner();
+            confirm_show_inner();
         }, 310);
     }
     else {
-        notie_confirm_show_inner();
+        confirm_show_inner();
     }
     
 }
 
-function notie_confirm_hide() {
+function confirm_hide() {
     
-    notie_confirm_outer.style.top = '-' + notie_confirm_outer.offsetHeight + 'px';
-    notie_confirm_backdrop.style.opacity = '0';
+    confirm_outer.style.top = '-' + confirm_outer.offsetHeight + 'px';
+    confirm_backdrop.style.opacity = '0';
 
     setTimeout(function() {
 
-        if (notie_shadow) { notie_confirm_outer.style.boxShadow = ''; }
-        notie_confirm_outer.style.MozTransition = '';
-        notie_confirm_outer.style.WebkitTransition = '';
-        notie_confirm_outer.style.transition = '';
-        notie_confirm_backdrop.style.display = 'none';
+        if (shadow) { confirm_outer.style.boxShadow = ''; }
+        confirm_outer.style.MozTransition = '';
+        confirm_outer.style.WebkitTransition = '';
+        confirm_outer.style.transition = '';
+        confirm_backdrop.style.display = 'none';
         
         scroll_enable();
         
-        notie_confirm_is_showing = false;
+        confirm_is_showing = false;
 
     }, 310);
     
@@ -384,3 +385,9 @@ function scroll_enable() {
     document.body.style.overflow = '';
     document.ontouchstart = function(e){ return true; }
 }
+return {
+    message: alert,
+    confirm: confirm
+}
+
+}();
