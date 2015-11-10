@@ -21,10 +21,10 @@ var shadow = true;
 var font_size_small = '18px';
 var font_size_big = '24px';
 
-var color_success_background = '#57BF57';
-var color_warning_background = '#E3B771';
-var color_error_background = '#E1715B';
-var color_text = 'white';
+var alert_color_success_background = '#57BF57';
+var alert_color_warning_background = '#E3B771';
+var alert_color_error_background = '#E1715B';
+var alert_color_text = 'white';
 
 var confirm_color_background = '#4D82D6';
 var confirm_color_yes_background = '#57bf57';
@@ -64,7 +64,7 @@ outer.appendChild(inner);
 
 // Initialize notie text
 var text = document.createElement('span');
-text.style.color = color_text;
+text.style.color = alert_color_text;
 if (window.innerWidth <= 600) { text.style.fontSize = font_size_small; }
 else { text.style.fontSize = font_size_big; }
 window.addEventListener('resize', function(){
@@ -130,13 +130,13 @@ function show(type, message, seconds) {
     // Set notie type (background color)
     switch(type) {
         case 1:
-            outer.style.backgroundColor = color_success_background;
+            outer.style.backgroundColor = alert_color_success_background;
             break;
         case 2:
-            outer.style.backgroundColor = color_warning_background;
+            outer.style.backgroundColor = alert_color_warning_background;
             break;
         case 3:
-            outer.style.backgroundColor = color_error_background;
+            outer.style.backgroundColor = alert_color_error_background;
             break;
     }
     
