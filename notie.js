@@ -386,7 +386,7 @@ function scroll_enable() {
     document.ontouchstart = function(e){ return true; }
 }
 return {
-    message: alert,
+    alert: alert,
     confirm: confirm
 }
 
