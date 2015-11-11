@@ -46,7 +46,7 @@ notie.confirm('Are you sure?', 'Yes', 'Cancel', function() {
 
 ## Options
 At the top of notie.js you can change all the colors to match your style/brand, turn on or off the bottom shadow, and change the large and small font sizes that auto adjust based on screen width.
-```css
+```javascript
 // General
 var shadow = true;
 var font_size_small = '18px';
