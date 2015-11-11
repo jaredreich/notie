@@ -184,9 +184,7 @@ var notie = function(){
 
             timeout2 = setTimeout(function() {
 
-                hide(function() {
-                    // Nothing
-                });
+                hide();
 
             }, duration);
 
@@ -209,7 +207,7 @@ var notie = function(){
 
             is_showing = false;
 
-            callback();
+            if (callback) { callback(); }
 
         }, (animation_delay * 1000 + 10));
 
