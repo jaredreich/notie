@@ -5,7 +5,11 @@
         <meta name='viewport' content="width=device-width,initial-scale=1,maximum-scale=1">
         <title>Notie Test Page</title>
         
+        <!-- Font -->
         <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+<!--        <link rel="stylesheet" type="text/css" href="notie.css">-->
         
         <style>
             body {
@@ -30,6 +34,7 @@
                 border-radius: 5px;
                 background-color: transparent;
                 outline: 0;
+                margin-top: 4px;
             }
         </style>
         
@@ -47,7 +52,8 @@
                 <br>
                 <button onclick="success();">Success</button>
                 <button onclick="warning();">Warning</button>
-                <button onclick="error();">Error</button>
+                <button onclick="error();">Error</button><br>
+                <button onclick="info();">Information</button>
                 <button onclick="confirm();">Confirm</button>
                 <br>
                 <br>
@@ -61,15 +67,19 @@
         <script>
             
             function success() {
-                notie.alert(1, 'Success!', 1);
+                notie.alert(1, 'Success!', 2);
             }
             
             function warning() {
-                notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 4);
+                notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2);
             }
             
             function error() {
-                notie.alert(3, 'Error.', 1);
+                notie.alert(3, 'Error.', 2);
+            }
+            
+            function info() {
+                notie.alert(4, 'Information.', 2);
             }
             
             function confirm() {
