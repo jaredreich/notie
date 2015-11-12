@@ -410,16 +410,13 @@ var notie = function(){
 
     // SCROLL DISABLE AND ENABLE FOR NOTIE.CONFIRM
     // *********************************************
-    var scroll_disable_function = function(e) { e.preventDefault(); }
     function scroll_disable() {
         document.body.style.height = '100%;';
         document.body.style.overflow = 'hidden';
-        // document.ontouchstart = function(e){ e.preventDefault(); }
     }
     function scroll_enable() {
         document.body.style.height = '';
         document.body.style.overflow = '';
-        // document.ontouchstart = function(e){ return true; }
     }
     
     
@@ -428,6 +425,6 @@ var notie = function(){
     return {
         alert: alert,
         confirm: confirm
-    }
+    };
 
 }();
