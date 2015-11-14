@@ -12,15 +12,29 @@ Demo: https://jaredreich.com/projects/notie.js
 * Easily customizable
 * Override or add styling in a separate .css file (optional)
 
-## Usage
-In your html:
+## Installation
+
+HTML:
 ```html
 <body>
   ...
   <script src="/path/to/notie.js"></script>
 </body>
 ```
-In your javascript:
+
+npm:
+```
+npm install notie-js
+```
+
+Bower:
+```
+bower install notie
+```
+
+
+## Usage
+
 ```javascript
 notie.alert(style, 'message', time_in_seconds);
 notie.confirm('Title text', 'Yes button text', 'No/cancel button text', yes_callback)
@@ -42,16 +56,6 @@ notie.confirm('Are you sure?', 'Yes', 'Cancel', function() {
         });
     });
 });
-```
-
-## npm
-```
-npm install notie-js
-```
-
-## Bower
-```
-bower install notie
 ```
 
 ## Options
