@@ -1,0 +1,20 @@
+{
+    "name": "notie-js",
+    "description": "A clean and simple notification plugin (alert/growl style) for javascript, with no dependencies.",
+    "author": "Jared Reich (https://jaredreich.com)",
+    "version": "0.1.0",
+    "main": "notie.js",
+    "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaredreich/notie.js.git"
+    },
+    "keywords": [
+    "tip"
+    ],
+    "author": "Jared Reich",
+    "license": "MIT",
+    "bugs": {
+    "url": "https://github.com/jaredreich/notie.js/issues"
+    },
+    "homepage": "https://jaredreich.com/projects/notie.js"
+}

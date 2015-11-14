@@ -44,7 +44,7 @@ notie.confirm('Are you sure?', 'Yes', 'Cancel', function() {
 });
 ```
 
-## npm
+## NPM
 ```
 npm install notie-js
 ```
