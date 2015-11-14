@@ -44,6 +44,16 @@ notie.confirm('Are you sure?', 'Yes', 'Cancel', function() {
 });
 ```
 
+## NPM
+```
+npm install notie-js
+```
+
+## Bower
+```
+bower install notie
+```
+
 ## Options
 At the top of notie.js you can change all the colors to match your style/brand, turn on or off the bottom shadow, and change the large and small font sizes that auto adjust based on screen width.
 ```javascript

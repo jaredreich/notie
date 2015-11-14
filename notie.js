@@ -7,7 +7,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  *
  * Project home:
- * https://jaredreich.com/projects/notie
+ * https://jaredreich.com/projects/notie.js
  *
  * Version:  1.0
  *
@@ -410,13 +410,16 @@ var notie = function(){
 
     // SCROLL DISABLE AND ENABLE FOR NOTIE.CONFIRM
     // *********************************************
+    var original_body_height, original_body_overflow;
     function scroll_disable() {
+        original_body_height = document.body.style.height;
+        original_body_overflow = document.body.style.overflow;
         document.body.style.height = '100%;';
         document.body.style.overflow = 'hidden';
     }
     function scroll_enable() {
-        document.body.style.height = '';
-        document.body.style.overflow = '';
+        document.body.style.height = original_body_height;
+        document.body.style.overflow = original_body_overflow;
     }
     
     
