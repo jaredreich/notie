@@ -9,22 +9,22 @@
  * Project home:
  * https://jaredreich.com/projects/notie.js
  *
- * Version:  1.1.1
+ * Version:  1.1.2
  *
-*/
+ */
 
 var notie = function(){
 
     // SETTINGS
     // *********************************************
-    
+
     // General
     var shadow = true;
     var font_size_small = '18px';
     var font_size_big = '24px';
     var font_change_screen_width = 600;
     var animation_delay = 0.3;
-    
+
     // notie.alert colors
     var alert_color_success_background = '#57BF57';
     var alert_color_warning_background = '#E3B771';
@@ -39,7 +39,7 @@ var notie = function(){
     var confirm_color_text = '#FFF';
     var confirm_color_yes_text = '#FFF';
     var confirm_color_no_text = '#FFF';
-    
+
     // ID's for use within your own .css file (OPTIONAL)
     // (Be sure to use !important to override the javascript)
     // Example: #notie-alert-inner { padding: 30px !important; }
@@ -54,11 +54,11 @@ var notie = function(){
     var confirm_text_id = 'notie-confirm-text';
     var confirm_yes_text_id = 'notie-confirm-yes-text';
     var confirm_no_text_id = 'notie-confirm-no-text';
-    
+
     // *********************************************
-    
-    
-    
+
+
+
     // NOTIE.ALERT
     // *********************************************
 
@@ -210,12 +210,13 @@ var notie = function(){
             alert_outer.style.MozTransition = '';
             alert_outer.style.WebkitTransition = '';
             alert_outer.style.transition = '';
-            
+
             alert_outer.style.top = '-10000px';
 
             is_showing = false;
-
-            callback();
+            if(callback) {
+                callback();
+            }
 
         }, (animation_delay * 1000 + 10));
 
@@ -332,67 +333,67 @@ var notie = function(){
 
     function confirm(title, yes_text, no_text, yes_callback) {
 
-        confirm_show(title, yes_text, no_text, yes_callback);
-        
         // Hide notie.alert
         clearTimeout(alert_timeout_1);
         clearTimeout(alert_timeout_2);
         alert_hide();
 
+        return confirm_show(title, yes_text, no_text, yes_callback);
     }
+
     function confirm_show(title, yes_text, no_text, yes_callback) {
+        return new Promise(function (yes_callback, reject) {
+            scroll_disable();
 
-        scroll_disable();
+            // Yes callback function
+            confirm_yes.onclick = function() {
+                confirm_hide();
+                setTimeout(function() {
+                    yes_callback();
+                }, (animation_delay * 1000 + 10));
+            }
 
-        // Yes callback function
-        confirm_yes.onclick = function() {
-            confirm_hide();
-            setTimeout(function() {
-                yes_callback();
-            }, (animation_delay * 1000 + 10));
-        }
+            function confirm_show_inner() {
 
-        function confirm_show_inner() {
+                // Set confirm text
+                confirm_text.innerHTML = title;
+                confirm_yes_text.innerHTML = yes_text;
+                confirm_no_text.innerHTML = no_text;
 
-            // Set confirm text
-            confirm_text.innerHTML = title;
-            confirm_yes_text.innerHTML = yes_text;
-            confirm_no_text.innerHTML = no_text;
-
-            // Get confirm's height
-            confirm_outer.style.top = '-10000px';
-            confirm_outer.style.display = 'table';
-            confirm_outer.style.top = '-' + confirm_outer.offsetHeight - 5 + 'px';
-            confirm_backdrop.style.display = 'block';
-
-            setTimeout(function() {
-
-                if (shadow) { confirm_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
-                confirm_outer.style.MozTransition = 'all ' + animation_delay + 's ease';
-                confirm_outer.style.WebkitTransition = 'all ' + animation_delay + 's ease';
-                confirm_outer.style.transition = 'all ' + animation_delay + 's ease';
-
-                confirm_outer.style.top = 0;
-                confirm_backdrop.style.opacity = '0.75';
+                // Get confirm's height
+                confirm_outer.style.top = '-10000px';
+                confirm_outer.style.display = 'table';
+                confirm_outer.style.top = '-' + confirm_outer.offsetHeight - 5 + 'px';
+                confirm_backdrop.style.display = 'block';
 
                 setTimeout(function() {
-                    confirm_is_showing = true;
+
+                    if (shadow) { confirm_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
+                    confirm_outer.style.MozTransition = 'all ' + animation_delay + 's ease';
+                    confirm_outer.style.WebkitTransition = 'all ' + animation_delay + 's ease';
+                    confirm_outer.style.transition = 'all ' + animation_delay + 's ease';
+
+                    confirm_outer.style.top = 0;
+                    confirm_backdrop.style.opacity = '0.75';
+
+                    setTimeout(function() {
+                        confirm_is_showing = true;
+                    }, (animation_delay * 1000 + 10));
+
+                }, 20);
+
+            }
+
+            if (confirm_is_showing) {
+                confirm_hide();
+                setTimeout(function() {
+                    confirm_show_inner();
                 }, (animation_delay * 1000 + 10));
-
-            }, 20);
-
-        }
-
-        if (confirm_is_showing) {
-            confirm_hide();
-            setTimeout(function() {
+            }
+            else {
                 confirm_show_inner();
-            }, (animation_delay * 1000 + 10));
-        }
-        else {
-            confirm_show_inner();
-        }
-
+            }
+        });
     }
 
     function confirm_hide() {
@@ -407,7 +408,7 @@ var notie = function(){
             confirm_outer.style.WebkitTransition = '';
             confirm_outer.style.transition = '';
             confirm_backdrop.style.display = 'none';
-            
+
             confirm_outer.style.top = '-10000px';
 
             scroll_enable();
@@ -432,10 +433,10 @@ var notie = function(){
         document.body.style.height = original_body_height;
         document.body.style.overflow = original_body_overflow;
     }
-    
-    
-    
-    
+
+
+
+
     return {
         alert: alert,
         confirm: confirm
