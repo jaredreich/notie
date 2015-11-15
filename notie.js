@@ -9,7 +9,7 @@
  * Project home:
  * https://jaredreich.com/projects/notie.js
  *
- * Version:  1.1.0
+ * Version:  1.1.1
  *
 */
 
@@ -22,6 +22,7 @@ var notie = function(){
     var shadow = true;
     var font_size_small = '18px';
     var font_size_big = '24px';
+    var font_change_screen_width = 600;
     var animation_delay = 0.3;
     
     // notie.alert colors
@@ -76,6 +77,12 @@ var notie = function(){
     alert_outer.style.MozTransition = '';
     alert_outer.style.WebkitTransition = '';
     alert_outer.style.transition = '';
+    alert_outer.style.cursor = 'pointer';
+    alert_outer.addEventListener('click', function() {
+        clearTimeout(alert_timeout_1);
+        clearTimeout(alert_timeout_2);
+        alert_hide();
+    });
     var alert_inner = document.createElement('div');
     alert_inner.id = alert_inner_id;
     alert_inner.style.padding = '20px';
@@ -87,10 +94,10 @@ var notie = function(){
     var alert_text = document.createElement('span');
     alert_text.id = alert_text_id;
     alert_text.style.color = alert_color_text;
-    if (window.innerWidth <= 600) { alert_text.style.fontSize = font_size_small; }
+    if (window.innerWidth <= font_change_screen_width) { alert_text.style.fontSize = font_size_small; }
     else { alert_text.style.fontSize = font_size_big; }
     window.addEventListener('resize', function(){
-        if (window.innerWidth <= 600) { alert_text.style.fontSize = font_size_small; }
+        if (window.innerWidth <= font_change_screen_width) { alert_text.style.fontSize = font_size_small; }
         else { alert_text.style.fontSize = font_size_big; }
     }, true);
     alert_inner.appendChild(alert_text);
@@ -101,16 +108,15 @@ var notie = function(){
     // Declare variables
     var height = 0;
     var is_showing = false;
-    var timeout0;
-    var timeout1;
-    var timeout2;
+    var alert_timeout_1;
+    var alert_timeout_2;
     var was_clicked_counter = 0;
 
     function alert(type, message, seconds) {
 
         was_clicked_counter++;
 
-        timeout0 = setTimeout(function() {
+        setTimeout(function() {
             was_clicked_counter--;
         }, (animation_delay * 1000 + 10));
 
@@ -118,23 +124,23 @@ var notie = function(){
 
             if (is_showing) {
 
-                clearTimeout(timeout1);
-                clearTimeout(timeout2);
+                clearTimeout(alert_timeout_1);
+                clearTimeout(alert_timeout_2);
 
-                hide(function() {
-                    show(type, message, seconds);
+                alert_hide(function() {
+                    alert_show(type, message, seconds);
                 });
 
             }
             else {
-                show(type, message, seconds);
+                alert_show(type, message, seconds);
             }
 
         }
 
     }
 
-    function show(type, message, seconds) {
+    function alert_show(type, message, seconds) {
 
         is_showing = true;
 
@@ -173,7 +179,7 @@ var notie = function(){
         alert_outer.style.display = 'table';
         alert_outer.style.top = '-' + alert_outer.offsetHeight - 5 + 'px';
 
-        timeout1 = setTimeout(function() {
+        alert_timeout_1 = setTimeout(function() {
 
             if (shadow) { alert_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
             alert_outer.style.MozTransition = 'all ' + animation_delay + 's ease';
@@ -182,9 +188,9 @@ var notie = function(){
 
             alert_outer.style.top = 0;
 
-            timeout2 = setTimeout(function() {
+            alert_timeout_2 = setTimeout(function() {
 
-                hide(function() {
+                alert_hide(function() {
                     // Nothing
                 });
 
@@ -194,7 +200,7 @@ var notie = function(){
 
     }
 
-    function hide(callback) {
+    function alert_hide(callback) {
 
         alert_outer.style.top = '-' + alert_outer.offsetHeight - 5 + 'px';
 
@@ -286,10 +292,10 @@ var notie = function(){
     var confirm_text = document.createElement('span');
     confirm_text.id = confirm_text_id;
     confirm_text.style.color = confirm_color_text;
-    if (window.innerWidth <= 600) { confirm_text.style.fontSize = font_size_small; }
+    if (window.innerWidth <= font_change_screen_width) { confirm_text.style.fontSize = font_size_small; }
     else { confirm_text.style.fontSize = font_size_big; }
     window.addEventListener('resize', function(){
-        if (window.innerWidth <= 600) { confirm_text.style.fontSize = font_size_small; }
+        if (window.innerWidth <= font_change_screen_width) { confirm_text.style.fontSize = font_size_small; }
         else { confirm_text.style.fontSize = font_size_big; }
     }, true);
     confirm_inner.appendChild(confirm_text);
@@ -297,10 +303,10 @@ var notie = function(){
     var confirm_yes_text = document.createElement('span');
     confirm_yes_text.id = confirm_yes_text_id;
     confirm_yes_text.style.color = confirm_color_yes_text;
-    if (window.innerWidth <= 600) { confirm_yes_text.style.fontSize = font_size_small; }
+    if (window.innerWidth <= font_change_screen_width) { confirm_yes_text.style.fontSize = font_size_small; }
     else { confirm_yes_text.style.fontSize = font_size_big; }
     window.addEventListener('resize', function(){
-        if (window.innerWidth <= 600) { confirm_yes_text.style.fontSize = font_size_small; }
+        if (window.innerWidth <= font_change_screen_width) { confirm_yes_text.style.fontSize = font_size_small; }
         else { confirm_yes_text.style.fontSize = font_size_big; }
     }, true);
     confirm_yes.appendChild(confirm_yes_text);
@@ -308,10 +314,10 @@ var notie = function(){
     var confirm_no_text = document.createElement('span');
     confirm_no_text.id = confirm_no_text_id;
     confirm_no_text.style.color = confirm_color_no_text;
-    if (window.innerWidth <= 600) { confirm_no_text.style.fontSize = font_size_small; }
+    if (window.innerWidth <= font_change_screen_width) { confirm_no_text.style.fontSize = font_size_small; }
     else { confirm_no_text.style.fontSize = font_size_big; }
     window.addEventListener('resize', function(){
-        if (window.innerWidth <= 600) { confirm_no_text.style.fontSize = font_size_small; }
+        if (window.innerWidth <= font_change_screen_width) { confirm_no_text.style.fontSize = font_size_small; }
         else { confirm_no_text.style.fontSize = font_size_big; }
     }, true);
     confirm_no.appendChild(confirm_no_text);
@@ -327,6 +333,11 @@ var notie = function(){
     function confirm(title, yes_text, no_text, yes_callback) {
 
         confirm_show(title, yes_text, no_text, yes_callback);
+        
+        // Hide notie.alert
+        clearTimeout(alert_timeout_1);
+        clearTimeout(alert_timeout_2);
+        alert_hide();
 
     }
     function confirm_show(title, yes_text, no_text, yes_callback) {

@@ -9,6 +9,7 @@ Demo: https://jaredreich.com/projects/notie.js
 * Change the colors to match your style/brand
 * Font size auto-adjusts based on screen size
 * Turn off bottom shadow for flat design, on for material design
+* Dismiss on click
 * Easily customizable
 * Override or add styling in a separate .css file (optional)
 
@@ -65,6 +66,7 @@ At the top of notie.js you can change all the colors to match your style/brand, 
 var shadow = true;
 var font_size_small = '18px';
 var font_size_big = '24px';
+var font_change_screen_width = 600;
 var animation_delay = 0.3;
 
 // notie.alert colors
