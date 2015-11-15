@@ -442,3 +442,7 @@ var notie = function(){
     };
 
 }();
+
+if (module) {
+    module.exports = notie;
+}
