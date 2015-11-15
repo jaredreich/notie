@@ -6,6 +6,7 @@ Demo: https://jaredreich.com/projects/notie.js
 ![Alt text](/demo.gif?raw=true "Demo")
 
 * Pure javascript, no dependencies, only one file to include
+* Works in all modern browsers (Chrome, Firefox, Safari, IE, Edge, Opera)
 * Change the colors to match your style/brand
 * Font size auto-adjusts based on screen size
 * Turn off bottom shadow for flat design, on for material design
