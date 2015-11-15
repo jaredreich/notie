@@ -13,6 +13,7 @@ Demo: https://jaredreich.com/projects/notie.js
 * Dismiss on click
 * Easily customizable
 * Override or add styling in a separate .css file (optional)
+* Promises supported (Promise polyfill required for older browsers)
 
 ## Installation
 
@@ -58,6 +59,13 @@ notie.confirm('Are you sure?', 'Yes', 'Cancel', function() {
         });
     });
 });
+
+or
+
+notie.confirm('Are you sure?', 'Yes', 'Cancel').then(function () {
+  notie.alert(1, 'Okay, jeez', 2);
+});
+
 ```
 
 ## Options
