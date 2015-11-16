@@ -13,8 +13,11 @@
  *
 */
 
-var notie = function(){
-
+(function (name, definition, context, dependencies) {
+    if (typeof context['module'] !== 'undefined' && context['module']['exports']) { if (dependencies && context['require']) { for (var i = 0; i < dependencies.length; i++) context[dependencies[i]] = context['require'](dependencies[i]); } context['module']['exports'] = definition.apply(context); }
+    else if (typeof context['define'] !== 'undefined' && context['define'] === 'function' && context['define']['amd']) { define(name, (dependencies || []), definition); }
+    else { context[name] = definition(); }
+})('notie', function () {
     // SETTINGS
     // *********************************************
     
@@ -692,18 +695,10 @@ var notie = function(){
         document.body.style.height = original_body_height;
         document.body.style.overflow = original_body_overflow;
     }
-    
-    
-    
-    
+
     return {
         alert: alert,
         confirm: confirm,
         input: input
     };
-
-}();
-
-if (typeof module !== 'undefined' && module) {
-    module.exports = notie;
-}
+}, (this || {}));
