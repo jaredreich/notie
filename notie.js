@@ -113,7 +113,9 @@ var notie = function(){
     alert_inner.appendChild(alert_text);
 
     // Attach notie to the body element
-    document.body.appendChild(alert_outer);
+    $(document).ready(function(){
+      document.body.appendChild(alert_outer);
+    });
 
     // Declare variables
     var height = 0;
@@ -333,8 +335,10 @@ var notie = function(){
     confirm_no.appendChild(confirm_no_text);
 
     // Attach confirm elements to the body element
-    document.body.appendChild(confirm_outer);
-    document.body.appendChild(confirm_backdrop);
+    $(document).ready(function(){
+      document.body.appendChild(confirm_outer);
+      document.body.appendChild(confirm_backdrop);
+    });
 
     // Declare variables
     var confirm_height = 0;
@@ -571,8 +575,10 @@ var notie = function(){
     input_no.appendChild(input_no_text);
 
     // Attach input elements to the body element
-    document.body.appendChild(input_outer);
-    document.body.appendChild(input_backdrop);
+    $(document).ready(function(){ //
+      document.body.appendChild(input_outer);
+      document.body.appendChild(input_backdrop);
+    });
 
     // Declare variables
     var input_height = 0;
