@@ -9,7 +9,7 @@
  * Project home:
  * https://jaredreich.com/projects/notie.js
  *
- * Version:  1.1.1
+ * Version:  2.0.0
  *
 */
 

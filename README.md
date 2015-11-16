@@ -3,7 +3,7 @@
 notie.js is a clean and simple notification plugin (alert/growl style) for javascript, with no dependencies.
 Demo: https://jaredreich.com/projects/notie.js
 
-With notie.js you can:
+#### With notie.js you can:
 * Alert users
 * Confirm user choices
 * Input user information
