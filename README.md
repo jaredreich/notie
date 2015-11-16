@@ -3,15 +3,21 @@
 notie.js is a clean and simple notification plugin (alert/growl style) for javascript, with no dependencies.
 Demo: https://jaredreich.com/projects/notie.js
 
+With notie.js you can:
+* Alert users
+* Confirm user choices
+* Input user information
+
 ![Alt text](/demo.gif?raw=true "Demo")
+
+## Features
 
 * Pure javascript, no dependencies, only one file to include
 * Works in all modern browsers (Chrome, Firefox, Safari, IE, Edge, Opera)
+* Easily customizable
 * Change the colors to match your style/brand
 * Font size auto-adjusts based on screen size
-* Turn off bottom shadow for flat design, on for material design
-* Dismiss on click
-* Easily customizable
+* Turn bottom shadow off for flat design, on for material design
 * Override or add styling in a separate .css file (optional)
 
 ## Installation
@@ -38,8 +44,9 @@ bower install notie
 ## Usage
 
 ```javascript
-notie.alert(style, 'message', time_in_seconds);
-notie.confirm('Title text', 'Yes button text', 'No/cancel button text', yes_callback)
+notie.alert(style_number, 'message', time_in_seconds);
+notie.confirm('Title text', 'Yes button text', 'No button text', yes_callback)
+notie.input('Title text', 'Submit button text', 'Cancel button text', 'type', 'placeholder', submit_callback, 'Optional pre-filled value');
 ```
 For example:
 ```javascript
@@ -57,6 +64,10 @@ notie.confirm('Are you sure?', 'Yes', 'Cancel', function() {
             notie.alert(1, 'Okay, jeez...', 2);
         });
     });
+});
+
+notie.input('Please enter your email address:', 'Submit', 'Cancel', 'email', 'name@example.com', function(value_entered) {
+    notie.alert(1, 'You entered: ' + value_entered, 2);
 });
 ```
 
@@ -78,12 +89,12 @@ var alert_color_info_background = '#4D82D6';
 var alert_color_text = '#FFF';
 
 // notie.confirm colors
-var confirm_color_background = '#4D82D6';
-var confirm_color_yes_background = '#57bf57';
-var confirm_color_no_background = '#E1715B';
-var confirm_color_text = '#FFF';
-var confirm_color_yes_text = '#FFF';
-var confirm_color_no_text = '#FFF';
+var confirm_and_input_color_background = '#4D82D6';
+var confirm_and_input_color_yes_background = '#57BF57';
+var confirm_and_input_color_no_background = '#E1715B';
+var confirm_and_input_color_text = '#FFF';
+var confirm_and_input_color_yes_text = '#FFF';
+var confirm_and_input_color_no_text = '#FFF';
 
 // ID's for use within your own .css file (OPTIONAL)
 // (Be sure to use !important to override the javascript)
@@ -99,6 +110,16 @@ var confirm_no_id = 'notie-confirm-no';
 var confirm_text_id = 'notie-confirm-text';
 var confirm_yes_text_id = 'notie-confirm-yes-text';
 var confirm_no_text_id = 'notie-confirm-no-text';
+var input_outer_id = 'notie-input-outer';
+var input_inner_id = 'notie-input-inner';
+var input_backdrop_id = 'notie-input-backdrop';
+var input_div_id = 'notie-input-div';
+var input_field_id = 'notie-input-field';
+var input_yes_id = 'notie-input-yes';
+var input_no_id = 'notie-input-no';
+var input_text_id = 'notie-input-text';
+var input_yes_text_id = 'notie-input-yes-text';
+var input_no_text_id = 'notie-input-no-text';
 ```
 
 ## License

@@ -12,6 +12,8 @@
             body {
                 margin: 0;
                 padding: 0;
+            }
+            body {
                 font-family: 'Lato', sans-serif;
             }
             .div-ext {
@@ -52,6 +54,7 @@
                 <button onclick="error();">Error</button><br>
                 <button onclick="info();">Information</button>
                 <button onclick="confirm();">Confirm</button>
+                <button onclick="input();">Input</button>
                 <br>
                 <br>
                 <span>Official page:</span>
@@ -82,6 +85,12 @@
             function confirm() {
                 notie.confirm('Are you sure you want to do that?<br><b>That\'s a bold move...</b>', 'Yes', 'Cancel', function() {
                     notie.alert(1, 'Good choice!', 2);
+                });
+            }
+            
+            function input() {
+                notie.input('Please enter your email address:', 'Submit', 'Cancel', 'email', 'name@example.com', function(value_entered) {
+                    notie.alert(1, 'You entered: ' + value_entered, 2);
                 });
             }
             
