@@ -368,7 +368,7 @@ var notie = function(){
             }, (animation_delay * 1000 + 10));
         }
 
-        // Yes callback function
+        // No callback function
         confirm_no.onclick = function() {
             confirm_hide();
             setTimeout(function() {
