@@ -340,23 +340,23 @@ var notie = function(){
     var confirm_height = 0;
     var confirm_is_showing = false;
 
-    function confirm(title, yes_text, no_text, yes_callback) {
+    function confirm(title, yes_text, no_text, yes_callback, no_callback) {
         
         if (alert_is_showing) {
             // Hide notie.alert
             clearTimeout(alert_timeout_1);
             clearTimeout(alert_timeout_2);
             alert_hide(function() {
-                confirm_show(title, yes_text, no_text, yes_callback);
+                confirm_show(title, yes_text, no_text, yes_callback, no_callback);
             });
         }
         else {
-            confirm_show(title, yes_text, no_text, yes_callback);
+            confirm_show(title, yes_text, no_text, yes_callback, no_callback);
         }
         
 
     }
-    function confirm_show(title, yes_text, no_text, yes_callback) {
+    function confirm_show(title, yes_text, no_text, yes_callback, no_callback) {
 
         scroll_disable();
 
@@ -365,6 +365,14 @@ var notie = function(){
             confirm_hide();
             setTimeout(function() {
                 yes_callback();
+            }, (animation_delay * 1000 + 10));
+        }
+
+        // Yes callback function
+        confirm_no.onclick = function() {
+            confirm_hide();
+            setTimeout(function() {
+                no_callback();
             }, (animation_delay * 1000 + 10));
         }
 
