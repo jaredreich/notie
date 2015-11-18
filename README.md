@@ -24,6 +24,7 @@ Demo: https://jaredreich.com/projects/notie.js
 
 HTML:
 ```html
+<!-- import not before the body tag -->
 <body>
   ...
   <script src="/path/to/notie.js"></script>
