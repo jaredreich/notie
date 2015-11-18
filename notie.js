@@ -97,13 +97,7 @@ var notie = function(){
     alert_outer.appendChild(alert_inner);
 
     if (typeof Element.prototype.addEventListener === 'undefined') {
-        Element.prototype.addEventListener = function (e, callback) {
-            e = 'on' + e;
-            return this.attachEvent(e, callback);
-        };
-
-        //we can assume Window.prototype.addEventListener is undefined too
-        Window.prototype.addEventListener = function (e, callback) {
+        Element.prototype.addEventListener = Window.prototype.addEventListener = function (e, callback) {
             e = 'on' + e;
             return this.attachEvent(e, callback);
         };
