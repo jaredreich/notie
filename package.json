@@ -1,5 +1,5 @@
 {
-    "name": "notie-js",
+    "name": "notie",
     "description": "A clean and simple notification plugin (alert/growl style) for javascript, with no dependencies.",
     "author": "Jared Reich (https://jaredreich.com)",
     "version": "2.1.0",
