@@ -1,20 +1,27 @@
 {
-    "name": "notie-js",
-    "description": "A clean and simple notification plugin (alert/growl style) for javascript, with no dependencies.",
-    "author": "Jared Reich (https://jaredreich.com)",
-    "version": "2.0.1",
-    "main": "notie.js",
-    "repository": {
+  "name": "notie-js",
+  "description": "A clean and simple notification plugin (alert/growl style) for javascript, with no dependencies.",
+  "author": "Jared Reich",
+  "version": "2.0.1",
+  "main": "dist/notie.js",
+  "scripts": {
+    "start": "watchify -v --standalone notie src/main.js -o dist/notie.js",
+    "build": "browserify --standalone notie src/main.js > dist/notie.js"
+  },
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/jaredreich/notie.js.git"
-    },
-    "keywords": [
+  },
+  "keywords": [
     "tip"
-    ],
-    "author": "Jared Reich",
-    "license": "MIT",
-    "bugs": {
+  ],
+  "license": "MIT",
+  "bugs": {
     "url": "https://github.com/jaredreich/notie.js/issues"
-    },
-    "homepage": "https://jaredreich.com/projects/notie.js"
+  },
+  "homepage": "https://jaredreich.com/projects/notie.js",
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "watchify": "^3.6.1"
+  }
 }
