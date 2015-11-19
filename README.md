@@ -32,7 +32,7 @@ HTML:
 
 npm:
 ```
-npm install notie-js
+npm install notie
 ```
 
 Bower:
