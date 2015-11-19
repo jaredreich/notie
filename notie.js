@@ -9,7 +9,7 @@
  * Project home:
  * https://jaredreich.com/projects/notie.js
  *
- * Version:  2.0.1
+ * Version:  2.0.2
  *
 */
 
@@ -24,6 +24,7 @@ var notie = function(){
     var font_size_big = '24px';
     var font_change_screen_width = 600;
     var animation_delay = 0.3;
+    var background_click_dismiss = true;
     
     // notie.alert colors
     var alert_color_success_background = '#57BF57';
@@ -48,7 +49,7 @@ var notie = function(){
     var alert_text_id = 'notie-alert-text';
     var confirm_outer_id = 'notie-confirm-outer';
     var confirm_inner_id = 'notie-confirm-inner';
-    var confirm_backdrop_id = 'notie-confirm-backdrop';
+    var confirm_background_id = 'notie-confirm-background';
     var confirm_yes_id = 'notie-confirm-yes';
     var confirm_no_id = 'notie-confirm-no';
     var confirm_text_id = 'notie-confirm-text';
@@ -56,7 +57,7 @@ var notie = function(){
     var confirm_no_text_id = 'notie-confirm-no-text';
     var input_outer_id = 'notie-input-outer';
     var input_inner_id = 'notie-input-inner';
-    var input_backdrop_id = 'notie-input-backdrop';
+    var input_background_id = 'notie-input-background';
     var input_div_id = 'notie-input-div';
     var input_field_id = 'notie-input-field';
     var input_yes_id = 'notie-input-yes';
@@ -123,6 +124,9 @@ var notie = function(){
     var was_clicked_counter = 0;
 
     function alert(type, message, seconds) {
+        
+        // Blur active element for use of enter key, focus input
+        document.activeElement.blur();
 
         was_clicked_counter++;
 
@@ -251,21 +255,25 @@ var notie = function(){
     confirm_outer.style.WebkitTransition = '';
     confirm_outer.style.transition = '';
 
-    var confirm_backdrop = document.createElement('div');
-    confirm_backdrop.id = confirm_backdrop_id;
-    confirm_backdrop.style.position = 'fixed';
-    confirm_backdrop.style.top = '0';
-    confirm_backdrop.style.left = '0';
-    confirm_backdrop.style.zIndex = '999999997';
-    confirm_backdrop.style.height = '100%';
-    confirm_backdrop.style.width = '100%';
-    confirm_backdrop.style.display = 'none';
-    confirm_backdrop.style.backgroundColor = 'white';
-    confirm_backdrop.style.MozTransition = 'all ' + animation_delay + 's ease';
-    confirm_backdrop.style.WebkitTransition = 'all ' + animation_delay + 's ease';
-    confirm_backdrop.style.transition = 'all ' + animation_delay + 's ease';
-    confirm_backdrop.style.opacity = '0';
-    confirm_backdrop.onclick = function() { confirm_hide(); }
+    var confirm_background = document.createElement('div');
+    confirm_background.id = confirm_background_id;
+    confirm_background.style.position = 'fixed';
+    confirm_background.style.top = '0';
+    confirm_background.style.left = '0';
+    confirm_background.style.zIndex = '999999997';
+    confirm_background.style.height = '100%';
+    confirm_background.style.width = '100%';
+    confirm_background.style.display = 'none';
+    confirm_background.style.backgroundColor = 'white';
+    confirm_background.style.MozTransition = 'all ' + animation_delay + 's ease';
+    confirm_background.style.WebkitTransition = 'all ' + animation_delay + 's ease';
+    confirm_background.style.transition = 'all ' + animation_delay + 's ease';
+    confirm_background.style.opacity = '0';
+    confirm_background.onclick = function() {
+        if (background_click_dismiss) {
+            confirm_hide();
+        }
+    };
 
     var confirm_inner = document.createElement('div');
     confirm_inner.id = confirm_inner_id;
@@ -334,13 +342,16 @@ var notie = function(){
 
     // Attach confirm elements to the body element
     document.body.appendChild(confirm_outer);
-    document.body.appendChild(confirm_backdrop);
+    document.body.appendChild(confirm_background);
 
     // Declare variables
     var confirm_height = 0;
     var confirm_is_showing = false;
 
     function confirm(title, yes_text, no_text, yes_callback) {
+        
+        // Blur active element for use of enter key
+        document.activeElement.blur();
         
         if (alert_is_showing) {
             // Hide notie.alert
@@ -379,7 +390,7 @@ var notie = function(){
             confirm_outer.style.top = '-10000px';
             confirm_outer.style.display = 'table';
             confirm_outer.style.top = '-' + confirm_outer.offsetHeight - 5 + 'px';
-            confirm_backdrop.style.display = 'block';
+            confirm_background.style.display = 'block';
 
             setTimeout(function() {
 
@@ -389,7 +400,7 @@ var notie = function(){
                 confirm_outer.style.transition = 'all ' + animation_delay + 's ease';
 
                 confirm_outer.style.top = 0;
-                confirm_backdrop.style.opacity = '0.75';
+                confirm_background.style.opacity = '0.75';
 
                 setTimeout(function() {
                     confirm_is_showing = true;
@@ -414,7 +425,7 @@ var notie = function(){
     function confirm_hide() {
 
         confirm_outer.style.top = '-' + confirm_outer.offsetHeight - 5 + 'px';
-        confirm_backdrop.style.opacity = '0';
+        confirm_background.style.opacity = '0';
 
         setTimeout(function() {
 
@@ -422,7 +433,7 @@ var notie = function(){
             confirm_outer.style.MozTransition = '';
             confirm_outer.style.WebkitTransition = '';
             confirm_outer.style.transition = '';
-            confirm_backdrop.style.display = 'none';
+            confirm_background.style.display = 'none';
             
             confirm_outer.style.top = '-10000px';
 
@@ -455,21 +466,25 @@ var notie = function(){
     input_outer.style.WebkitTransition = '';
     input_outer.style.transition = '';
 
-    var input_backdrop = document.createElement('div');
-    input_backdrop.id = input_backdrop_id;
-    input_backdrop.style.position = 'fixed';
-    input_backdrop.style.top = '0';
-    input_backdrop.style.left = '0';
-    input_backdrop.style.zIndex = '999999997';
-    input_backdrop.style.height = '100%';
-    input_backdrop.style.width = '100%';
-    input_backdrop.style.display = 'none';
-    input_backdrop.style.backgroundColor = 'white';
-    input_backdrop.style.MozTransition = 'all ' + animation_delay + 's ease';
-    input_backdrop.style.WebkitTransition = 'all ' + animation_delay + 's ease';
-    input_backdrop.style.transition = 'all ' + animation_delay + 's ease';
-    input_backdrop.style.opacity = '0';
-    input_backdrop.onclick = function() { input_hide(); }
+    var input_background = document.createElement('div');
+    input_background.id = input_background_id;
+    input_background.style.position = 'fixed';
+    input_background.style.top = '0';
+    input_background.style.left = '0';
+    input_background.style.zIndex = '999999997';
+    input_background.style.height = '100%';
+    input_background.style.width = '100%';
+    input_background.style.display = 'none';
+    input_background.style.backgroundColor = 'white';
+    input_background.style.MozTransition = 'all ' + animation_delay + 's ease';
+    input_background.style.WebkitTransition = 'all ' + animation_delay + 's ease';
+    input_background.style.transition = 'all ' + animation_delay + 's ease';
+    input_background.style.opacity = '0';
+    input_background.onclick = function() {
+        if (background_click_dismiss) {
+            input_hide();
+        }
+    };
 
     var input_inner = document.createElement('div');
     input_inner.id = input_inner_id;
@@ -572,13 +587,17 @@ var notie = function(){
 
     // Attach input elements to the body element
     document.body.appendChild(input_outer);
-    document.body.appendChild(input_backdrop);
+    document.body.appendChild(input_background);
 
     // Declare variables
     var input_height = 0;
     var input_is_showing = false;
 
     function input(title, submit_text, cancel_text, type, placeholder, submit_callback, prefilled_value_optional) {
+        
+        // Blur active element for use of enter key, focus input
+        document.activeElement.blur();
+        setTimeout(function() { input_field.focus(); }, (animation_delay * 1000));
         
         input_field.setAttribute('type', type);
         input_field.setAttribute('placeholder', placeholder);
@@ -621,7 +640,7 @@ var notie = function(){
             input_outer.style.top = '-10000px';
             input_outer.style.display = 'table';
             input_outer.style.top = '-' + input_outer.offsetHeight - 5 + 'px';
-            input_backdrop.style.display = 'block';
+            input_background.style.display = 'block';
 
             setTimeout(function() {
 
@@ -631,7 +650,7 @@ var notie = function(){
                 input_outer.style.transition = 'all ' + animation_delay + 's ease';
 
                 input_outer.style.top = 0;
-                input_backdrop.style.opacity = '0.75';
+                input_background.style.opacity = '0.75';
 
                 setTimeout(function() {
                     input_is_showing = true;
@@ -656,7 +675,7 @@ var notie = function(){
     function input_hide() {
 
         input_outer.style.top = '-' + input_outer.offsetHeight - 5 + 'px';
-        input_backdrop.style.opacity = '0';
+        input_background.style.opacity = '0';
 
         setTimeout(function() {
 
@@ -664,7 +683,7 @@ var notie = function(){
             input_outer.style.MozTransition = '';
             input_outer.style.WebkitTransition = '';
             input_outer.style.transition = '';
-            input_backdrop.style.display = 'none';
+            input_background.style.display = 'none';
             
             input_outer.style.top = '-10000px';
 
@@ -677,15 +696,49 @@ var notie = function(){
     }
     
     
+    
+    // Event listener for enter and escape keys
+    // *********************************************
+    window.addEventListener('keydown', function(event) {
+        
+        var enter_clicked = (event.which == 13 || event.keyCode == 13);
+        var escape_clicked = (event.which == 27 || event.keyCode == 27);
+        
+        if (alert_is_showing) {
+            if (enter_clicked || escape_clicked) {
+                clearTimeout(alert_timeout_1);
+                clearTimeout(alert_timeout_2);
+                alert_hide();
+            }
+        }
+        else if (confirm_is_showing) {
+            if (enter_clicked) {
+                confirm_yes.click();
+            }
+            else if (escape_clicked) {
+                confirm_no.click();
+            }
+        }
+        else if (input_is_showing) {
+            if (enter_clicked) {
+                input_yes.click();
+            }
+            else if (escape_clicked) {
+                input_no.click();
+            }
+        }
+    });
+    
+    
 
 
-    // SCROLL DISABLE AND ENABLE FOR NOTIE.CONFIRM and NOTIE.INPUT
+    // Scroll disable and enable for notie.confirm and notie.input
     // *********************************************
     var original_body_height, original_body_overflow;
     function scroll_disable() {
         original_body_height = document.body.style.height;
         original_body_overflow = document.body.style.overflow;
-        document.body.style.height = '100%;';
+        document.body.style.height = '100%';
         document.body.style.overflow = 'hidden';
     }
     function scroll_enable() {
