@@ -89,11 +89,14 @@ var notie = function(){
     alert_outer.style.WebkitTransition = '';
     alert_outer.style.transition = '';
     alert_outer.style.cursor = 'pointer';
-    alert_outer.addEventListener('click', function() {
+    
+    // Hide alert on click
+    alert_outer.onclick = function() {
         clearTimeout(alert_timeout_1);
         clearTimeout(alert_timeout_2);
         alert_hide();
-    });
+    };
+    
     var alert_inner = document.createElement('div');
     alert_inner.id = alert_inner_id;
     alert_inner.style.padding = '20px';
@@ -269,6 +272,8 @@ var notie = function(){
     confirm_background.style.WebkitTransition = 'all ' + animation_delay + 's ease';
     confirm_background.style.transition = 'all ' + animation_delay + 's ease';
     confirm_background.style.opacity = '0';
+    
+    // Hide notie.confirm on background click
     confirm_background.onclick = function() {
         if (background_click_dismiss) {
             confirm_hide();
@@ -480,6 +485,8 @@ var notie = function(){
     input_background.style.WebkitTransition = 'all ' + animation_delay + 's ease';
     input_background.style.transition = 'all ' + animation_delay + 's ease';
     input_background.style.opacity = '0';
+    
+    // Hide notie.input on background click
     input_background.onclick = function() {
         if (background_click_dismiss) {
             input_hide();
@@ -730,6 +737,14 @@ var notie = function(){
     });
     
     
+    // addEventListener polyfill, fixes a style.height issue for IE8
+    // *********************************************
+    if (typeof Element.prototype.addEventListener === 'undefined') {
+        Element.prototype.addEventListener = Window.prototype.addEventListener = function (e, callback) {
+            e = 'on' + e;
+            return this.attachEvent(e, callback);
+        };
+    }
 
 
     // Scroll disable and enable for notie.confirm and notie.input
