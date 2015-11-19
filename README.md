@@ -84,6 +84,7 @@ var font_size_small = '18px';
 var font_size_big = '24px';
 var font_change_screen_width = 600;
 var animation_delay = 0.3;
+var background_click_dismiss = true;
 
 // notie.alert colors
 var alert_color_success_background = '#57BF57';
