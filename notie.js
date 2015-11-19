@@ -89,17 +89,26 @@ var notie = function(){
     alert_outer.style.WebkitTransition = '';
     alert_outer.style.transition = '';
     alert_outer.style.cursor = 'pointer';
-    alert_outer.addEventListener('click', function() {
-        clearTimeout(alert_timeout_1);
-        clearTimeout(alert_timeout_2);
-        alert_hide();
-    });
+
     var alert_inner = document.createElement('div');
     alert_inner.id = alert_inner_id;
     alert_inner.style.padding = '20px';
     alert_inner.style.display = 'table-cell';
     alert_inner.style.verticalAlign = 'middle';
     alert_outer.appendChild(alert_inner);
+
+    if (typeof Element.prototype.addEventListener === 'undefined') {
+        Element.prototype.addEventListener = Window.prototype.addEventListener = function (e, callback) {
+            e = 'on' + e;
+            return this.attachEvent(e, callback);
+        };
+    }
+
+    alert_outer.addEventListener('click', function() {
+        clearTimeout(alert_timeout_1);
+        clearTimeout(alert_timeout_2);
+        alert_hide();
+    });
 
     // Initialize notie text
     var alert_text = document.createElement('span');
