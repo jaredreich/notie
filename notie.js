@@ -9,7 +9,7 @@
  * Project home:
  * https://jaredreich.com/projects/notie.js
  *
- * Version:  2.0.2
+ * Version:  2.1.0
  *
 */
 
@@ -70,6 +70,91 @@ var notie = function(){
     
     
     
+    
+    
+    // HELPERS
+    // *********************************************
+    
+    // Function for resize listeners for font-size
+    var resizeListener = function resizeListener(ele) {
+        if (window.innerWidth <= font_change_screen_width) { ele.style.fontSize = font_size_small; }
+        else { ele.style.fontSize = font_size_big; }
+    };
+    
+    
+    // Debounce function (credit to Underscore.js)
+    var debounce_time = 500;
+    var debounce = function debounce(func, wait, immediate) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    }
+    
+    
+    // Event listener for enter and escape keys
+    window.addEventListener('keydown', function(event) {
+        var enter_clicked = (event.which == 13 || event.keyCode == 13);
+        var escape_clicked = (event.which == 27 || event.keyCode == 27);
+        if (alert_is_showing) {
+            if (enter_clicked || escape_clicked) {
+                clearTimeout(alert_timeout_1);
+                clearTimeout(alert_timeout_2);
+                alert_hide();
+            }
+        }
+        else if (confirm_is_showing) {
+            if (enter_clicked) {
+                confirm_yes.click();
+            }
+            else if (escape_clicked) {
+                confirm_no.click();
+            }
+        }
+        else if (input_is_showing) {
+            if (enter_clicked) {
+                input_yes.click();
+            }
+            else if (escape_clicked) {
+                input_no.click();
+            }
+        }
+    });
+    
+    
+    // addEventListener polyfill, fixes a style.height issue for IE8
+    if (typeof Element.prototype.addEventListener === 'undefined') {
+        Element.prototype.addEventListener = Window.prototype.addEventListener = function (e, callback) {
+            e = 'on' + e;
+            return this.attachEvent(e, callback);
+        };
+    }
+
+
+    // Scroll disable and enable for notie.confirm and notie.input
+    var original_body_height, original_body_overflow;
+    function scroll_disable() {
+        original_body_height = document.body.style.height;
+        original_body_overflow = document.body.style.overflow;
+        document.body.style.height = '100%';
+        document.body.style.overflow = 'hidden';
+    }
+    function scroll_enable() {
+        document.body.style.height = original_body_height;
+        document.body.style.overflow = original_body_overflow;
+    }
+    // *********************************************
+    
+    
+    
     // NOTIE.ALERT
     // *********************************************
 
@@ -103,17 +188,14 @@ var notie = function(){
     alert_inner.style.display = 'table-cell';
     alert_inner.style.verticalAlign = 'middle';
     alert_outer.appendChild(alert_inner);
-
+    
     // Initialize notie text
     var alert_text = document.createElement('span');
     alert_text.id = alert_text_id;
     alert_text.style.color = alert_color_text;
     if (window.innerWidth <= font_change_screen_width) { alert_text.style.fontSize = font_size_small; }
     else { alert_text.style.fontSize = font_size_big; }
-    window.addEventListener('resize', function(){
-        if (window.innerWidth <= font_change_screen_width) { alert_text.style.fontSize = font_size_small; }
-        else { alert_text.style.fontSize = font_size_big; }
-    }, true);
+    window.addEventListener('resize', debounce(resizeListener.bind(null, alert_text), debounce_time), true);
     alert_inner.appendChild(alert_text);
 
     // Attach notie to the body element
@@ -317,10 +399,7 @@ var notie = function(){
     confirm_text.style.color = confirm_and_input_color_text;
     if (window.innerWidth <= font_change_screen_width) { confirm_text.style.fontSize = font_size_small; }
     else { confirm_text.style.fontSize = font_size_big; }
-    window.addEventListener('resize', function(){
-        if (window.innerWidth <= font_change_screen_width) { confirm_text.style.fontSize = font_size_small; }
-        else { confirm_text.style.fontSize = font_size_big; }
-    }, true);
+    window.addEventListener('resize', debounce(resizeListener.bind(null, confirm_text), debounce_time), true);
     confirm_inner.appendChild(confirm_text);
 
     var confirm_yes_text = document.createElement('span');
@@ -328,10 +407,7 @@ var notie = function(){
     confirm_yes_text.style.color = confirm_and_input_color_yes_text;
     if (window.innerWidth <= font_change_screen_width) { confirm_yes_text.style.fontSize = font_size_small; }
     else { confirm_yes_text.style.fontSize = font_size_big; }
-    window.addEventListener('resize', function(){
-        if (window.innerWidth <= font_change_screen_width) { confirm_yes_text.style.fontSize = font_size_small; }
-        else { confirm_yes_text.style.fontSize = font_size_big; }
-    }, true);
+    window.addEventListener('resize', debounce(resizeListener.bind(null, confirm_yes_text), debounce_time), true);
     confirm_yes.appendChild(confirm_yes_text);
 
     var confirm_no_text = document.createElement('span');
@@ -339,10 +415,7 @@ var notie = function(){
     confirm_no_text.style.color = confirm_and_input_color_no_text;
     if (window.innerWidth <= font_change_screen_width) { confirm_no_text.style.fontSize = font_size_small; }
     else { confirm_no_text.style.fontSize = font_size_big; }
-    window.addEventListener('resize', function(){
-        if (window.innerWidth <= font_change_screen_width) { confirm_no_text.style.fontSize = font_size_small; }
-        else { confirm_no_text.style.fontSize = font_size_big; }
-    }, true);
+    window.addEventListener('resize', debounce(resizeListener.bind(null, confirm_no_text), debounce_time), true);
     confirm_no.appendChild(confirm_no_text);
 
     // Attach confirm elements to the body element
@@ -531,10 +604,7 @@ var notie = function(){
     input_field.style.fontSize = font_size_big;
     if (window.innerWidth <= font_change_screen_width) { input_field.style.fontSize = font_size_small; }
     else { input_field.style.fontSize = font_size_big; }
-    window.addEventListener('resize', function(){
-        if (window.innerWidth <= font_change_screen_width) { input_field.style.fontSize = font_size_small; }
-        else { input_field.style.fontSize = font_size_big; }
-    }, true);
+    window.addEventListener('resize', debounce(resizeListener.bind(null, input_field), debounce_time), true);
     input_div.appendChild(input_field);
 
     var input_yes = document.createElement('div');
@@ -564,10 +634,7 @@ var notie = function(){
     input_text.style.color = confirm_and_input_color_text;
     if (window.innerWidth <= font_change_screen_width) { input_text.style.fontSize = font_size_small; }
     else { input_text.style.fontSize = font_size_big; }
-    window.addEventListener('resize', function(){
-        if (window.innerWidth <= font_change_screen_width) { input_text.style.fontSize = font_size_small; }
-        else { input_text.style.fontSize = font_size_big; }
-    }, true);
+    window.addEventListener('resize', debounce(resizeListener.bind(null, input_text), debounce_time), true);
     input_inner.appendChild(input_text);
 
     var input_yes_text = document.createElement('span');
@@ -575,10 +642,7 @@ var notie = function(){
     input_yes_text.style.color = confirm_and_input_color_yes_text;
     if (window.innerWidth <= font_change_screen_width) { input_yes_text.style.fontSize = font_size_small; }
     else { input_yes_text.style.fontSize = font_size_big; }
-    window.addEventListener('resize', function(){
-        if (window.innerWidth <= font_change_screen_width) { input_yes_text.style.fontSize = font_size_small; }
-        else { input_yes_text.style.fontSize = font_size_big; }
-    }, true);
+    window.addEventListener('resize', debounce(resizeListener.bind(null, input_yes_text), debounce_time), true);
     input_yes.appendChild(input_yes_text);
 
     var input_no_text = document.createElement('span');
@@ -586,10 +650,7 @@ var notie = function(){
     input_no_text.style.color = confirm_and_input_color_no_text;
     if (window.innerWidth <= font_change_screen_width) { input_no_text.style.fontSize = font_size_small; }
     else { input_no_text.style.fontSize = font_size_big; }
-    window.addEventListener('resize', function(){
-        if (window.innerWidth <= font_change_screen_width) { input_no_text.style.fontSize = font_size_small; }
-        else { input_no_text.style.fontSize = font_size_big; }
-    }, true);
+    window.addEventListener('resize', debounce(resizeListener.bind(null, input_no_text), debounce_time), true);
     input_no.appendChild(input_no_text);
 
     // Attach input elements to the body element
@@ -701,66 +762,6 @@ var notie = function(){
         }, (animation_delay * 1000 + 10));
 
     }
-    
-    
-    
-    // Event listener for enter and escape keys
-    // *********************************************
-    window.addEventListener('keydown', function(event) {
-        
-        var enter_clicked = (event.which == 13 || event.keyCode == 13);
-        var escape_clicked = (event.which == 27 || event.keyCode == 27);
-        
-        if (alert_is_showing) {
-            if (enter_clicked || escape_clicked) {
-                clearTimeout(alert_timeout_1);
-                clearTimeout(alert_timeout_2);
-                alert_hide();
-            }
-        }
-        else if (confirm_is_showing) {
-            if (enter_clicked) {
-                confirm_yes.click();
-            }
-            else if (escape_clicked) {
-                confirm_no.click();
-            }
-        }
-        else if (input_is_showing) {
-            if (enter_clicked) {
-                input_yes.click();
-            }
-            else if (escape_clicked) {
-                input_no.click();
-            }
-        }
-    });
-    
-    
-    // addEventListener polyfill, fixes a style.height issue for IE8
-    // *********************************************
-    if (typeof Element.prototype.addEventListener === 'undefined') {
-        Element.prototype.addEventListener = Window.prototype.addEventListener = function (e, callback) {
-            e = 'on' + e;
-            return this.attachEvent(e, callback);
-        };
-    }
-
-
-    // Scroll disable and enable for notie.confirm and notie.input
-    // *********************************************
-    var original_body_height, original_body_overflow;
-    function scroll_disable() {
-        original_body_height = document.body.style.height;
-        original_body_overflow = document.body.style.overflow;
-        document.body.style.height = '100%';
-        document.body.style.overflow = 'hidden';
-    }
-    function scroll_enable() {
-        document.body.style.height = original_body_height;
-        document.body.style.overflow = original_body_overflow;
-    }
-    
     
     
     
