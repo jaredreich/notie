@@ -101,7 +101,8 @@ var notie = function(){
     
     
     // Event listener for enter and escape keys
-    window.addEventListener('keydown', function(event) {
+var addEvent = (window.addEventListener) ? window.addEventListener : window.attachEvent;
+window.addEventListener('keydown', function(event) {
         var enter_clicked = (event.which == 13 || event.keyCode == 13);
         var escape_clicked = (event.which == 27 || event.keyCode == 27);
         if (alert_is_showing) {
