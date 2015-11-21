@@ -277,26 +277,33 @@ var notie = function(){
         alert_outer.style.top = '-10000px';
         alert_outer.style.display = 'table';
         alert_outer.style.top = '-' + alert_outer.offsetHeight - 5 + 'px';
-
+        
+        // Call timeout to prepare auto hide
+        alert_prepare_to_hide(duration); // Or alert_prepare_to_hide(duration,function(){  });
+        
+        // Stop timeouts while mouseOver
+        alert_outer.onmouseover=function(){ console.log("mouseveor");
+            clearTimeout(alert_timeout_1);
+            clearTimeout(alert_timeout_2);                        
+        };
+        
+        // Call timeouts again on mouseOut
+        alert_outer.onmouseout=function(){ console.log("mouseout");
+             alert_prepare_to_hide(duration/2);                       
+        };        
+    }
+    
+    function alert_prepare_to_hide(duration,callback){        
         alert_timeout_1 = setTimeout(function() {
-
             if (shadow) { alert_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
             alert_outer.style.MozTransition = 'all ' + animation_delay + 's ease';
             alert_outer.style.WebkitTransition = 'all ' + animation_delay + 's ease';
             alert_outer.style.transition = 'all ' + animation_delay + 's ease';
-
             alert_outer.style.top = 0;
-
             alert_timeout_2 = setTimeout(function() {
-
-                alert_hide(function() {
-                    // Nothing
-                });
-
-            }, duration);
-
-        }, 20);
-
+                alert_hide(callback);
+            }, duration); 
+        }, 20); 
     }
 
     function alert_hide(callback) {
