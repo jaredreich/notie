@@ -282,13 +282,13 @@ var notie = function(){
         alert_prepare_to_hide(duration); // Or alert_prepare_to_hide(duration,function(){  });
         
         // Stop timeouts while mouseOver
-        alert_outer.onmouseover=function(){ console.log("mouseveor");
+        alert_outer.onmouseover=function(){ 
             clearTimeout(alert_timeout_1);
             clearTimeout(alert_timeout_2);                        
         };
         
         // Call timeouts again on mouseOut
-        alert_outer.onmouseout=function(){ console.log("mouseout");
+        alert_outer.onmouseout=function(){ 
              alert_prepare_to_hide(duration/2);                       
         };        
     }
