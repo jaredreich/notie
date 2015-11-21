@@ -246,11 +246,7 @@ var notie = function(){
         var duration = 0;
         if (typeof seconds == 'undefined') {
             var duration = 3000;
-        }
-        else if (seconds < 1) {
-            duration = 1000;
-        }
-        else {
+        } else {
             duration = seconds * 1000;
         }
 
@@ -294,6 +290,10 @@ var notie = function(){
                 });
 
             }, duration);
+
+            if (seconds < 1) { 
+                clearTimeout(alert_timeout_2); 
+            }
 
         }, 20);
 
