@@ -16,69 +16,76 @@
 var notie = function(){
 
     // SETTINGS
-    // *********************************************
-    
-    // General
-    var shadow = true;
-    var font_size_small = '18px';
-    var font_size_big = '24px';
-    var font_change_screen_width = 600;
-    var animation_delay = 0.3;
-    var background_click_dismiss = true;
-    
-    // notie.alert colors
-    var alert_color_success_background = '#57BF57';
-    var alert_color_warning_background = '#E3B771';
-    var alert_color_error_background = '#E1715B';
-    var alert_color_info_background = '#4D82D6';
-    var alert_color_text = '#FFF';
+    // *********************************************  
+    // *********************************************    
 
-    // notie.confirm colors
-    var confirm_and_input_color_background = '#4D82D6';
-    var confirm_and_input_color_yes_background = '#57BF57';
-    var confirm_and_input_color_no_background = '#E1715B';
-    var confirm_and_input_color_text = '#FFF';
-    var confirm_and_input_color_yes_text = '#FFF';
-    var confirm_and_input_color_no_text = '#FFF';
-    
-    // ID's for use within your own .css file (OPTIONAL)
-    // (Be sure to use !important to override the javascript)
-    // Example: #notie-alert-inner { padding: 30px !important; }
-    var alert_outer_id = 'notie-alert-outer';
-    var alert_inner_id = 'notie-alert-inner';
-    var alert_text_id = 'notie-alert-text';
-    var confirm_outer_id = 'notie-confirm-outer';
-    var confirm_inner_id = 'notie-confirm-inner';
-    var confirm_background_id = 'notie-confirm-background';
-    var confirm_yes_id = 'notie-confirm-yes';
-    var confirm_no_id = 'notie-confirm-no';
-    var confirm_text_id = 'notie-confirm-text';
-    var confirm_yes_text_id = 'notie-confirm-yes-text';
-    var confirm_no_text_id = 'notie-confirm-no-text';
-    var input_outer_id = 'notie-input-outer';
-    var input_inner_id = 'notie-input-inner';
-    var input_background_id = 'notie-input-background';
-    var input_div_id = 'notie-input-div';
-    var input_field_id = 'notie-input-field';
-    var input_yes_id = 'notie-input-yes';
-    var input_no_id = 'notie-input-no';
-    var input_text_id = 'notie-input-text';
-    var input_yes_text_id = 'notie-input-yes-text';
-    var input_no_text_id = 'notie-input-no-text';
-    
-    // *********************************************
-    
-    
-    
-    
+    var options = {
+        shadow : true,
+        font_size_small : '18px',
+        font_size_big : '24px',
+        font_change_screen_width : 600,
+        animation_delay : 0.3,
+        background_click_dismiss : true,
+
+        // notie.alert colors
+        alert_color_success_background : '#57BF57',
+        alert_color_warning_background : '#E3B771',
+        alert_color_error_background : '#E1715B',
+        alert_color_info_background : '#4D82D6',
+        alert_color_text : '#FFF',
+        
+        // notie.confirm colors
+        confirm_and_input_color_background : '#4D82D6',
+        confirm_and_input_color_yes_background : '#57BF57',
+        confirm_and_input_color_no_background : '#E1715B',
+        confirm_and_input_color_text : '#FFF',
+        confirm_and_input_color_yes_text : '#FFF',
+        confirm_and_input_color_no_text : '#FFF',
+        
+        // ID's for use within your own .css file (OPTIONAL)
+        // (Be sure to use !important to override the javascript)
+        // Example: #notie-alert-inner { padding: 30px !important, }
+        alert_outer_id : 'notie-alert-outer',
+        alert_inner_id : 'notie-alert-inner',
+        alert_text_id : 'notie-alert-text',
+        confirm_outer_id : 'notie-confirm-outer',
+        confirm_inner_id : 'notie-confirm-inner',
+        confirm_background_id : 'notie-confirm-background',
+        confirm_yes_id : 'notie-confirm-yes',
+        confirm_no_id : 'notie-confirm-no',
+        confirm_text_id : 'notie-confirm-text',
+        confirm_yes_text_id : 'notie-confirm-yes-text',
+        confirm_no_text_id : 'notie-confirm-no-text',
+        input_outer_id : 'notie-input-outer',
+        input_inner_id : 'notie-input-inner',
+        input_background_id : 'notie-input-background',
+        input_div_id : 'notie-input-div',
+        input_field_id : 'notie-input-field',
+        input_yes_id : 'notie-input-yes',
+        input_no_id : 'notie-input-no',
+        input_text_id : 'notie-input-text',
+        input_yes_text_id : 'notie-input-yes-text',
+        input_no_text_id : 'notie-input-no-text'		
+    };
+
+    // change options    
+    function setOptions(arguments){
+	    // extend options with arguments
+    	for (var i in arguments){ 
+            if (typeof options[i] !== undefined){
+	       	   options[i] = arguments[i]; 
+	        }
+    	}
+	};
+
     
     // HELPERS
     // *********************************************
     
     // Function for resize listeners for font-size
     var resizeListener = function resizeListener(ele) {
-        if (window.innerWidth <= font_change_screen_width) { ele.style.fontSize = font_size_small; }
-        else { ele.style.fontSize = font_size_big; }
+        if (window.innerWidth <= options.font_change_screen_width) { ele.style.fontSize = options.font_size_small; }
+        else { ele.style.fontSize = options.font_size_big; }
     };
     
     
@@ -160,7 +167,7 @@ var notie = function(){
 
     // notie elements and styling
     var alert_outer = document.createElement('div');
-    alert_outer.id = alert_outer_id;
+    alert_outer.id = options.alert_outer_id;
     alert_outer.style.position = 'fixed';
     alert_outer.style.top = '0';
     alert_outer.style.left = '0';
@@ -183,7 +190,7 @@ var notie = function(){
     };
     
     var alert_inner = document.createElement('div');
-    alert_inner.id = alert_inner_id;
+    alert_inner.id = options.alert_inner_id;
     alert_inner.style.padding = '20px';
     alert_inner.style.display = 'table-cell';
     alert_inner.style.verticalAlign = 'middle';
@@ -191,10 +198,10 @@ var notie = function(){
     
     // Initialize notie text
     var alert_text = document.createElement('span');
-    alert_text.id = alert_text_id;
-    alert_text.style.color = alert_color_text;
-    if (window.innerWidth <= font_change_screen_width) { alert_text.style.fontSize = font_size_small; }
-    else { alert_text.style.fontSize = font_size_big; }
+    alert_text.id = options.alert_text_id;
+    alert_text.style.color = options.alert_color_text;
+    if (window.innerWidth <= options.font_change_screen_width) { alert_text.style.fontSize = options.font_size_small; }
+    else { alert_text.style.fontSize = options.font_size_big; }
     window.addEventListener('resize', debounce(resizeListener.bind(null, alert_text), debounce_time), true);
     alert_inner.appendChild(alert_text);
 
@@ -217,7 +224,7 @@ var notie = function(){
 
         setTimeout(function() {
             was_clicked_counter--;
-        }, (animation_delay * 1000 + 10));
+        }, (options.animation_delay * 1000 + 10));
 
         if (was_clicked_counter == 1) {
 
@@ -257,16 +264,16 @@ var notie = function(){
         // Set notie type (background color)
         switch(type) {
             case 1:
-                alert_outer.style.backgroundColor = alert_color_success_background;
+                alert_outer.style.backgroundColor = options.alert_color_success_background;
                 break;
             case 2:
-                alert_outer.style.backgroundColor = alert_color_warning_background;
+                alert_outer.style.backgroundColor = options.alert_color_warning_background;
                 break;
             case 3:
-                alert_outer.style.backgroundColor = alert_color_error_background;
+                alert_outer.style.backgroundColor = options.alert_color_error_background;
                 break;
             case 4:
-                alert_outer.style.backgroundColor = alert_color_info_background;
+                alert_outer.style.backgroundColor = options.alert_color_info_background;
                 break;
         }
 
@@ -295,10 +302,10 @@ var notie = function(){
     
     function alert_prepare_to_hide(duration,callback){        
         alert_timeout_1 = setTimeout(function() {
-            if (shadow) { alert_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
-            alert_outer.style.MozTransition = 'all ' + animation_delay + 's ease';
-            alert_outer.style.WebkitTransition = 'all ' + animation_delay + 's ease';
-            alert_outer.style.transition = 'all ' + animation_delay + 's ease';
+            if (options.shadow) { alert_outer.style.boxshadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
+            alert_outer.style.MozTransition = 'all ' + options.animation_delay + 's ease';
+            alert_outer.style.WebkitTransition = 'all ' + options.animation_delay + 's ease';
+            alert_outer.style.transition = 'all ' + options.animation_delay + 's ease';
             alert_outer.style.top = 0;
             alert_timeout_2 = setTimeout(function() {
                 alert_hide(callback);
@@ -312,7 +319,7 @@ var notie = function(){
 
         setTimeout(function() {
 
-            if (shadow) { alert_outer.style.boxShadow = ''; }
+            if (options.shadow) { alert_outer.style.boxshadow = ''; }
             alert_outer.style.MozTransition = '';
             alert_outer.style.WebkitTransition = '';
             alert_outer.style.transition = '';
@@ -323,7 +330,7 @@ var notie = function(){
 
             if (callback) { callback(); }
 
-        }, (animation_delay * 1000 + 10));
+        }, (options.animation_delay * 1000 + 10));
 
     }
 
@@ -334,7 +341,7 @@ var notie = function(){
 
     // confirm elements and styling
     var confirm_outer = document.createElement('div');
-    confirm_outer.id = confirm_outer_id;
+    confirm_outer.id = options.confirm_outer_id;
     confirm_outer.style.position = 'fixed';
     confirm_outer.style.top = '0';
     confirm_outer.style.left = '0';
@@ -348,7 +355,7 @@ var notie = function(){
     confirm_outer.style.transition = '';
 
     var confirm_background = document.createElement('div');
-    confirm_background.id = confirm_background_id;
+    confirm_background.id = options.confirm_background_id;
     confirm_background.style.position = 'fixed';
     confirm_background.style.top = '0';
     confirm_background.style.left = '0';
@@ -357,71 +364,71 @@ var notie = function(){
     confirm_background.style.width = '100%';
     confirm_background.style.display = 'none';
     confirm_background.style.backgroundColor = 'white';
-    confirm_background.style.MozTransition = 'all ' + animation_delay + 's ease';
-    confirm_background.style.WebkitTransition = 'all ' + animation_delay + 's ease';
-    confirm_background.style.transition = 'all ' + animation_delay + 's ease';
+    confirm_background.style.MozTransition = 'all ' + options.animation_delay + 's ease';
+    confirm_background.style.WebkitTransition = 'all ' + options.animation_delay + 's ease';
+    confirm_background.style.transition = 'all ' + options.animation_delay + 's ease';
     confirm_background.style.opacity = '0';
     
     // Hide notie.confirm on background click
     confirm_background.onclick = function() {
-        if (background_click_dismiss) {
+        if (options.background_click_dismiss) {
             confirm_hide();
         }
     };
 
     var confirm_inner = document.createElement('div');
-    confirm_inner.id = confirm_inner_id;
+    confirm_inner.id = options.confirm_inner_id;
     confirm_inner.style.boxSizing = 'border-box';
     confirm_inner.style.width = '100%';
     confirm_inner.style.padding = '20px';
     confirm_inner.style.display = 'block';
     confirm_inner.style.cursor = 'default';
-    confirm_inner.style.backgroundColor = confirm_and_input_color_background;
+    confirm_inner.style.backgroundColor = options.confirm_and_input_color_background;
     confirm_outer.appendChild(confirm_inner);
 
     var confirm_yes = document.createElement('div');
-    confirm_yes.id = confirm_yes_id;
+    confirm_yes.id = options.confirm_yes_id;
     confirm_yes.style.cssFloat = 'left';
     confirm_yes.style.height = '50px';
     confirm_yes.style.lineHeight = '50px';
     confirm_yes.style.width = '50%';
     confirm_yes.style.cursor = 'pointer';
-    confirm_yes.style.backgroundColor = confirm_and_input_color_yes_background;
+    confirm_yes.style.backgroundColor = options.confirm_and_input_color_yes_background;
     confirm_outer.appendChild(confirm_yes);
 
     var confirm_no = document.createElement('div');
-    confirm_no.id = confirm_no_id;
+    confirm_no.id = options.confirm_no_id;
     confirm_no.style.cssFloat = 'right';
     confirm_no.style.height = '50px';
     confirm_no.style.lineHeight = '50px';
     confirm_no.style.width = '50%';
     confirm_no.style.cursor = 'pointer';
-    confirm_no.style.backgroundColor = confirm_and_input_color_no_background;
+    confirm_no.style.backgroundColor = options.confirm_and_input_color_no_background;
     confirm_no.onclick = function() { confirm_hide(); }
     confirm_outer.appendChild(confirm_no);
 
     // Initialize confirm text
     var confirm_text = document.createElement('span');
-    confirm_text.id = confirm_text_id;
-    confirm_text.style.color = confirm_and_input_color_text;
-    if (window.innerWidth <= font_change_screen_width) { confirm_text.style.fontSize = font_size_small; }
-    else { confirm_text.style.fontSize = font_size_big; }
+    confirm_text.id = options.confirm_text_id;
+    confirm_text.style.color = options.confirm_and_input_color_text;
+    if (window.innerWidth <= options.font_change_screen_width) { confirm_text.style.fontSize = font_size_small; }
+    else { confirm_text.style.fontSize = options.font_size_big; }
     window.addEventListener('resize', debounce(resizeListener.bind(null, confirm_text), debounce_time), true);
     confirm_inner.appendChild(confirm_text);
 
     var confirm_yes_text = document.createElement('span');
-    confirm_yes_text.id = confirm_yes_text_id;
-    confirm_yes_text.style.color = confirm_and_input_color_yes_text;
-    if (window.innerWidth <= font_change_screen_width) { confirm_yes_text.style.fontSize = font_size_small; }
-    else { confirm_yes_text.style.fontSize = font_size_big; }
+    confirm_yes_text.id = options.confirm_yes_text_id;
+    confirm_yes_text.style.color = options.confirm_and_input_color_yes_text;
+    if (window.innerWidth <= options.font_change_screen_width) { confirm_yes_text.style.fontSize = font_size_small; }
+    else { confirm_yes_text.style.fontSize = options.font_size_big; }
     window.addEventListener('resize', debounce(resizeListener.bind(null, confirm_yes_text), debounce_time), true);
     confirm_yes.appendChild(confirm_yes_text);
 
     var confirm_no_text = document.createElement('span');
-    confirm_no_text.id = confirm_no_text_id;
-    confirm_no_text.style.color = confirm_and_input_color_no_text;
-    if (window.innerWidth <= font_change_screen_width) { confirm_no_text.style.fontSize = font_size_small; }
-    else { confirm_no_text.style.fontSize = font_size_big; }
+    confirm_no_text.id = options.confirm_no_text_id;
+    confirm_no_text.style.color = options.confirm_and_input_color_no_text;
+    if (window.innerWidth <= options.font_change_screen_width) { confirm_no_text.style.fontSize = font_size_small; }
+    else { confirm_no_text.style.fontSize = options.font_size_big; }
     window.addEventListener('resize', debounce(resizeListener.bind(null, confirm_no_text), debounce_time), true);
     confirm_no.appendChild(confirm_no_text);
 
@@ -479,17 +486,17 @@ var notie = function(){
 
             setTimeout(function() {
 
-                if (shadow) { confirm_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
-                confirm_outer.style.MozTransition = 'all ' + animation_delay + 's ease';
-                confirm_outer.style.WebkitTransition = 'all ' + animation_delay + 's ease';
-                confirm_outer.style.transition = 'all ' + animation_delay + 's ease';
+                if (options.shadow) { confirm_outer.style.boxshadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
+                confirm_outer.style.MozTransition = 'all ' + options.animation_delay + 's ease';
+                confirm_outer.style.WebkitTransition = 'all ' + options.animation_delay + 's ease';
+                confirm_outer.style.transition = 'all ' + options.animation_delay + 's ease';
 
                 confirm_outer.style.top = 0;
                 confirm_background.style.opacity = '0.75';
 
                 setTimeout(function() {
                     confirm_is_showing = true;
-                }, (animation_delay * 1000 + 10));
+                }, (options.animation_delay * 1000 + 10));
 
             }, 20);
 
@@ -499,7 +506,7 @@ var notie = function(){
             confirm_hide();
             setTimeout(function() {
                 confirm_show_inner();
-            }, (animation_delay * 1000 + 10));
+            }, (options.animation_delay * 1000 + 10));
         }
         else {
             confirm_show_inner();
@@ -514,7 +521,7 @@ var notie = function(){
 
         setTimeout(function() {
 
-            if (shadow) { confirm_outer.style.boxShadow = ''; }
+            if (options.shadow) { confirm_outer.style.boxshadow = ''; }
             confirm_outer.style.MozTransition = '';
             confirm_outer.style.WebkitTransition = '';
             confirm_outer.style.transition = '';
@@ -526,7 +533,7 @@ var notie = function(){
 
             confirm_is_showing = false;
 
-        }, (animation_delay * 1000 + 10));
+        }, (options.animation_delay * 1000 + 10));
 
     }
     
@@ -538,7 +545,7 @@ var notie = function(){
 
     // input elements and styling
     var input_outer = document.createElement('div');
-    input_outer.id = input_outer_id;
+    input_outer.id = options.input_outer_id;
     input_outer.style.position = 'fixed';
     input_outer.style.top = '0';
     input_outer.style.left = '0';
@@ -552,7 +559,7 @@ var notie = function(){
     input_outer.style.transition = '';
 
     var input_background = document.createElement('div');
-    input_background.id = input_background_id;
+    input_background.id = options.input_background_id;
     input_background.style.position = 'fixed';
     input_background.style.top = '0';
     input_background.style.left = '0';
@@ -561,30 +568,30 @@ var notie = function(){
     input_background.style.width = '100%';
     input_background.style.display = 'none';
     input_background.style.backgroundColor = 'white';
-    input_background.style.MozTransition = 'all ' + animation_delay + 's ease';
-    input_background.style.WebkitTransition = 'all ' + animation_delay + 's ease';
-    input_background.style.transition = 'all ' + animation_delay + 's ease';
+    input_background.style.MozTransition = 'all ' + options.animation_delay + 's ease';
+    input_background.style.WebkitTransition = 'all ' + options.animation_delay + 's ease';
+    input_background.style.transition = 'all ' + options.animation_delay + 's ease';
     input_background.style.opacity = '0';
     
     // Hide notie.input on background click
     input_background.onclick = function() {
-        if (background_click_dismiss) {
+        if (options.background_click_dismiss) {
             input_hide();
         }
     };
 
     var input_inner = document.createElement('div');
-    input_inner.id = input_inner_id;
+    input_inner.id = options.input_inner_id;
     input_inner.style.boxSizing = 'border-box';
     input_inner.style.width = '100%';
     input_inner.style.padding = '20px';
     input_inner.style.display = 'block';
     input_inner.style.cursor = 'default';
-    input_inner.style.backgroundColor = confirm_and_input_color_background;
+    input_inner.style.backgroundColor = options.confirm_and_input_color_background;
     input_outer.appendChild(input_inner);
     
     var input_div = document.createElement('div');
-    input_div.id = input_div_id;
+    input_div.id = options.input_div_id;
     input_div.style.boxSizing = 'border-box';
     input_div.style.height = '55px';
     input_div.style.width = '100%';
@@ -594,7 +601,7 @@ var notie = function(){
     input_outer.appendChild(input_div);
     
     var input_field = document.createElement('input');
-    input_field.id = input_field_id;    
+    input_field.id = options.input_field_id;    
     input_field.setAttribute('autocomplete', 'off');
     input_field.setAttribute('autocorrect', 'off');
     input_field.setAttribute('autocapitalize', 'off');
@@ -608,55 +615,55 @@ var notie = function(){
     input_field.style.outline = '0';
     input_field.style.border = '0';
     input_field.style.fontFamily = 'inherit';
-    input_field.style.fontSize = font_size_big;
-    if (window.innerWidth <= font_change_screen_width) { input_field.style.fontSize = font_size_small; }
-    else { input_field.style.fontSize = font_size_big; }
+    input_field.style.fontSize = options.font_size_big;
+    if (window.innerWidth <= options.font_change_screen_width) { input_field.style.fontSize = options.font_size_small; }
+    else { input_field.style.fontSize = options.font_size_big; }
     window.addEventListener('resize', debounce(resizeListener.bind(null, input_field), debounce_time), true);
     input_div.appendChild(input_field);
 
     var input_yes = document.createElement('div');
-    input_yes.id = input_yes_id;
+    input_yes.id = options.input_yes_id;
     input_yes.style.cssFloat = 'left';
     input_yes.style.height = '50px';
     input_yes.style.lineHeight = '50px';
     input_yes.style.width = '50%';
     input_yes.style.cursor = 'pointer';
-    input_yes.style.backgroundColor = confirm_and_input_color_yes_background;
+    input_yes.style.backgroundColor = options.confirm_and_input_color_yes_background;
     input_outer.appendChild(input_yes);
 
     var input_no = document.createElement('div');
-    input_no.id = input_no_id;
+    input_no.id = options.input_no_id;
     input_no.style.cssFloat = 'right';
     input_no.style.height = '50px';
     input_no.style.lineHeight = '50px';
     input_no.style.width = '50%';
     input_no.style.cursor = 'pointer';
-    input_no.style.backgroundColor = confirm_and_input_color_no_background;
+    input_no.style.backgroundColor = options.confirm_and_input_color_no_background;
     input_no.onclick = function() { input_hide(); }
     input_outer.appendChild(input_no);
 
     // Initialize input text
     var input_text = document.createElement('span');
-    input_text.id = input_text_id;
-    input_text.style.color = confirm_and_input_color_text;
-    if (window.innerWidth <= font_change_screen_width) { input_text.style.fontSize = font_size_small; }
-    else { input_text.style.fontSize = font_size_big; }
+    input_text.id = options.input_text_id;
+    input_text.style.color = options.confirm_and_input_color_text;
+    if (window.innerWidth <= options.font_change_screen_width) { input_text.style.fontSize = options.font_size_small; }
+    else { input_text.style.fontSize = options.font_size_big; }
     window.addEventListener('resize', debounce(resizeListener.bind(null, input_text), debounce_time), true);
     input_inner.appendChild(input_text);
 
     var input_yes_text = document.createElement('span');
-    input_yes_text.id = input_yes_text_id;
-    input_yes_text.style.color = confirm_and_input_color_yes_text;
-    if (window.innerWidth <= font_change_screen_width) { input_yes_text.style.fontSize = font_size_small; }
-    else { input_yes_text.style.fontSize = font_size_big; }
+    input_yes_text.id = options.input_yes_text_id;
+    input_yes_text.style.color = options.confirm_and_input_color_yes_text;
+    if (window.innerWidth <= options.font_change_screen_width) { input_yes_text.style.fontSize = options.font_size_small; }
+    else { input_yes_text.style.fontSize = options.font_size_big; }
     window.addEventListener('resize', debounce(resizeListener.bind(null, input_yes_text), debounce_time), true);
     input_yes.appendChild(input_yes_text);
 
     var input_no_text = document.createElement('span');
-    input_no_text.id = input_no_text_id;
-    input_no_text.style.color = confirm_and_input_color_no_text;
-    if (window.innerWidth <= font_change_screen_width) { input_no_text.style.fontSize = font_size_small; }
-    else { input_no_text.style.fontSize = font_size_big; }
+    input_no_text.id = options.input_no_text_id;
+    input_no_text.style.color = options.confirm_and_input_color_no_text;
+    if (window.innerWidth <= options.font_change_screen_width) { input_no_text.style.fontSize = options.font_size_small; }
+    else { input_no_text.style.fontSize = options.font_size_big; }
     window.addEventListener('resize', debounce(resizeListener.bind(null, input_no_text), debounce_time), true);
     input_no.appendChild(input_no_text);
 
@@ -672,7 +679,7 @@ var notie = function(){
         
         // Blur active element for use of enter key, focus input
         document.activeElement.blur();
-        setTimeout(function() { input_field.focus(); }, (animation_delay * 1000));
+        setTimeout(function() { input_field.focus(); }, (options.animation_delay * 1000));
         
         input_field.setAttribute('type', type);
         input_field.setAttribute('placeholder', placeholder);
@@ -701,7 +708,7 @@ var notie = function(){
             input_hide();
             setTimeout(function() {
                 submit_callback(input_field.value);
-            }, (animation_delay * 1000 + 10));
+            }, (options.animation_delay * 1000 + 10));
         }
 
         function input_show_inner() {
@@ -719,17 +726,17 @@ var notie = function(){
 
             setTimeout(function() {
 
-                if (shadow) { input_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
-                input_outer.style.MozTransition = 'all ' + animation_delay + 's ease';
-                input_outer.style.WebkitTransition = 'all ' + animation_delay + 's ease';
-                input_outer.style.transition = 'all ' + animation_delay + 's ease';
+                if (options.shadow) { input_outer.style.boxshadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
+                input_outer.style.MozTransition = 'all ' + options.animation_delay + 's ease';
+                input_outer.style.WebkitTransition = 'all ' + options.animation_delay + 's ease';
+                input_outer.style.transition = 'all ' + options.animation_delay + 's ease';
 
                 input_outer.style.top = 0;
                 input_background.style.opacity = '0.75';
 
                 setTimeout(function() {
                     input_is_showing = true;
-                }, (animation_delay * 1000 + 10));
+                }, (options.animation_delay * 1000 + 10));
 
             }, 20);
 
@@ -739,7 +746,7 @@ var notie = function(){
             input_hide();
             setTimeout(function() {
                 input_show_inner();
-            }, (animation_delay * 1000 + 10));
+            }, (options.animation_delay * 1000 + 10));
         }
         else {
             input_show_inner();
@@ -754,7 +761,7 @@ var notie = function(){
 
         setTimeout(function() {
 
-            if (shadow) { input_outer.style.boxShadow = ''; }
+            if (options.shadow) { input_outer.style.boxshadow = ''; }
             input_outer.style.MozTransition = '';
             input_outer.style.WebkitTransition = '';
             input_outer.style.transition = '';
@@ -771,11 +778,12 @@ var notie = function(){
     }
     
     
-    
+
     return {
         alert: alert,
         confirm: confirm,
-        input: input
+        input: input,
+        setOptions:setOptions
     };
 
 }();
