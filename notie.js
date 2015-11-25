@@ -174,6 +174,7 @@ var notie = function(){
     alert_outer.style.WebkitTransition = '';
     alert_outer.style.transition = '';
     alert_outer.style.cursor = 'pointer';
+    alert_outer.setAttribute("role", "alert");
     
     // Hide alert on click
     alert_outer.onclick = function() {
@@ -380,7 +381,9 @@ var notie = function(){
     confirm_yes.style.width = '50%';
     confirm_yes.style.cursor = 'pointer';
     confirm_yes.style.backgroundColor = confirm_and_input_color_yes_background;
+    confirm_yes.setAttribute("role", "button");
     confirm_outer.appendChild(confirm_yes);
+    confirm_yes.focus();
 
     var confirm_no = document.createElement('div');
     confirm_no.id = confirm_no_id;
@@ -390,6 +393,7 @@ var notie = function(){
     confirm_no.style.width = '50%';
     confirm_no.style.cursor = 'pointer';
     confirm_no.style.backgroundColor = confirm_and_input_color_no_background;
+    confirm_no.setAttribute("role", "button");
     confirm_no.onclick = function() { confirm_hide(); }
     confirm_outer.appendChild(confirm_no);
 
@@ -543,7 +547,6 @@ var notie = function(){
     input_outer.style.MozTransition = '';
     input_outer.style.WebkitTransition = '';
     input_outer.style.transition = '';
-
     var input_background = document.createElement('div');
     input_background.id = input_background_id;
     input_background.style.position = 'fixed';
@@ -615,6 +618,7 @@ var notie = function(){
     input_yes.style.width = '50%';
     input_yes.style.cursor = 'pointer';
     input_yes.style.backgroundColor = confirm_and_input_color_yes_background;
+    input_yes.setAttribute("role", "button");
     input_outer.appendChild(input_yes);
 
     var input_no = document.createElement('div');
@@ -625,6 +629,7 @@ var notie = function(){
     input_no.style.width = '50%';
     input_no.style.cursor = 'pointer';
     input_no.style.backgroundColor = confirm_and_input_color_no_background;
+    input_no.setAttribute("role", "button");
     input_no.onclick = function() { input_hide(); }
     input_outer.appendChild(input_no);
 
