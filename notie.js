@@ -241,6 +241,9 @@ var notie = function(){
 
     function alert_show(type, message, seconds) {
 
+    	// Get element which is in focus
+    	var activeElement = document.activeElement.id;
+
         alert_is_showing = true;
 
         var duration = 0;
@@ -296,6 +299,10 @@ var notie = function(){
             }, duration);
 
         }, 20);
+
+        // If there is any active element then activate again 
+        if(activeElement != "")
+        	document.getElementById(activeElement).focus();
 
     }
 
