@@ -13,7 +13,10 @@
  *
 */
 
-var notie = function(){
+var notie = null;
+
+(function() {
+var notieLoad = function(){
 
     // SETTINGS
     // *********************************************
@@ -771,8 +774,19 @@ var notie = function(){
         input: input
     };
 
-}();
+};
+
+
+if (typeof window !== 'undefined' && window) {
+    window.addEventListener("load", function() {
+        notie = notieLoad();
+    });
+}
 
 if (typeof module !== 'undefined' && module) {
+    if (!notie) {
+      notie = notieLoad();
+    }
     module.exports = notie;
 }
+})();
