@@ -778,9 +778,15 @@ var notieLoad = function(){
 
 
 if (typeof window !== 'undefined' && window) {
-    window.addEventListener("load", function() {
-        notie = notieLoad();
-    });
+    if (window.addEventListener) {
+        window.addEventListener("load", function() {
+            notie = notieLoad();
+        });
+    } else {
+        window.attachEvent("onload", function() {
+            notie = notieLoad();
+        });
+    }
 }
 
 if (typeof module !== 'undefined' && module) {
