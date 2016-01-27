@@ -20,10 +20,10 @@ var notie = function(){
     
     // General
     var shadow = true;
-    var font_size_small = '18px';
-    var font_size_big = '24px';
+    var font_size_small = '17px';
+    var font_size_big = '25px';
     var font_change_screen_width = 600;
-    var animation_delay = 0.3;
+    var animation_delay = 0.4;
     var background_click_dismiss = true;
     
     // notie.alert colors
