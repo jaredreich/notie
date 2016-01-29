@@ -1,5 +1,7 @@
 # notie.js
 
+[![Join the chat at https://gitter.im/jaredreich/notie.js](https://badges.gitter.im/jaredreich/notie.js.svg)](https://gitter.im/jaredreich/notie.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 notie.js is a clean and simple notification plugin (alert/growl style) for javascript, with no dependencies.
 Demo: https://jaredreich.com/projects/notie.js
 
