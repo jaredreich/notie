@@ -763,12 +763,23 @@ var notie = function(){
 
     }
     
+    function dismissAlert(callback) {
+        alert_hide(callback);
+    }
+    
+    //Returns any other utility functions needed to be publicly exposed
+    function handler() {
+        return {
+            dismissAlert: dismissAlert
+        };
+    }
     
     
     return {
         alert: alert,
         confirm: confirm,
-        input: input
+        input: input,
+        handler: handler()
     };
 
 }();
