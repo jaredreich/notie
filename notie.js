@@ -561,11 +561,9 @@ var notie = function(){
     
     // Hide notie.input on background click
     input_background.onclick = function() {
-        if (background_click_dismiss) {
+        if (background_click_dismiss) 
             input_hide();
-        }
     };
-
     var input_inner = document.createElement('div');
     input_inner.id = input_inner_id;
     input_inner.style.boxSizing = 'border-box';
@@ -575,7 +573,6 @@ var notie = function(){
     input_inner.style.cursor = 'default';
     input_inner.style.backgroundColor = confirm_and_input_color_background;
     input_outer.appendChild(input_inner);
-    
     var input_div = document.createElement('div');
     input_div.id = input_div_id;
     input_div.style.boxSizing = 'border-box';
@@ -585,7 +582,6 @@ var notie = function(){
     input_div.style.cursor = 'default';
     input_div.style.backgroundColor = '#FFF';
     input_outer.appendChild(input_div);
-    
     var input_field = document.createElement('input');
     input_field.id = input_field_id;    
     input_field.setAttribute('autocomplete', 'off');
@@ -602,11 +598,10 @@ var notie = function(){
     input_field.style.border = '0';
     input_field.style.fontFamily = 'inherit';
     input_field.style.fontSize = font_size_big;
-    if (window.innerWidth <= font_change_screen_width) { input_field.style.fontSize = font_size_small; }
-   
+    if (window.innerWidth <= font_change_screen_width) 
+        input_field.style.fontSize = font_size_small; 
     window.addEventListener('resize', debounce(resizeListener.bind(null, input_field), debounce_time), true);
     input_div.appendChild(input_field);
-
     var input_yes = document.createElement('div');
     input_yes.id = input_yes_id;
     input_yes.style.cssFloat = 'left';
@@ -632,8 +627,11 @@ var notie = function(){
     var input_text = document.createElement('span');
     input_text.id = input_text_id;
     input_text.style.color = confirm_and_input_color_text;
-    if (window.innerWidth <= font_change_screen_width) { input_text.style.fontSize = font_size_small; }
-    else { input_text.style.fontSize = font_size_big; }
+    if (window.innerWidth <= font_change_screen_width)
+        input_text.style.fontSize = font_size_small; 
+    else
+       input_text.style.fontSize = font_size_big; 
+    
     window.addEventListener('resize', debounce(resizeListener.bind(null, input_text), debounce_time), true);
     input_inner.appendChild(input_text);
 
