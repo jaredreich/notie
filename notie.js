@@ -603,7 +603,7 @@ var notie = function(){
     input_field.style.fontFamily = 'inherit';
     input_field.style.fontSize = font_size_big;
     if (window.innerWidth <= font_change_screen_width) { input_field.style.fontSize = font_size_small; }
-    else { input_field.style.fontSize = font_size_big; }
+   
     window.addEventListener('resize', debounce(resizeListener.bind(null, input_field), debounce_time), true);
     input_div.appendChild(input_field);
 
