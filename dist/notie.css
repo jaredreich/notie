@@ -15,7 +15,7 @@
 .background-info {
   background-color: #4D82D6; }
 
-#notie-alert-outer, #notie-confirm-outer {
+#notie-alert-outer, #notie-confirm-outer, #notie-input-outer {
   position: fixed;
   top: 0;
   left: 0;
@@ -27,7 +27,7 @@
   cursor: pointer;
   font-size: 24px; }
   @media (max-width: 600px) {
-    #notie-alert-outer, #notie-confirm-outer {
+    #notie-alert-outer, #notie-confirm-outer, #notie-input-outer {
       font-size: 18px; } }
 
 #notie-alert-inner {
@@ -44,7 +44,7 @@
 #notie-confirm-outer {
   cursor: default; }
 
-#notie-confirm-inner {
+#notie-confirm-inner, #notie-input-inner {
   box-sizing: border-box;
   width: 100%;
   padding: 20px;
@@ -61,7 +61,7 @@
 #notie-confirm-text-no {
   color: #FFFFFF; }
 
-#notie-confirm-yes, #notie-confirm-no {
+#notie-confirm-yes, #notie-confirm-no, #notie-input-no, #notie-input-yes {
   float: left;
   height: 50px;
   line-height: 50px;
@@ -69,11 +69,11 @@
   cursor: pointer;
   background-color: #57BF57; }
 
-#notie-confirm-no {
+#notie-confirm-no, #notie-input-no {
   float: right;
   background-color: #E1715B; }
 
-#notie-confirm-background {
+#notie-confirm-background, #notie-input-background {
   position: fixed;
   top: 0;
   left: 0;
@@ -83,3 +83,30 @@
   display: none;
   background-color: #FFFFFF;
   opacity: 0; }
+
+/* INPUT */
+#notie-input-outer {
+  cursor: default; }
+
+#notie-input-field {
+  display: block;
+  box-sizing: border-box;
+  height: 55px;
+  width: 100%;
+  text-align: center;
+  outline: 0;
+  border: 0;
+  font-family: inherit;
+  font-size: 24px; }
+  @media (max-width: 600px) {
+    #notie-input-field {
+      font-size: 18px; } }
+
+#notie-input-text {
+  color: #FFFFFF; }
+
+#notie-input-text-yes {
+  color: #FFFFFF; }
+
+#notie-input-text-no {
+  color: #FFFFFF; }

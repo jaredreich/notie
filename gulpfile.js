@@ -11,6 +11,7 @@ gulp.task('clean', function() {
 
 gulp.task('script', function() {
     gulp.src('./notie.js')
+		.pipe(gulp.dest('./dist'))
         .pipe(uglify())
         .pipe(rename('notie.min.js'))
         .pipe(gulp.dest('./dist'));
