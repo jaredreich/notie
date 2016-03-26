@@ -23,12 +23,6 @@ gulp.task('style', function () {
 		.pipe(gulp.dest('./dist'));
 });
 
-gulp.task('sass', function() {
-    gulp.src(['./notie.scss'])
-        .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./'));
-});
-
 gulp.task('default', ['clean'], function() {
     gulp.start('script', 'style');
 });
