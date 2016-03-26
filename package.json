@@ -1,20 +1,31 @@
 {
-    "name": "notie",
-    "description": "A clean and simple notification plugin (alert/growl style) for javascript, with no dependencies.",
-    "author": "Jared Reich (https://jaredreich.com)",
-    "version": "2.1.0",
-    "main": "notie.js",
-    "repository": {
+  "name": "notie",
+  "description": "notie - a clean and simple notification suite for javascript, with no dependencies",
+  "author": "Jared Reich",
+  "version": "3.0.0",
+  "main": "notie.js",
+  "repository": {
     "type": "git",
-    "url": "git+https://github.com/jaredreich/notie.js.git"
-    },
-    "keywords": [
-    "tip"
-    ],
-    "author": "Jared Reich",
-    "license": "MIT",
-    "bugs": {
-    "url": "https://github.com/jaredreich/notie.js/issues"
-    },
-    "homepage": "https://jaredreich.com/projects/notie.js"
+    "url": "git+https://github.com/jaredreich/notie.git"
+  },
+  "keywords": [
+    "javascript",
+    "alert",
+    "notification",
+    "growl",
+    "message"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jaredreich/notie/issues"
+  },
+  "homepage": "https://jaredreich.com/projects/notie",
+  "devDependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-cssnano": "^2.1.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.2.0",
+    "gulp-uglify": "^1.5.3"
+  }
 }

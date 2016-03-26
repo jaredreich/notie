@@ -1,0 +1,149 @@
+$color-success: #57BF57;
+$color-warning: #D6A14D;
+$color-error: #E1715B;
+$color-info: #4D82D6;
+$color-text: #FFFFFF;
+$color-text-yes: #FFFFFF;
+$color-text-no: #FFFFFF;
+$color-background: #FFFFFF;
+
+$font-size-small: 18px;
+$font-size-big: 24px;
+$breakpoint: '(max-width: 600px)';
+$content-width: 900px;
+$transition: all 0.3s ease;
+
+.transition {
+	-moz-transition: $transition;
+	-webkit-transition: $transition;
+    transition: $transition;
+}
+
+.background-success {
+	background-color: $color-success;
+}
+.background-warning {
+	background-color: $color-warning;
+}
+.background-error {
+	background-color: $color-error;
+}
+.background-info {
+	background-color: $color-info;
+}
+
+#notie-alert-outer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999999999;
+	height: auto;
+	width: 100%;
+	display: none;
+	text-align: center;
+	cursor: pointer;
+	font-size: $font-size-big;
+	@media #{$breakpoint} {
+		font-size: $font-size-small;
+	}
+}
+#notie-alert-inner {
+	padding: 20px;
+    display: table-cell;
+}
+#notie-alert-content {
+	max-width: $content-width;
+	margin: 0 auto;
+}
+#notie-alert-text {
+	color: $color-text;
+}
+
+#notie-confirm-outer {
+	@extend #notie-alert-outer;
+	cursor: default;
+}
+#notie-confirm-inner {
+	box-sizing: border-box;
+    width: 100%;
+    padding: 20px;
+    display: block;
+    cursor: default;
+	background-color: $color-info;
+}
+#notie-confirm-text {
+	color: $color-text;
+}
+#notie-confirm-text-yes {
+	color: $color-text-yes;
+}
+#notie-confirm-text-no {
+	color: $color-text-no;
+}
+#notie-confirm-yes {
+	float: left;
+    height: 50px;
+    line-height: 50px;
+    width: 50%;
+    cursor: pointer;
+    background-color: $color-success;
+}
+#notie-confirm-no {
+	@extend #notie-confirm-yes;
+	float: right;
+    background-color: $color-error;
+}
+#notie-confirm-background {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999999980;
+	height: 100%;
+	width: 100%;
+	display: none;
+	background-color: $color-background;
+	opacity: 0;
+}
+
+
+/* INPUT */
+
+#notie-input-outer {
+	@extend #notie-alert-outer;
+	cursor: default;
+}
+#notie-input-inner {
+	@extend #notie-confirm-inner;
+}
+#notie-input-field {
+	display: block;
+	box-sizing: border-box;
+	height: 55px;
+	width: 100%;
+	text-align: center;
+	outline: 0;
+	border: 0;
+	font-family: inherit;
+    font-size: $font-size-big;
+	@media #{$breakpoint} {
+		font-size: $font-size-small;
+	}
+}
+#notie-input-background {
+	@extend #notie-confirm-background;
+}
+#notie-input-yes {
+	@extend #notie-confirm-yes;
+}
+#notie-input-no {
+	@extend #notie-confirm-no;
+}
+#notie-input-text {
+	color: $color-text;
+}
+#notie-input-text-yes {
+	color: $color-text-yes;
+}
+#notie-input-text-no {
+	color: $color-text-no;
+}

@@ -6,6 +6,9 @@
         <meta name='viewport' content="width=device-width,initial-scale=1,maximum-scale=1">
         <title>Notie Test Page</title>
         
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="notie.css">
+        
         <!-- Font -->
         <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
         
@@ -60,15 +63,22 @@
                 <br>
                 <span>Official page:</span>
                 <br>
-                <a href="https://jaredreich.com/projects/notie.js" target="_blank">https://jaredreich.com/projects/notie</a>
+                <a href="https://jaredreich.com/projects/notie" target="_blank">https://jaredreich.com/projects/notie</a>
                 
             </div>
         </div>
-        
+		
+		<!-- JavaScript -->
+		<script src="notie.js"></script>
         <script>
-            
+			
+			notie.setOptions({
+				animationDelay: 300,
+				backgroundClickDismiss: true
+			});
+			
             function success() {
-                notie.alert(1, 'Success!', 2);
+                notie.alert(1, 'Success!');
             }
             
             function warning() {
@@ -85,20 +95,27 @@
             
             function confirm() {
                 notie.confirm('Are you sure you want to do that?<br><b>That\'s a bold move...</b>', 'Yes', 'Cancel', function() {
-                    notie.alert(1, 'Good choice!', 2);
-                });
+                    notie.alert(1, 'Good choice! :D', 2);
+                }, function() {
+					notie.alert(3, 'Aw, why not? :(', 2);
+				});
             }
             
             function input() {
-                notie.input('Please enter your email address:', 'Submit', 'Cancel', 'email', 'name@example.com', function(value_entered) {
-                    notie.alert(1, 'You entered: ' + value_entered, 2);
-                });
+				notie.input({
+					type: 'text',
+					placeholder: 'name@example.com',
+					prefilledValue: ''
+				}, 'Please enter your email address:', 'Submit', 'Cancel', function(valueEntered) {
+                    notie.alert(1, 'You entered: ' + valueEntered, 2);
+                }, function(valueEntered) {
+					notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2);
+				});
             }
             
-        </script>
-        
-        <!-- JavaScript -->
-		<script src="notie.js"></script>
+            
+            
+		</script>
         
     </body>
     
