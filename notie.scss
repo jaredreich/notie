@@ -123,6 +123,7 @@ $transition: all 0.3s ease;
 	text-align: center;
 	outline: 0;
 	border: 0;
+	background-color: $color-background;
 	font-family: inherit;
     font-size: $font-size-big;
 	@media #{$breakpoint} {
