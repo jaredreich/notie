@@ -26,8 +26,8 @@ demo: https://jaredreich.com/projects/notie
 HTML:
 ```html
 <head>
-	...
-	<link rel="stylesheet" type="text/css" href="/path/to/notie.css">
+  ...
+  <link rel="stylesheet" type="text/css" href="/path/to/notie.css">
 </head>
 <body>
   ...
