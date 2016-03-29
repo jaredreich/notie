@@ -1,7 +1,10 @@
 {
   "name": "notie",
   "description": "notie - a clean and simple notification suite for javascript, with no dependencies",
-  "main": "notie.js",
+  "main": [
+      "dist/notie.js",
+      "dist/notie.css"
+  ],
   "authors": [
     "Jared Reich"
   ],
