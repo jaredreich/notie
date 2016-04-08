@@ -1,35 +1,35 @@
-$color-success: #57BF57;
-$color-warning: #D6A14D;
-$color-error: #E1715B;
-$color-info: #4D82D6;
-$color-text: #FFFFFF;
-$color-text-yes: #FFFFFF;
-$color-text-no: #FFFFFF;
-$color-background: #FFFFFF;
+$notie-color-success: #57BF57 !default;
+$notie-color-warning: #D6A14D !default;
+$notie-color-error: #E1715B !default;
+$notie-color-info: #4D82D6 !default;
+$notie-color-text: #FFFFFF !default;
+$notie-color-text-yes: #FFFFFF !default;
+$notie-color-text-no: #FFFFFF !default;
+$notie-color-background: #FFFFFF !default;
 
-$font-size-small: 18px;
-$font-size-big: 24px;
-$breakpoint: '(max-width: 600px)';
-$content-width: 900px;
-$transition: all 0.3s ease;
+$notie-font-size-small: 18px !default;
+$notie-font-size-big: 24px !default;
+$notie-breakpoint: '(max-width: 600px)' !default;
+$notie-content-width: 900px !default;
+$notie-transition: all 0.3s ease !default;
 
 .transition {
-	-moz-transition: $transition;
-	-webkit-transition: $transition;
-    transition: $transition;
+	-moz-transition: $notie-transition;
+	-webkit-transition: $notie-transition;
+    transition: $notie-transition;
 }
 
 .background-success {
-	background-color: $color-success;
+	background-color: $notie-color-success;
 }
 .background-warning {
-	background-color: $color-warning;
+	background-color: $notie-color-warning;
 }
 .background-error {
-	background-color: $color-error;
+	background-color: $notie-color-error;
 }
 .background-info {
-	background-color: $color-info;
+	background-color: $notie-color-info;
 }
 
 #notie-alert-outer {
@@ -42,9 +42,9 @@ $transition: all 0.3s ease;
 	display: none;
 	text-align: center;
 	cursor: pointer;
-	font-size: $font-size-big;
-	@media #{$breakpoint} {
-		font-size: $font-size-small;
+	font-size: $notie-font-size-big;
+	@media #{$notie-breakpoint} {
+		font-size: $notie-font-size-small;
 	}
 }
 #notie-alert-inner {
@@ -52,11 +52,11 @@ $transition: all 0.3s ease;
     display: table-cell;
 }
 #notie-alert-content {
-	max-width: $content-width;
+	max-width: $notie-content-width;
 	margin: 0 auto;
 }
 #notie-alert-text {
-	color: $color-text;
+	color: $notie-color-text;
 }
 
 #notie-confirm-outer {
@@ -69,16 +69,16 @@ $transition: all 0.3s ease;
     padding: 20px;
     display: block;
     cursor: default;
-	background-color: $color-info;
+	background-color: $notie-color-info;
 }
 #notie-confirm-text {
-	color: $color-text;
+	color: $notie-color-text;
 }
 #notie-confirm-text-yes {
-	color: $color-text-yes;
+	color: $notie-color-text-yes;
 }
 #notie-confirm-text-no {
-	color: $color-text-no;
+	color: $notie-color-text-no;
 }
 #notie-confirm-yes {
 	float: left;
@@ -86,12 +86,12 @@ $transition: all 0.3s ease;
     line-height: 50px;
     width: 50%;
     cursor: pointer;
-    background-color: $color-success;
+    background-color: $notie-color-success;
 }
 #notie-confirm-no {
 	@extend #notie-confirm-yes;
 	float: right;
-    background-color: $color-error;
+    background-color: $notie-color-error;
 }
 #notie-confirm-background {
 	position: fixed;
@@ -101,7 +101,7 @@ $transition: all 0.3s ease;
 	height: 100%;
 	width: 100%;
 	display: none;
-	background-color: $color-background;
+	background-color: $notie-color-background;
 	opacity: 0;
 }
 
@@ -123,11 +123,11 @@ $transition: all 0.3s ease;
 	text-align: center;
 	outline: 0;
 	border: 0;
-	background-color: $color-background;
+	background-color: $notie-color-background;
 	font-family: inherit;
-    font-size: $font-size-big;
-	@media #{$breakpoint} {
-		font-size: $font-size-small;
+    font-size: $notie-font-size-big;
+	@media #{$notie-breakpoint} {
+		font-size: $notie-font-size-small;
 	}
 }
 #notie-input-background {
@@ -140,11 +140,11 @@ $transition: all 0.3s ease;
 	@extend #notie-confirm-no;
 }
 #notie-input-text {
-	color: $color-text;
+	color: $notie-color-text;
 }
 #notie-input-text-yes {
-	color: $color-text-yes;
+	color: $notie-color-text-yes;
 }
 #notie-input-text-no {
-	color: $color-text-no;
+	color: $notie-color-text-no;
 }
