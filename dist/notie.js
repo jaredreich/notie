@@ -120,15 +120,19 @@ var notie = function(){
         // Set notie type (background color)
         switch(type) {
             case 1:
+            case 'success':
 				addClass(alertOuter, 'background-success');
                 break;
             case 2:
+            case 'warning':
                 addClass(alertOuter, 'background-warning');
                 break;
             case 3:
+            case 'error':
                 addClass(alertOuter, 'background-error');
                 break;
             case 4:
+            case 'info':
                 addClass(alertOuter, 'background-info');
                 break;
         }
