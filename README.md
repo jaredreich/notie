@@ -50,7 +50,7 @@ bower install notie
 ## Usage
 
 ```javascript
-notie.alert(alertType(Number), message(String, timeInSeconds);
+notie.alert(alertType(Number|String), message(String, timeInSeconds);
 
 notie.confirm(title(String), yesText(String), noText(String), yesCallback(Function), noCallbackOptional(Function));
 
@@ -62,6 +62,9 @@ notie.alert(1, 'Success!', 1.5);
 notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2);
 notie.alert(3, 'Error.', 2.5);
 notie.alert(4, 'Information.', 2);
+
+// Alternatively, use keywords for alertType (success, warning, error, info)
+notie.alert('success', 'Success!', 1.5);
 
 notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
     notie.alert(1, 'Good choice!', 2);
