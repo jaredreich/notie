@@ -5,6 +5,11 @@
       "dist/notie.js",
       "dist/notie.css"
   ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
   "authors": [
     "Jared Reich"
   ],

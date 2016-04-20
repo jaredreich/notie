@@ -2,7 +2,7 @@
 
 notie - a clean and simple notification suite for javascript, with no dependencies
 
-Copyright (c) 2015 Jared Reich
+Copyright (c) 2016 Jared Reich
 
 Licensed under the MIT license:
 http://www.opensource.org/licenses/mit-license.php
@@ -10,11 +10,11 @@ http://www.opensource.org/licenses/mit-license.php
 Project demo:
 https://jaredreich.com/projects/notie
 
-Version:  3.0.0
+Version:  3.1.0
 
 */
 
-var notie = function(){	
+var notie = function() {
 	
 	// Default options
 	var options = {
@@ -28,7 +28,8 @@ var notie = function(){
 		}
 	}
 	
-	// ALERT
+	
+	// alert
     // **************
 	
 	// create alert container
@@ -112,24 +113,24 @@ var notie = function(){
         }
 		
 		// Remove all color classes first
-		removeClass(alertOuter, 'background-success');
-		removeClass(alertOuter, 'background-warning');
-		removeClass(alertOuter, 'background-error');
-		removeClass(alertOuter, 'background-info');
+		removeClass(alertOuter, 'notie-background-success');
+		removeClass(alertOuter, 'notie-background-warning');
+		removeClass(alertOuter, 'notie-background-error');
+		removeClass(alertOuter, 'notie-background-info');
 		
         // Set notie type (background color)
         switch(type) {
             case 1:
-				addClass(alertOuter, 'background-success');
+				addClass(alertOuter, 'notie-background-success');
                 break;
             case 2:
-                addClass(alertOuter, 'background-warning');
+                addClass(alertOuter, 'notie-background-warning');
                 break;
             case 3:
-                addClass(alertOuter, 'background-error');
+                addClass(alertOuter, 'notie-background-error');
                 break;
             case 4:
-                addClass(alertOuter, 'background-info');
+                addClass(alertOuter, 'notie-background-info');
                 break;
         }
 
@@ -142,7 +143,7 @@ var notie = function(){
 
         alertTimeout1 = setTimeout(function() {
 			
-			addClass(alertOuter, 'transition');
+			addClass(alertOuter, 'notie-transition');
 
             alertOuter.style.top = 0;
 
@@ -164,7 +165,7 @@ var notie = function(){
 
         setTimeout(function() {
 			
-			removeClass(alertOuter, 'transition');
+			removeClass(alertOuter, 'notie-transition');
             
             alertOuter.style.top = '-10000px';
 
@@ -210,7 +211,7 @@ var notie = function(){
 	
 	var confirmBackground = document.createElement('div');
     confirmBackground.id = 'notie-confirm-background';
-	addClass(confirmBackground, 'transition');
+	addClass(confirmBackground, 'notie-transition');
 	
 	// Hide notie.confirm on no click and background click
     confirmBackground.onclick = function() {
@@ -283,7 +284,7 @@ var notie = function(){
 
             setTimeout(function() {
 				
-                addClass(confirmOuter, 'transition');
+                addClass(confirmOuter, 'notie-transition');
 
                 confirmOuter.style.top = 0;
                 confirmBackground.style.opacity = '0.75';
@@ -315,7 +316,7 @@ var notie = function(){
 
         setTimeout(function() {
 			
-            removeClass(confirmOuter, 'transition');
+            removeClass(confirmOuter, 'notie-transition');
 			confirmOuter.style.top = '-10000px';
             confirmBackground.style.display = 'none';
 
@@ -330,16 +331,15 @@ var notie = function(){
 	
 	
 	
-	// INPUT
+	// input
     // **********
 
-    // input elements and styling
     var inputOuter = document.createElement('div');
     inputOuter.id = 'notie-input-outer';
 	
 	var inputBackground = document.createElement('div');
     inputBackground.id = 'notie-input-background';
-	addClass(inputBackground, 'transition');
+	addClass(inputBackground, 'notie-transition');
 	
 	var inputInner = document.createElement('div');
     inputInner.id = 'notie-input-inner';
@@ -361,7 +361,6 @@ var notie = function(){
     inputNo.id = 'notie-input-no';
     inputOuter.appendChild(inputNo);
 	
-	// Initialize input text
     var inputText = document.createElement('span');
     inputText.id = 'notie-input-text';
     inputInner.appendChild(inputText);
@@ -467,7 +466,7 @@ var notie = function(){
 
             setTimeout(function() {
 
-				addClass(inputOuter, 'transition');
+				addClass(inputOuter, 'notie-transition');
 				
                 inputOuter.style.top = 0;
                 inputBackground.style.opacity = '0.75';
@@ -503,7 +502,7 @@ var notie = function(){
 
         setTimeout(function() {
 			
-			removeClass(inputOuter, 'transition');
+			removeClass(inputOuter, 'notie-transition');
             inputBackground.style.display = 'none';
             
             inputOuter.style.top = '-10000px';
@@ -516,6 +515,168 @@ var notie = function(){
 
     }
 	
+	
+	
+	// select
+    // **************
+	
+	var selectOuter = document.createElement('div');
+    selectOuter.id = 'notie-select-outer';
+	
+	var selectInner = document.createElement('div');
+    selectInner.id = 'notie-select-inner';
+    selectOuter.appendChild(selectInner);
+	
+	var selectText = document.createElement('span');
+    selectText.id = 'notie-select-text';
+	selectInner.appendChild(selectText);
+	
+	var selectBackground = document.createElement('div');
+    selectBackground.id = 'notie-select-background';
+	addClass(selectBackground, 'notie-transition');
+	
+	var selectChoices = document.createElement('div');
+	selectChoices.id = 'notie-select-choices';
+	selectOuter.appendChild(selectChoices);
+	
+	var selectCancel = document.createElement('div');
+    selectCancel.id = 'notie-select-cancel';
+	selectCancel.innerHTML = 'Cancel';
+    selectOuter.appendChild(selectCancel);
+	
+	// Attach select elements to the body element
+    document.body.appendChild(selectOuter);
+    document.body.appendChild(selectBackground);
+	
+	// Hide input on no click and background click
+    selectBackground.onclick = function() {
+        if (options.backgroundClickDismiss) {
+            selectHide();
+        }
+    };
+	
+	selectCancel.onclick = function() {
+		selectHide();
+	}
+	
+	// select helper variables
+    var selectIsShowing = false;
+	
+	function select(title, choices /*, callback1, callback2, ... */) {
+		
+		var funcs = [];
+		for (var i = 0; i < arguments.length - 2; i++) {
+			funcs[i] = arguments[i + 2];
+		}
+		
+		if (funcs.length === choices.length) {
+			
+			blur();
+        
+			if (alertIsShowing) {
+				// Hide notie.alert
+				clearTimeout(alertTimeout1);
+				clearTimeout(alertTimeout2);
+				alertHide(function() {
+					selectShow(title, choices, funcs);
+				});
+			}
+			else {
+				selectShow(title, choices, funcs);
+			}
+			
+		}
+		else {
+			throw 'notie.select number of choices must match number of functions';
+		}
+
+    }
+	
+	function selectShow(title, choices, funcs) {
+		
+		scrollDisable();
+		
+		document.getElementById('notie-select-choices').innerHTML = '';
+		
+		for (var i = 0; i < choices.length; i++) {
+			
+			var selectChoice = document.createElement('div');
+			selectChoice.innerHTML = choices[i].title;
+			if (choices[i].color) {
+				selectChoice.style.backgroundColor = choices[i].color;
+			}
+			if (i < choices.length - 1) {
+				selectChoice.style.borderBottom = '1px solid rgba(255, 255, 255, 0.15)';
+			}
+			addClass(selectChoice, 'notie-select-choice');
+			selectChoices.appendChild(selectChoice);
+			
+			// onclick for this choice
+			selectChoice.onclick = (function(i) { return function() {
+				selectHide();
+				setTimeout(function() {
+					funcs[i]();
+				}, (options.animationDelay + 10));
+			};})(i);
+			
+		}
+
+        function selectShowInner(title) {
+
+            // Set select text
+            selectText.innerHTML = title;
+
+            // Get select's height
+            selectOuter.style.bottom = '-10000px';
+            selectOuter.style.display = 'table';
+            selectOuter.style.bottom = '-' + selectOuter.offsetHeight - 5 + 'px';
+            selectBackground.style.display = 'block';
+
+            setTimeout(function() {
+				
+                addClass(selectOuter, 'notie-transition');
+
+                selectOuter.style.bottom = 0;
+                selectBackground.style.opacity = '0.75';
+
+                setTimeout(function() {
+                    selectIsShowing = true;
+                }, (options.animationDelay + 10));
+
+            }, 20);
+
+        }
+
+        if (selectIsShowing) {
+            selectHide();
+            setTimeout(function() {
+                selectShowInner(title);
+            }, (options.animationDelay + 10));
+        }
+        else {
+            selectShowInner(title);
+        }
+		
+	}
+	
+	function selectHide() {
+		
+		selectOuter.style.bottom = '-' + selectOuter.offsetHeight - 5 + 'px';
+        selectBackground.style.opacity = '0';
+
+        setTimeout(function() {
+			
+            removeClass(selectOuter, 'notie-transition');
+			selectOuter.style.bottom = '-10000px';
+            selectBackground.style.display = 'none';
+
+            scrollEnable();
+
+            selectIsShowing = false;
+
+        }, (options.animationDelay + 10));
+		
+	}
 	
 	
 	// Internal helper functions
@@ -581,6 +742,11 @@ var notie = function(){
                 inputHide();
             }
         }
+		else if (selectIsShowing) {
+			if (escapeClicked) {
+                selectHide();
+            }
+		}
     });
 	
 	
@@ -590,7 +756,8 @@ var notie = function(){
 		setOptions: setOptions,
         alert: alert,
         confirm: confirm,
-        input: input
+        input: input,
+		select: select
     };
 
 }();

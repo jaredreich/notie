@@ -7,18 +7,18 @@
         <title>Notie Test Page</title>
         
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="/dist/notie.css">
+        <link rel="stylesheet" type="text/css" href="dist/notie.css">
         
         <!-- Font -->
         <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
         
         <style>
             body {
                 margin: 0;
                 padding: 0;
-            }
-            body {
-                font-family: 'Lato', sans-serif;
+				font-family: 'Lato', sans-serif;
+				background-color: rgb(255, 170, 133);
             }
             .div-ext {
                 height: 100vh;
@@ -32,12 +32,15 @@
             }
             button {
                 cursor: pointer;
-                font-size: 16px;
-                border: 2px solid #d3d3d3;
-                border-radius: 5px;
+                font-size: 20px;
+                border: 2px solid white;
+                border-radius: 2px;
                 background-color: transparent;
                 outline: 0;
-                margin-top: 4px;
+                margin: 2px;
+				margin-top: 4px;
+				padding: 5px;
+				color: white;
             }
         </style>
         
@@ -51,19 +54,20 @@
         <div class="div-ext">
             <div class="div-int">
                 
-                <span>Test notie with these buttons:</span>
-                <br>
-                <button onclick="success();">Success</button>
-                <button onclick="warning();">Warning</button>
-                <button onclick="error();">Error</button><br>
-                <button onclick="info();">Information</button>
-                <button onclick="confirm();">Confirm</button>
-                <button onclick="input();">Input</button>
-                <br>
-                <br>
-                <span>Official page:</span>
-                <br>
-                <a href="https://jaredreich.com/projects/notie" target="_blank">https://jaredreich.com/projects/notie</a>
+                <div style="font-family: 'Satisfy', cursive;color:white;font-size:80px;margin-bottom:20px;">notie.js</div>
+				
+				<div style="margin-bottom:20px;padding-left:50px;padding-right:50px;">
+					<button onclick="success();">Success</button>
+					<button onclick="warning();">Warning</button>
+					<button onclick="error();">Error</button>
+					<button onclick="info();">Info</button>
+					<button onclick="confirm();">Confirm</button>
+					<button onclick="input();">Input</button>
+					<button onclick="select();">Select</button>
+				</div>
+				
+                <div style="color:white;">Official demo page:</div>
+                <a href="https://jaredreich.com/projects/notie" target="_blank" style="color:white;">https://jaredreich.com/projects/notie</a>
                 
             </div>
         </div>
@@ -113,7 +117,24 @@
 				});
             }
             
-            
+            function select() {
+				notie.select('Demo item #1, owner: Jane Smith',
+				[
+					{ title: 'Share' },
+					{ title: 'Open' },
+				 	{ title: 'Edit', color: '#D6A14D' },
+					{ title: 'Delete', color: '#E1715B' }
+				],
+				function() {
+					notie.alert(1, 'Share item!', 3);
+				}, function() {
+					notie.alert(1, 'Open item!', 3);
+				}, function() {
+					notie.alert(2, 'Edit item!', 3);
+				}, function() {
+					notie.alert(3, 'Delete item!', 3);
+				});
+			}
             
 		</script>
         

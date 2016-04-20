@@ -1,21 +1,21 @@
-.transition {
+.notie-transition {
   -moz-transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease; }
 
-.background-success {
+.notie-background-success {
   background-color: #57BF57; }
 
-.background-warning {
+.notie-background-warning {
   background-color: #D6A14D; }
 
-.background-error {
+.notie-background-error {
   background-color: #E1715B; }
 
-.background-info {
+.notie-background-info {
   background-color: #4D82D6; }
 
-#notie-alert-outer, #notie-confirm-outer, #notie-input-outer {
+#notie-alert-outer, #notie-confirm-outer, #notie-input-outer, #notie-select-outer {
   position: fixed;
   top: 0;
   left: 0;
@@ -25,9 +25,14 @@
   display: none;
   text-align: center;
   cursor: pointer;
-  font-size: 24px; }
+  font-size: 24px;
+  -o-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); }
   @media (max-width: 600px) {
-    #notie-alert-outer, #notie-confirm-outer, #notie-input-outer {
+    #notie-alert-outer, #notie-confirm-outer, #notie-input-outer, #notie-select-outer {
       font-size: 18px; } }
 
 #notie-alert-inner {
@@ -44,7 +49,7 @@
 #notie-confirm-outer {
   cursor: default; }
 
-#notie-confirm-inner, #notie-input-inner {
+#notie-confirm-inner, #notie-input-inner, #notie-select-inner {
   box-sizing: border-box;
   width: 100%;
   padding: 20px;
@@ -73,7 +78,7 @@
   float: right;
   background-color: #E1715B; }
 
-#notie-confirm-background, #notie-input-background {
+#notie-confirm-background, #notie-input-background, #notie-select-background {
   position: fixed;
   top: 0;
   left: 0;
@@ -111,3 +116,27 @@
 
 #notie-input-text-no {
   color: #FFFFFF; }
+
+#notie-select-outer {
+  top: auto;
+  bottom: 0;
+  cursor: default; }
+
+#notie-select-text {
+  color: #FFFFFF; }
+
+#notie-select-choices, .notie-select-choice {
+  background-color: #57BF57; }
+
+.notie-select-choice {
+  height: 50px;
+  line-height: 50px;
+  color: #FFFFFF;
+  cursor: pointer; }
+
+#notie-select-cancel {
+  height: 60px;
+  line-height: 60px;
+  color: #FFFFFF;
+  cursor: pointer;
+  background-color: #A0A0A0; }

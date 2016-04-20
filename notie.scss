@@ -2,6 +2,7 @@ $notie-color-success: #57BF57 !default;
 $notie-color-warning: #D6A14D !default;
 $notie-color-error: #E1715B !default;
 $notie-color-info: #4D82D6 !default;
+$notie-color-neutral: #A0A0A0 !default;
 $notie-color-text: #FFFFFF !default;
 $notie-color-text-yes: #FFFFFF !default;
 $notie-color-text-no: #FFFFFF !default;
@@ -13,22 +14,31 @@ $notie-breakpoint: '(max-width: 600px)' !default;
 $notie-content-width: 900px !default;
 $notie-transition: all 0.3s ease !default;
 
-.transition {
+$notie-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+@mixin notie-box-shadow($notie-box-shadow) {
+	-o-box-shadow: $notie-box-shadow;
+	-ms-box-shadow: $notie-box-shadow;
+	-moz-box-shadow: $notie-box-shadow;
+	-webkit-box-shadow: $notie-box-shadow;
+	box-shadow: $notie-box-shadow;
+}
+
+.notie-transition {
 	-moz-transition: $notie-transition;
 	-webkit-transition: $notie-transition;
     transition: $notie-transition;
 }
 
-.background-success {
+.notie-background-success {
 	background-color: $notie-color-success;
 }
-.background-warning {
+.notie-background-warning {
 	background-color: $notie-color-warning;
 }
-.background-error {
+.notie-background-error {
 	background-color: $notie-color-error;
 }
-.background-info {
+.notie-background-info {
 	background-color: $notie-color-info;
 }
 
@@ -43,6 +53,7 @@ $notie-transition: all 0.3s ease !default;
 	text-align: center;
 	cursor: pointer;
 	font-size: $notie-font-size-big;
+	@include notie-box-shadow($notie-box-shadow);
 	@media #{$notie-breakpoint} {
 		font-size: $notie-font-size-small;
 	}
@@ -147,4 +158,39 @@ $notie-transition: all 0.3s ease !default;
 }
 #notie-input-text-no {
 	color: $notie-color-text-no;
+}
+
+
+
+#notie-select-outer {
+	@extend #notie-alert-outer;
+	top: auto;
+	bottom: 0;
+	cursor: default;
+}
+#notie-select-inner {
+	@extend #notie-confirm-inner;
+}
+#notie-select-background {
+	@extend #notie-confirm-background;
+}
+#notie-select-text {
+	color: $notie-color-text;
+}
+#notie-select-choices {
+	background-color: $notie-color-success;
+}
+.notie-select-choice {
+	@extend #notie-select-choices;
+    height: 50px;
+    line-height: 50px;
+	color: $notie-color-text;
+    cursor: pointer;
+}
+#notie-select-cancel {
+	height: 60px;
+    line-height: 60px;
+	color: $notie-color-text;
+	cursor: pointer;
+	background-color: $notie-color-neutral;
 }

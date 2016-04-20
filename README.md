@@ -8,7 +8,8 @@ demo: https://jaredreich.com/projects/notie
 #### With notie you can:
 * Alert users
 * Confirm user choices
-* Input user information
+* Allow user to input information
+* Allow user to select choices
 
 ![Alt text](/demo.gif?raw=true "Demo")
 
@@ -20,6 +21,14 @@ demo: https://jaredreich.com/projects/notie
 * Change colors to match your style/brand
 * Modify styling with the sass file (notie.scss)
 * Font size auto-adjusts based on screen size
+
+## Browser Support
+
+* Chrome 8+
+* Firefox 3.6+
+* Firefox for Android 32+
+* Safari 5.1+
+* IE 10+
 
 ## Installation
 
@@ -55,13 +64,15 @@ notie.alert(alertType(Number), message(String, timeInSeconds);
 notie.confirm(title(String), yesText(String), noText(String), yesCallback(Function), noCallbackOptional(Function));
 
 notie.input(options(JSON), title(String), submitText(String), cancelText(String), submitCallback(Function), cancelCallbackOptional(Function));
+
+notie.select(title(String), choices(Array of Objects) /*, callback1(Function), callback2(Function), ... */);
 ```
 For example:
 ```javascript
-notie.alert(1, 'Success!', 1.5);
-notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2);
+notie.alert(1, 'Success!'); // Never hides unless clicked, or escape or enter is pressed
+notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2); // Hides after 2 seconds
 notie.alert(3, 'Error.', 2.5);
-notie.alert(4, 'Information.', 2);
+notie.alert(4, 'Information.', 3);
 
 notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
     notie.alert(1, 'Good choice!', 2);
@@ -78,8 +89,8 @@ notie.input({
 	type: 'email'
 	placeholder: 'name@example.com',
 	prefilledValue: 'jane@doe.com'
-},'Please enter your email address:', 'Submit', 'Cancel', 'email', 'name@example.com', function(value_entered) {
-    notie.alert(1, 'You entered: ' + value_entered, 2);
+}, 'Please enter your email address:', 'Submit', 'Cancel', 'email', 'name@example.com', function(valueEntered) {
+    notie.alert(1, 'You entered: ' + valueEntered, 2);
 });
 notie.input({
 	type: 'password',
@@ -88,6 +99,23 @@ notie.input({
 	notie.alert(1, 'You entered: ' + valueEntered, 2);
 }, function(valueEntered) {
 	notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2);
+});
+
+notie.select('Demo item #1, owner is Jane Smith',
+[
+	{ title: 'Share' },
+	{ title: 'Open' },
+	{ title: 'Edit', color: '#D6A14D' },
+	{ title: 'Delete', color: '#E1715B' }
+],
+function() {
+	notie.alert(1, 'Share item!', 3);
+}, function() {
+	notie.alert(1, 'Open item!', 3);
+}, function() {
+	notie.alert(2, 'Edit item!', 3);
+}, function() {
+	notie.alert(3, 'Delete item!', 3);
 });
 
 ```

@@ -28,5 +28,6 @@ gulp.task('default', ['clean'], function() {
 });
 
 gulp.task('watch', function() {
-    gulp.watch('./notie.scss', ['sass']);
+    gulp.watch('./notie.scss', ['style']);
+	gulp.watch('./notie.js', ['script'])
 });
