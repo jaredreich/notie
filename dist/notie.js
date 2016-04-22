@@ -10,7 +10,7 @@ http://www.opensource.org/licenses/mit-license.php
 Project demo:
 https://jaredreich.com/projects/notie
 
-Version:  3.1.0
+Version:  3.2.0
 
 */
 
@@ -18,6 +18,12 @@ var notie = function() {
 	
 	// Default options
 	var options = {
+		colorSuccess: '',
+		colorWarning: '',
+		colorError: '',
+		colorInfo: '',
+		colorNeutral: '',
+		colorText: '',
 		animationDelay: 300,
 		backgroundClickDismiss: true
 	}	
@@ -68,6 +74,8 @@ var notie = function() {
     var wasClickedCounter = 0;
 	
 	function alert(type, message, seconds) {
+		
+		if (options.colorText.length > 0) alertText.style.color = options.colorText;
 		
 		blur();
 
@@ -121,16 +129,20 @@ var notie = function() {
         // Set notie type (background color)
         switch(type) {
             case 1:
-				addClass(alertOuter, 'notie-background-success');
+				if (options.colorSuccess.length > 0) alertOuter.style.backgroundColor = options.colorSuccess;
+				else addClass(alertOuter, 'notie-background-success');
                 break;
             case 2:
-                addClass(alertOuter, 'notie-background-warning');
+                if (options.colorWarning.length > 0) alertOuter.style.backgroundColor = options.colorWarning;
+				else addClass(alertOuter, 'notie-background-warning');
                 break;
             case 3:
-                addClass(alertOuter, 'notie-background-error');
+				if (options.colorError.length > 0) alertOuter.style.backgroundColor = options.colorError;
+				else addClass(alertOuter, 'notie-background-error');
                 break;
             case 4:
-                addClass(alertOuter, 'notie-background-info');
+                if (options.colorInfo.length > 0) alertOuter.style.backgroundColor = options.colorInfo;
+				else addClass(alertOuter, 'notie-background-info');
                 break;
         }
 
@@ -228,6 +240,15 @@ var notie = function() {
     var confirmIsShowing = false;
 
     function confirm(title, yesText, noText, yesCallback, noCallback) {
+		
+		if (options.colorInfo.length > 0) confirmInner.style.backgroundColor = options.colorInfo;
+		if (options.colorSuccess.length > 0) confirmYes.style.backgroundColor = options.colorSuccess;
+		if (options.colorError.length > 0) confirmNo.style.backgroundColor = options.colorError;
+		if (options.colorText.length > 0) {
+			confirmText.style.color = options.colorText;
+			confirmTextYes.style.color = options.colorText;
+			confirmTextNo.style.color = options.colorText;
+		}
 		
 		blur();
         
@@ -365,13 +386,13 @@ var notie = function() {
     inputText.id = 'notie-input-text';
     inputInner.appendChild(inputText);
 
-    var inputYesText = document.createElement('span');
-    inputYesText.id = 'notie-input-text-yes';
-    inputYes.appendChild(inputYesText);
+    var inputTextYes = document.createElement('span');
+    inputTextYes.id = 'notie-input-text-yes';
+    inputYes.appendChild(inputTextYes);
 
-    var inputNoText = document.createElement('span');
-    inputNoText.id = 'notie-input-text-no';
-    inputNo.appendChild(inputNoText);
+    var inputTextNo = document.createElement('span');
+    inputTextNo.id = 'notie-input-text-no';
+    inputNo.appendChild(inputTextNo);
 
     // Attach input elements to the body element
     document.body.appendChild(inputOuter);
@@ -387,26 +408,35 @@ var notie = function() {
 	// input helper variables
     var inputIsShowing = false;
 	
-	function input(options, title, submitText, cancelText, submitCallback, cancelCallback) {
+	function input(settings, title, submitText, cancelText, submitCallback, cancelCallback) {
+		
+		if (options.colorInfo.length > 0) inputInner.style.backgroundColor = options.colorInfo;
+		if (options.colorSuccess.length > 0) inputYes.style.backgroundColor = options.colorSuccess;
+		if (options.colorError.length > 0) inputNo.style.backgroundColor = options.colorError;
+		if (options.colorText.length > 0) {
+			inputText.style.color = options.colorText;
+			inputTextYes.style.color = options.colorText;
+			inputTextNo.style.color = options.colorText;
+		}
 		
 		blur();
 		
-		if (typeof options.type !== 'undefined' && options.type) {
-			inputField.setAttribute('type', options.type);
+		if (typeof settings.type !== 'undefined' && settings.type) {
+			inputField.setAttribute('type', settings.type);
 		}
 		else {
 			inputField.setAttribute('type', 'text');
 		}
 		
-		if (typeof options.placeholder !== 'undefined' && options.placeholder) {
-			inputField.setAttribute('placeholder', options.placeholder);
+		if (typeof settings.placeholder !== 'undefined' && settings.placeholder) {
+			inputField.setAttribute('placeholder', settings.placeholder);
 		}
 		else {
 			// Do not set placeholder
 		}
 		
-        if (typeof options.prefilledValue !== 'undefined' && options.prefilledValue) {
-			inputField.value = options.prefilledValue;
+        if (typeof settings.prefilledValue !== 'undefined' && settings.prefilledValue) {
+			inputField.value = settings.prefilledValue;
 		}
 		else {
 			inputField.value = '';
@@ -455,8 +485,8 @@ var notie = function() {
 
             // Set input text
             inputText.innerHTML = title;
-            inputYesText.innerHTML = submitText;
-            inputNoText.innerHTML = cancelText;
+            inputTextYes.innerHTML = submitText;
+            inputTextNo.innerHTML = cancelText;
 
             // Get input's height
             inputOuter.style.top = '-10000px';
@@ -564,6 +594,13 @@ var notie = function() {
 	
 	function select(title, choices /*, callback1, callback2, ... */) {
 		
+		if (options.colorInfo.length > 0) selectInner.style.backgroundColor = options.colorInfo;
+		if (options.colorNeutral.length > 0) selectCancel.style.backgroundColor = options.colorNeutral;
+		if (options.colorText.length > 0) {
+			selectText.style.color = options.colorText;
+			selectCancel.style.color = options.colorText;
+		}
+		
 		var funcs = [];
 		for (var i = 0; i < arguments.length - 2; i++) {
 			funcs[i] = arguments[i + 2];
@@ -598,18 +635,46 @@ var notie = function() {
 		
 		document.getElementById('notie-select-choices').innerHTML = '';
 		
+		var selectChoicePrevious;
+		
 		for (var i = 0; i < choices.length; i++) {
 			
 			var selectChoice = document.createElement('div');
 			selectChoice.innerHTML = choices[i].title;
-			if (choices[i].color) {
-				selectChoice.style.backgroundColor = choices[i].color;
-			}
-			if (i < choices.length - 1) {
-				selectChoice.style.borderBottom = '1px solid rgba(255, 255, 255, 0.15)';
-			}
 			addClass(selectChoice, 'notie-select-choice');
 			selectChoices.appendChild(selectChoice);
+			selectChoice.style.backgroundColor = window.getComputedStyle(selectChoice).backgroundColor;
+			if (options.colorText.length > 0) selectChoice.style.color = options.colorText;
+			
+			if (choices[i].type) {
+				switch(choices[i].type) {
+					case 1:
+						if (options.colorSuccess.length > 0) selectChoice.style.backgroundColor = options.colorSuccess;
+						else addClass(selectChoice, 'notie-background-success');
+						break;
+					case 2:
+						if (options.colorWarning.length > 0) selectChoice.style.backgroundColor = options.colorWarning;
+						else addClass(selectChoice, 'notie-background-warning');
+						break;
+					case 3:
+						if (options.colorError.length > 0) selectChoice.style.backgroundColor = options.colorError;
+						else addClass(selectChoice, 'notie-background-error');
+						break;
+					case 4:
+						if (options.colorInfo.length > 0) selectChoice.style.backgroundColor = options.colorInfo;
+						else addClass(selectChoice, 'notie-background-info');
+						break;
+				}
+			}
+			else if (choices[i].color) {
+				selectChoice.style.backgroundColor = choices[i].color;
+			}
+			
+			if (i > 0) {
+				if (selectChoice.style.backgroundColor === selectChoicePrevious.style.backgroundColor) {
+					selectChoicePrevious.style.borderBottom = '1px solid rgba(255, 255, 255, 0.2)';
+				}
+			}
 			
 			// onclick for this choice
 			selectChoice.onclick = (function(i) { return function() {
@@ -618,6 +683,8 @@ var notie = function() {
 					funcs[i]();
 				}, (options.animationDelay + 10));
 			};})(i);
+			
+			selectChoicePrevious = selectChoice;
 			
 		}
 

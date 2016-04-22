@@ -4,8 +4,6 @@ $notie-color-error: #E1715B !default;
 $notie-color-info: #4D82D6 !default;
 $notie-color-neutral: #A0A0A0 !default;
 $notie-color-text: #FFFFFF !default;
-$notie-color-text-yes: #FFFFFF !default;
-$notie-color-text-no: #FFFFFF !default;
 $notie-color-background: #FFFFFF !default;
 
 $notie-font-size-small: 18px !default;
@@ -86,10 +84,10 @@ $notie-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
 	color: $notie-color-text;
 }
 #notie-confirm-text-yes {
-	color: $notie-color-text-yes;
+	color: $notie-color-text;
 }
 #notie-confirm-text-no {
-	color: $notie-color-text-no;
+	color: $notie-color-text;
 }
 #notie-confirm-yes {
 	float: left;
@@ -154,10 +152,10 @@ $notie-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
 	color: $notie-color-text;
 }
 #notie-input-text-yes {
-	color: $notie-color-text-yes;
+	color: $notie-color-text;
 }
 #notie-input-text-no {
-	color: $notie-color-text-no;
+	color: $notie-color-text;
 }
 
 

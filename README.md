@@ -16,7 +16,6 @@ demo: https://jaredreich.com/projects/notie
 ## Features
 
 * Pure JavaScript, no dependencies
-* Works in all modern browsers (Chrome, Firefox, Safari, IE 9+, Edge, Opera)
 * Easily customizable
 * Change colors to match your style/brand
 * Modify styling with the sass file (notie.scss)
@@ -24,11 +23,11 @@ demo: https://jaredreich.com/projects/notie
 
 ## Browser Support
 
-* Chrome 8+
-* Firefox 3.6+
-* Firefox for Android 32+
-* Safari 5.1+
 * IE 10+
+* Chrome 11+
+* Firefox 4+
+* Safari 5.1+
+* Opera 11.5+
 
 ## Installation
 
@@ -104,9 +103,9 @@ notie.input({
 notie.select('Demo item #1, owner is Jane Smith',
 [
 	{ title: 'Share' },
-	{ title: 'Open' },
-	{ title: 'Edit', color: '#D6A14D' },
-	{ title: 'Delete', color: '#E1715B' }
+	{ title: 'Open', color: '#57BF57' },
+	{ title: 'Edit', type: 2 },
+	{ title: 'Delete', type: 3 }
 ],
 function() {
 	notie.alert(1, 'Share item!', 3);
@@ -123,6 +122,12 @@ function() {
 ## Options
 ```javascript
 notie.setOptions({
+	colorSuccess: '#57BF57',
+	colorWarning: '#D6A14D',
+	colorError: '#E1715B',
+	colorInfo: '#4D82D6',
+	colorNeutral: '#A0A0A0',
+	colorText: '#FFFFFF',
 	animationDelay: 300, // Be sure to also change "transition: all 0.3s ease" variable in .scss file
 	backgroundClickDismiss: true
 });
