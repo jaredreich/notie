@@ -15,69 +15,69 @@ Version:  3.2.0
 */
 
 var notie = function() {
-	
-	// Default options
-	var options = {
-		colorSuccess: '',
-		colorWarning: '',
-		colorError: '',
-		colorInfo: '',
-		colorNeutral: '',
-		colorText: '',
-		animationDelay: 300,
-		backgroundClickDismiss: true
-	}	
-	function setOptions(customOptions) {
-		// Custom options
-		for (var key in customOptions) {
-			options[key] = customOptions[key];
-		}
-	}
-	
-	
-	// alert
+
+    // Default options
+    var options = {
+        colorSuccess: '',
+        colorWarning: '',
+        colorError: '',
+        colorInfo: '',
+        colorNeutral: '',
+        colorText: '',
+        animationDelay: 300,
+        backgroundClickDismiss: true
+    }
+    function setOptions(customOptions) {
+        // Custom options
+        for (var key in customOptions) {
+            options[key] = customOptions[key];
+        }
+    }
+
+
+    // alert
     // **************
-	
-	// create alert container
-	var alertOuter = document.createElement('div');
-	alertOuter.id = 'notie-alert-outer';
-	
-	// Hide alert on click
+
+    // create alert container
+    var alertOuter = document.createElement('div');
+    alertOuter.id = 'notie-alert-outer';
+
+    // Hide alert on click
     alertOuter.onclick = function() {
         clearTimeout(alertTimeout1);
         clearTimeout(alertTimeout2);
         alertHide();
     };
-	
-	// add alert to body
-	document.body.appendChild(alertOuter);
-	
-	// create alert inner container
-	var alertInner = document.createElement('div');
+
+    // add alert to body
+    document.body.appendChild(alertOuter);
+
+    // create alert inner container
+    var alertInner = document.createElement('div');
     alertInner.id = 'notie-alert-inner';
     alertOuter.appendChild(alertInner);
-	
-	// create alert content container
-	var alertContent = document.createElement('div');
+
+    // create alert content container
+    var alertContent = document.createElement('div');
     alertContent.id = 'notie-alert-content';
     alertInner.appendChild(alertContent);
-	
-	// Initialize alert text
+
+    // Initialize alert text
     var alertText = document.createElement('span');
     alertText.id = 'notie-alert-text';
     alertContent.appendChild(alertText);
-	
-	// alert helper variables
+
+    // alert helper variables
     var alertIsShowing = false;
     var alertTimeout1;
     var alertTimeout2;
     var wasClickedCounter = 0;
-	
-	function alert(type, message, seconds) {
-		
-		if (options.colorText.length > 0) alertText.style.color = options.colorText;
-		
-		blur();
+
+    function alert(type, message, seconds) {
+
+        if (options.colorText.length > 0) alertText.style.color = options.colorText;
+
+        blur();
 
         wasClickedCounter++;
 
@@ -119,30 +119,30 @@ var notie = function() {
         else {
             duration = seconds * 1000;
         }
-		
-		// Remove all color classes first
-		removeClass(alertOuter, 'notie-background-success');
-		removeClass(alertOuter, 'notie-background-warning');
-		removeClass(alertOuter, 'notie-background-error');
-		removeClass(alertOuter, 'notie-background-info');
-		
+
+        // Remove all color classes first
+        removeClass(alertOuter, 'notie-background-success');
+        removeClass(alertOuter, 'notie-background-warning');
+        removeClass(alertOuter, 'notie-background-error');
+        removeClass(alertOuter, 'notie-background-info');
+
         // Set notie type (background color)
         switch(type) {
             case 1:
-				if (options.colorSuccess.length > 0) alertOuter.style.backgroundColor = options.colorSuccess;
-				else addClass(alertOuter, 'notie-background-success');
+                if (options.colorSuccess.length > 0) alertOuter.style.backgroundColor = options.colorSuccess;
+                else addClass(alertOuter, 'notie-background-success');
                 break;
             case 2:
                 if (options.colorWarning.length > 0) alertOuter.style.backgroundColor = options.colorWarning;
-				else addClass(alertOuter, 'notie-background-warning');
+                else addClass(alertOuter, 'notie-background-warning');
                 break;
             case 3:
-				if (options.colorError.length > 0) alertOuter.style.backgroundColor = options.colorError;
-				else addClass(alertOuter, 'notie-background-error');
+                if (options.colorError.length > 0) alertOuter.style.backgroundColor = options.colorError;
+                else addClass(alertOuter, 'notie-background-error');
                 break;
             case 4:
                 if (options.colorInfo.length > 0) alertOuter.style.backgroundColor = options.colorInfo;
-				else addClass(alertOuter, 'notie-background-info');
+                else addClass(alertOuter, 'notie-background-info');
                 break;
         }
 
@@ -154,8 +154,8 @@ var notie = function() {
         alertOuter.style.top = '-' + alertOuter.offsetHeight - 5 + 'px';
 
         alertTimeout1 = setTimeout(function() {
-			
-			addClass(alertOuter, 'notie-transition');
+
+            addClass(alertOuter, 'notie-transition');
 
             alertOuter.style.top = 0;
 
@@ -168,7 +168,7 @@ var notie = function() {
             }, duration);
 
         }, 20);
-		
+
     }
 
     function alertHide(callback) {
@@ -176,9 +176,9 @@ var notie = function() {
         alertOuter.style.top = '-' + alertOuter.offsetHeight - 5 + 'px';
 
         setTimeout(function() {
-			
-			removeClass(alertOuter, 'notie-transition');
-            
+
+            removeClass(alertOuter, 'notie-transition');
+
             alertOuter.style.top = '-10000px';
 
             alertIsShowing = false;
@@ -188,70 +188,70 @@ var notie = function() {
         }, (options.animationDelay + 10));
 
     }
-	
-	
-	
-	// confirm
+
+
+
+    // confirm
     // **************
-	
-	var confirmOuter = document.createElement('div');
+
+    var confirmOuter = document.createElement('div');
     confirmOuter.id = 'notie-confirm-outer';
-	
-	var confirmInner = document.createElement('div');
+
+    var confirmInner = document.createElement('div');
     confirmInner.id = 'notie-confirm-inner';
     confirmOuter.appendChild(confirmInner);
-	
-	var confirmText = document.createElement('span');
+
+    var confirmText = document.createElement('span');
     confirmText.id = 'notie-confirm-text';
     confirmInner.appendChild(confirmText);
-	
-	var confirmYes = document.createElement('div');
+
+    var confirmYes = document.createElement('div');
     confirmYes.id = 'notie-confirm-yes'
     confirmOuter.appendChild(confirmYes);
 
     var confirmNo = document.createElement('div');
-   	confirmNo.id = 'notie-confirm-no';
-	confirmOuter.appendChild(confirmNo);
-	
-	var confirmTextYes = document.createElement('span');
+    confirmNo.id = 'notie-confirm-no';
+    confirmOuter.appendChild(confirmNo);
+
+    var confirmTextYes = document.createElement('span');
     confirmTextYes.id = 'notie-confirm-text-yes';
     confirmYes.appendChild(confirmTextYes);
 
     var confirmTextNo = document.createElement('span');
     confirmTextNo.id = 'notie-confirm-text-no';
     confirmNo.appendChild(confirmTextNo);
-	
-	var confirmBackground = document.createElement('div');
+
+    var confirmBackground = document.createElement('div');
     confirmBackground.id = 'notie-confirm-background';
-	addClass(confirmBackground, 'notie-transition');
-	
-	// Hide notie.confirm on no click and background click
+    addClass(confirmBackground, 'notie-transition');
+
+    // Hide notie.confirm on no click and background click
     confirmBackground.onclick = function() {
         if (options.backgroundClickDismiss) {
             confirmHide();
         }
     };
-	
-	// Attach confirm elements to the body element
+
+    // Attach confirm elements to the body element
     document.body.appendChild(confirmOuter);
     document.body.appendChild(confirmBackground);
-	
-	// confirm helper variables
+
+    // confirm helper variables
     var confirmIsShowing = false;
 
     function confirm(title, yesText, noText, yesCallback, noCallback) {
-		
-		if (options.colorInfo.length > 0) confirmInner.style.backgroundColor = options.colorInfo;
-		if (options.colorSuccess.length > 0) confirmYes.style.backgroundColor = options.colorSuccess;
-		if (options.colorError.length > 0) confirmNo.style.backgroundColor = options.colorError;
-		if (options.colorText.length > 0) {
-			confirmText.style.color = options.colorText;
-			confirmTextYes.style.color = options.colorText;
-			confirmTextNo.style.color = options.colorText;
-		}
-		
-		blur();
-        
+
+        if (options.colorInfo.length > 0) confirmInner.style.backgroundColor = options.colorInfo;
+        if (options.colorSuccess.length > 0) confirmYes.style.backgroundColor = options.colorSuccess;
+        if (options.colorError.length > 0) confirmNo.style.backgroundColor = options.colorError;
+        if (options.colorText.length > 0) {
+            confirmText.style.color = options.colorText;
+            confirmTextYes.style.color = options.colorText;
+            confirmTextNo.style.color = options.colorText;
+        }
+
+        blur();
+
         if (alertIsShowing) {
             // Hide notie.alert
             clearTimeout(alertTimeout1);
@@ -263,7 +263,7 @@ var notie = function() {
         else {
             confirmShow(title, yesText, noText, yesCallback, noCallback);
         }
-        
+
 
     }
     function confirmShow(title, yesText, noText, yesCallback, noCallback) {
@@ -273,21 +273,21 @@ var notie = function() {
         // Yes callback function
         confirmYes.onclick = function() {
             confirmHide();
-			if (yesCallback) {
-				setTimeout(function() {
-					yesCallback();
-				}, (options.animationDelay + 10));
-			}
+            if (yesCallback) {
+                setTimeout(function() {
+                    yesCallback();
+                }, (options.animationDelay + 10));
+            }
         }
-		
-		// No callback function
-		confirmNo.onclick = function() {
+
+        // No callback function
+        confirmNo.onclick = function() {
             confirmHide();
             if (noCallback) {
-				setTimeout(function() {
-					noCallback();
-				}, (options.animationDelay + 10));
-			}
+                setTimeout(function() {
+                    noCallback();
+                }, (options.animationDelay + 10));
+            }
         }
 
         function confirmShowInner() {
@@ -304,7 +304,7 @@ var notie = function() {
             confirmBackground.style.display = 'block';
 
             setTimeout(function() {
-				
+
                 addClass(confirmOuter, 'notie-transition');
 
                 confirmOuter.style.top = 0;
@@ -336,9 +336,9 @@ var notie = function() {
         confirmBackground.style.opacity = '0';
 
         setTimeout(function() {
-			
+
             removeClass(confirmOuter, 'notie-transition');
-			confirmOuter.style.top = '-10000px';
+            confirmOuter.style.top = '-10000px';
             confirmBackground.style.display = 'none';
 
             scrollEnable();
@@ -348,32 +348,32 @@ var notie = function() {
         }, (options.animationDelay + 10));
 
     }
-	
-	
-	
-	
-	// input
+
+
+
+
+    // input
     // **********
 
     var inputOuter = document.createElement('div');
     inputOuter.id = 'notie-input-outer';
-	
-	var inputBackground = document.createElement('div');
+
+    var inputBackground = document.createElement('div');
     inputBackground.id = 'notie-input-background';
-	addClass(inputBackground, 'notie-transition');
-	
-	var inputInner = document.createElement('div');
+    addClass(inputBackground, 'notie-transition');
+
+    var inputInner = document.createElement('div');
     inputInner.id = 'notie-input-inner';
     inputOuter.appendChild(inputInner);
-	
+
     var inputField = document.createElement('input');
     inputField.id = 'notie-input-field';
-	inputField.setAttribute('autocomplete', 'off');
+    inputField.setAttribute('autocomplete', 'off');
     inputField.setAttribute('autocorrect', 'off');
     inputField.setAttribute('autocapitalize', 'off');
     inputField.setAttribute('spellcheck', 'false');
-	inputOuter.appendChild(inputField);
-    
+    inputOuter.appendChild(inputField);
+
     var inputYes = document.createElement('div');
     inputYes.id = 'notie-input-yes';
     inputOuter.appendChild(inputYes);
@@ -381,7 +381,7 @@ var notie = function() {
     var inputNo = document.createElement('div');
     inputNo.id = 'notie-input-no';
     inputOuter.appendChild(inputNo);
-	
+
     var inputText = document.createElement('span');
     inputText.id = 'notie-input-text';
     inputInner.appendChild(inputText);
@@ -396,61 +396,61 @@ var notie = function() {
 
     // Attach input elements to the body element
     document.body.appendChild(inputOuter);
-    document.body.appendChild(inputBackground);	
-	
-	// Hide input on no click and background click
+    document.body.appendChild(inputBackground);
+
+    // Hide input on no click and background click
     inputBackground.onclick = function() {
         if (options.backgroundClickDismiss) {
             inputHide();
         }
     };
-	
-	// input helper variables
+
+    // input helper variables
     var inputIsShowing = false;
-	
-	function input(settings, title, submitText, cancelText, submitCallback, cancelCallback) {
-		
-		if (options.colorInfo.length > 0) inputInner.style.backgroundColor = options.colorInfo;
-		if (options.colorSuccess.length > 0) inputYes.style.backgroundColor = options.colorSuccess;
-		if (options.colorError.length > 0) inputNo.style.backgroundColor = options.colorError;
-		if (options.colorText.length > 0) {
-			inputText.style.color = options.colorText;
-			inputTextYes.style.color = options.colorText;
-			inputTextNo.style.color = options.colorText;
-		}
-		
-		blur();
-		
-		if (typeof settings.type !== 'undefined' && settings.type) {
-			inputField.setAttribute('type', settings.type);
-		}
-		else {
-			inputField.setAttribute('type', 'text');
-		}
-		
-		if (typeof settings.placeholder !== 'undefined' && settings.placeholder) {
-			inputField.setAttribute('placeholder', settings.placeholder);
-		}
-		else {
-			// Do not set placeholder
-		}
-		
+
+    function input(settings, title, submitText, cancelText, submitCallback, cancelCallback) {
+
+        if (options.colorInfo.length > 0) inputInner.style.backgroundColor = options.colorInfo;
+        if (options.colorSuccess.length > 0) inputYes.style.backgroundColor = options.colorSuccess;
+        if (options.colorError.length > 0) inputNo.style.backgroundColor = options.colorError;
+        if (options.colorText.length > 0) {
+            inputText.style.color = options.colorText;
+            inputTextYes.style.color = options.colorText;
+            inputTextNo.style.color = options.colorText;
+        }
+
+        blur();
+
+        if (typeof settings.type !== 'undefined' && settings.type) {
+            inputField.setAttribute('type', settings.type);
+        }
+        else {
+            inputField.setAttribute('type', 'text');
+        }
+
+        if (typeof settings.placeholder !== 'undefined' && settings.placeholder) {
+            inputField.setAttribute('placeholder', settings.placeholder);
+        }
+        else {
+            // Do not set placeholder
+        }
+
         if (typeof settings.prefilledValue !== 'undefined' && settings.prefilledValue) {
-			inputField.value = settings.prefilledValue;
-		}
-		else {
-			inputField.value = '';
-		}
-        
+            inputField.value = settings.prefilledValue;
+        }
+        else {
+            inputField.value = '';
+        }
+
         if (alertIsShowing) {
-			
+
             // Hide alert
             clearTimeout(alertTimeout1);
             clearTimeout(alertTimeout2);
             alertHide(function() {
                 inputShow(title, submitText, cancelText, submitCallback, cancelCallback);
             });
-			
+
         }
         else {
             inputShow(title, submitText, cancelText, submitCallback, cancelCallback);
@@ -464,21 +464,21 @@ var notie = function() {
         // Yes callback function
         inputYes.onclick = function() {
             inputHide();
-			if (submitCallback) {
-				setTimeout(function() {
-					submitCallback(inputField.value);
-				}, (options.animationDelay + 10));
-			}
+            if (submitCallback) {
+                setTimeout(function() {
+                    submitCallback(inputField.value);
+                }, (options.animationDelay + 10));
+            }
         }
-		
-		// No callback function
-		inputNo.onclick = function() {
+
+        // No callback function
+        inputNo.onclick = function() {
             inputHide();
             if (cancelCallback) {
-				setTimeout(function() {
-					cancelCallback(inputField.value);
-				}, (options.animationDelay + 10));
-			}
+                setTimeout(function() {
+                    cancelCallback(inputField.value);
+                }, (options.animationDelay + 10));
+            }
         }
 
         function inputShowInner() {
@@ -496,17 +496,17 @@ var notie = function() {
 
             setTimeout(function() {
 
-				addClass(inputOuter, 'notie-transition');
-				
+                addClass(inputOuter, 'notie-transition');
+
                 inputOuter.style.top = 0;
                 inputBackground.style.opacity = '0.75';
 
                 setTimeout(function() {
                     inputIsShowing = true;
-					
-					// put focus on input field
-					inputField.focus();
-					
+
+                    // put focus on input field
+                    inputField.focus();
+
                 }, (options.animationDelay + 10));
 
             }, 20);
@@ -531,10 +531,10 @@ var notie = function() {
         inputBackground.style.opacity = '0';
 
         setTimeout(function() {
-			
-			removeClass(inputOuter, 'notie-transition');
+
+            removeClass(inputOuter, 'notie-transition');
             inputBackground.style.display = 'none';
-            
+
             inputOuter.style.top = '-10000px';
 
             scrollEnable();
@@ -544,149 +544,149 @@ var notie = function() {
         }, (options.animationDelay + 10));
 
     }
-	
-	
-	
-	// select
+
+
+
+    // select
     // **************
-	
-	var selectOuter = document.createElement('div');
+
+    var selectOuter = document.createElement('div');
     selectOuter.id = 'notie-select-outer';
-	
-	var selectInner = document.createElement('div');
+
+    var selectInner = document.createElement('div');
     selectInner.id = 'notie-select-inner';
     selectOuter.appendChild(selectInner);
-	
-	var selectText = document.createElement('span');
+
+    var selectText = document.createElement('span');
     selectText.id = 'notie-select-text';
-	selectInner.appendChild(selectText);
-	
-	var selectBackground = document.createElement('div');
+    selectInner.appendChild(selectText);
+
+    var selectBackground = document.createElement('div');
     selectBackground.id = 'notie-select-background';
-	addClass(selectBackground, 'notie-transition');
-	
-	var selectChoices = document.createElement('div');
-	selectChoices.id = 'notie-select-choices';
-	selectOuter.appendChild(selectChoices);
-	
-	var selectCancel = document.createElement('div');
+    addClass(selectBackground, 'notie-transition');
+
+    var selectChoices = document.createElement('div');
+    selectChoices.id = 'notie-select-choices';
+    selectOuter.appendChild(selectChoices);
+
+    var selectCancel = document.createElement('div');
     selectCancel.id = 'notie-select-cancel';
-	selectCancel.innerHTML = 'Cancel';
+    selectCancel.innerHTML = 'Cancel';
     selectOuter.appendChild(selectCancel);
-	
-	// Attach select elements to the body element
+
+    // Attach select elements to the body element
     document.body.appendChild(selectOuter);
     document.body.appendChild(selectBackground);
-	
-	// Hide input on no click and background click
+
+    // Hide input on no click and background click
     selectBackground.onclick = function() {
         if (options.backgroundClickDismiss) {
             selectHide();
         }
     };
-	
-	selectCancel.onclick = function() {
-		selectHide();
-	}
-	
-	// select helper variables
+
+    selectCancel.onclick = function() {
+        selectHide();
+    }
+
+    // select helper variables
     var selectIsShowing = false;
-	
-	function select(title, choices /*, callback1, callback2, ... */) {
-		
-		if (options.colorInfo.length > 0) selectInner.style.backgroundColor = options.colorInfo;
-		if (options.colorNeutral.length > 0) selectCancel.style.backgroundColor = options.colorNeutral;
-		if (options.colorText.length > 0) {
-			selectText.style.color = options.colorText;
-			selectCancel.style.color = options.colorText;
-		}
-		
-		var funcs = [];
-		for (var i = 0; i < arguments.length - 2; i++) {
-			funcs[i] = arguments[i + 2];
-		}
-		
-		if (funcs.length === choices.length) {
-			
-			blur();
-        
-			if (alertIsShowing) {
-				// Hide notie.alert
-				clearTimeout(alertTimeout1);
-				clearTimeout(alertTimeout2);
-				alertHide(function() {
-					selectShow(title, choices, funcs);
-				});
-			}
-			else {
-				selectShow(title, choices, funcs);
-			}
-			
-		}
-		else {
-			throw 'notie.select number of choices must match number of functions';
-		}
+
+    function select(title, choices /*, callback1, callback2, ... */) {
+
+        if (options.colorInfo.length > 0) selectInner.style.backgroundColor = options.colorInfo;
+        if (options.colorNeutral.length > 0) selectCancel.style.backgroundColor = options.colorNeutral;
+        if (options.colorText.length > 0) {
+            selectText.style.color = options.colorText;
+            selectCancel.style.color = options.colorText;
+        }
+
+        var funcs = [];
+        for (var i = 0; i < arguments.length - 2; i++) {
+            funcs[i] = arguments[i + 2];
+        }
+
+        if (funcs.length === choices.length) {
+
+            blur();
+
+            if (alertIsShowing) {
+                // Hide notie.alert
+                clearTimeout(alertTimeout1);
+                clearTimeout(alertTimeout2);
+                alertHide(function() {
+                    selectShow(title, choices, funcs);
+                });
+            }
+            else {
+                selectShow(title, choices, funcs);
+            }
+
+        }
+        else {
+            throw 'notie.select number of choices must match number of functions';
+        }
 
     }
-	
-	function selectShow(title, choices, funcs) {
-		
-		scrollDisable();
-		
-		document.getElementById('notie-select-choices').innerHTML = '';
-		
-		var selectChoicePrevious;
-		
-		for (var i = 0; i < choices.length; i++) {
-			
-			var selectChoice = document.createElement('div');
-			selectChoice.innerHTML = choices[i].title;
-			addClass(selectChoice, 'notie-select-choice');
-			selectChoices.appendChild(selectChoice);
-			selectChoice.style.backgroundColor = window.getComputedStyle(selectChoice).backgroundColor;
-			if (options.colorText.length > 0) selectChoice.style.color = options.colorText;
-			
-			if (choices[i].type) {
-				switch(choices[i].type) {
-					case 1:
-						if (options.colorSuccess.length > 0) selectChoice.style.backgroundColor = options.colorSuccess;
-						else addClass(selectChoice, 'notie-background-success');
-						break;
-					case 2:
-						if (options.colorWarning.length > 0) selectChoice.style.backgroundColor = options.colorWarning;
-						else addClass(selectChoice, 'notie-background-warning');
-						break;
-					case 3:
-						if (options.colorError.length > 0) selectChoice.style.backgroundColor = options.colorError;
-						else addClass(selectChoice, 'notie-background-error');
-						break;
-					case 4:
-						if (options.colorInfo.length > 0) selectChoice.style.backgroundColor = options.colorInfo;
-						else addClass(selectChoice, 'notie-background-info');
-						break;
-				}
-			}
-			else if (choices[i].color) {
-				selectChoice.style.backgroundColor = choices[i].color;
-			}
-			
-			if (i > 0) {
-				if (selectChoice.style.backgroundColor === selectChoicePrevious.style.backgroundColor) {
-					selectChoicePrevious.style.borderBottom = '1px solid rgba(255, 255, 255, 0.2)';
-				}
-			}
-			
-			// onclick for this choice
-			selectChoice.onclick = (function(i) { return function() {
-				selectHide();
-				setTimeout(function() {
-					funcs[i]();
-				}, (options.animationDelay + 10));
-			};})(i);
-			
-			selectChoicePrevious = selectChoice;
-			
-		}
+
+    function selectShow(title, choices, funcs) {
+
+        scrollDisable();
+
+        document.getElementById('notie-select-choices').innerHTML = '';
+
+        var selectChoicePrevious;
+
+        for (var i = 0; i < choices.length; i++) {
+
+            var selectChoice = document.createElement('div');
+            selectChoice.innerHTML = choices[i].title;
+            addClass(selectChoice, 'notie-select-choice');
+            selectChoices.appendChild(selectChoice);
+            selectChoice.style.backgroundColor = window.getComputedStyle(selectChoice).backgroundColor;
+            if (options.colorText.length > 0) selectChoice.style.color = options.colorText;
+
+            if (choices[i].type) {
+                switch(choices[i].type) {
+                    case 1:
+                        if (options.colorSuccess.length > 0) selectChoice.style.backgroundColor = options.colorSuccess;
+                        else addClass(selectChoice, 'notie-background-success');
+                        break;
+                    case 2:
+                        if (options.colorWarning.length > 0) selectChoice.style.backgroundColor = options.colorWarning;
+                        else addClass(selectChoice, 'notie-background-warning');
+                        break;
+                    case 3:
+                        if (options.colorError.length > 0) selectChoice.style.backgroundColor = options.colorError;
+                        else addClass(selectChoice, 'notie-background-error');
+                        break;
+                    case 4:
+                        if (options.colorInfo.length > 0) selectChoice.style.backgroundColor = options.colorInfo;
+                        else addClass(selectChoice, 'notie-background-info');
+                        break;
+                }
+            }
+            else if (choices[i].color) {
+                selectChoice.style.backgroundColor = choices[i].color;
+            }
+
+            if (i > 0) {
+                if (selectChoice.style.backgroundColor === selectChoicePrevious.style.backgroundColor) {
+                    selectChoicePrevious.style.borderBottom = '1px solid rgba(255, 255, 255, 0.2)';
+                }
+            }
+
+            // onclick for this choice
+            selectChoice.onclick = (function(i) { return function() {
+                selectHide();
+                setTimeout(function() {
+                    funcs[i]();
+                }, (options.animationDelay + 10));
+            };})(i);
+
+            selectChoicePrevious = selectChoice;
+
+        }
 
         function selectShowInner(title) {
 
@@ -700,7 +700,7 @@ var notie = function() {
             selectBackground.style.display = 'block';
 
             setTimeout(function() {
-				
+
                 addClass(selectOuter, 'notie-transition');
 
                 selectOuter.style.bottom = 0;
@@ -723,18 +723,18 @@ var notie = function() {
         else {
             selectShowInner(title);
         }
-		
-	}
-	
-	function selectHide() {
-		
-		selectOuter.style.bottom = '-' + selectOuter.offsetHeight - 5 + 'px';
+
+    }
+
+    function selectHide() {
+
+        selectOuter.style.bottom = '-' + selectOuter.offsetHeight - 5 + 'px';
         selectBackground.style.opacity = '0';
 
         setTimeout(function() {
-			
+
             removeClass(selectOuter, 'notie-transition');
-			selectOuter.style.bottom = '-10000px';
+            selectOuter.style.bottom = '-10000px';
             selectBackground.style.display = 'none';
 
             scrollEnable();
@@ -742,35 +742,35 @@ var notie = function() {
             selectIsShowing = false;
 
         }, (options.animationDelay + 10));
-		
-	}
-	
-	
-	// Internal helper functions
-	// #################
-	
-	function addClass(element, className) {
-		if (element.classList) {
-			element.classList.add(className);
-		}
-		else {
-			element.className += ' ' + className;
-		}
-	}
-	function removeClass(element, className) {
-		if (element.classList) {
-			element.classList.remove(className);
-		}
-		else {
-			element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-		}
-	}
-	
-	function blur() {
-		document.activeElement.blur();
-	}
-	
-	var originalBodyHeight, originalBodyOverflow;
+
+    }
+
+
+    // Internal helper functions
+    // #################
+
+    function addClass(element, className) {
+        if (element.classList) {
+            element.classList.add(className);
+        }
+        else {
+            element.className += ' ' + className;
+        }
+    }
+    function removeClass(element, className) {
+        if (element.classList) {
+            element.classList.remove(className);
+        }
+        else {
+            element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        }
+    }
+
+    function blur() {
+        document.activeElement.blur();
+    }
+
+    var originalBodyHeight, originalBodyOverflow;
     function scrollDisable() {
         originalBodyHeight = document.body.style.height;
         originalBodyOverflow = document.body.style.overflow;
@@ -781,8 +781,8 @@ var notie = function() {
         document.body.style.height = originalBodyHeight;
         document.body.style.overflow = originalBodyOverflow;
     }
-	
-	// Event listener for keydown enter and escape keys
+
+    // Event listener for keydown enter and escape keys
     window.addEventListener('keydown', function(event) {
         var enterClicked = (event.which == 13 || event.keyCode == 13);
         var escapeClicked = (event.which == 27 || event.keyCode == 27);
@@ -809,22 +809,22 @@ var notie = function() {
                 inputHide();
             }
         }
-		else if (selectIsShowing) {
-			if (escapeClicked) {
+        else if (selectIsShowing) {
+            if (escapeClicked) {
                 selectHide();
             }
-		}
+        }
     });
-	
-	
-	
-	
+
+
+
+
     return {
-		setOptions: setOptions,
+        setOptions: setOptions,
         alert: alert,
         confirm: confirm,
         input: input,
-		select: select
+        select: select
     };
 
 }();
