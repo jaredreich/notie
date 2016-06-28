@@ -14,6 +14,23 @@ Version:  3.2.0
 
 */
 
+/**
+ * Diablohu modified
+ * https://github.com/Diablohu/
+ * 
+ * New options:
+ *      offsetTop
+ *          offset top position for notification frame, default to 0 as before
+ *      autohideDelay
+ *          timeout for auto-hiding, default to 0 as always shown
+ * 
+ * New feature
+ *      Now use CSS Transform to manupilate frame animation when posible, if not, use Top instead
+ * 
+ * Other tweaks
+ *      All elements nodes will not be created nor appended into document until reference function called
+ */
+
 var notie = function() {
 	
 	// Default options
@@ -25,7 +42,13 @@ var notie = function() {
 		colorNeutral: '',
 		colorText: '',
 		animationDelay: 300,
-		backgroundClickDismiss: true
+		backgroundClickDismiss: true,
+
+        // offset top position for notification frame, default to 0 as before
+        offsetTop: 0,
+
+        // timeout for auto-hiding, default to 0 as always shown
+        autohideDelay: 0
 	}	
 	function setOptions(customOptions) {
 		// Custom options
@@ -33,40 +56,33 @@ var notie = function() {
 			options[key] = customOptions[key];
 		}
 	}
+
+    function cssPositionY( el, y ){
+        var key = [
+            'transform',
+            'webkitTransform',
+            'mozTransform',
+            'msTransform',
+            'oTransform'
+        ]
+
+        for( var i = 0; i < key.length; i++ ){
+            //console.log( key[i], value )
+            if( typeof el.style[key[i]] != 'undefined' )
+                return el.style[key[i]] = 'translateY(' + y + 'px)'
+        }
+
+        // if CSS transform not supported, use top insted
+        return el.style.top = y + 'px'
+    }
 	
 	
 	// alert
     // **************
-	
-	// create alert container
-	var alertOuter = document.createElement('div');
-	alertOuter.id = 'notie-alert-outer';
-	
-	// Hide alert on click
-    alertOuter.onclick = function() {
-        clearTimeout(alertTimeout1);
-        clearTimeout(alertTimeout2);
-        alertHide();
-    };
-	
-	// add alert to body
-	document.body.appendChild(alertOuter);
-	
-	// create alert inner container
-	var alertInner = document.createElement('div');
-    alertInner.id = 'notie-alert-inner';
-    alertOuter.appendChild(alertInner);
-	
-	// create alert content container
-	var alertContent = document.createElement('div');
-    alertContent.id = 'notie-alert-content';
-    alertInner.appendChild(alertContent);
-	
-	// Initialize alert text
-    var alertText = document.createElement('span');
-    alertText.id = 'notie-alert-text';
-    alertContent.appendChild(alertText);
-	
+	var alertOuter
+	var alertInner
+	var alertContent
+    var alertText
 	// alert helper variables
     var alertIsShowing = false;
     var alertTimeout1;
@@ -74,6 +90,8 @@ var notie = function() {
     var wasClickedCounter = 0;
 	
 	function alert(type, message, seconds) {
+
+        alertInit();
 		
 		if (options.colorText.length > 0) alertText.style.color = options.colorText;
 		
@@ -105,13 +123,48 @@ var notie = function() {
 
     }
 
+    function alertInit(){
+        if( !alertOuter ){	
+            // create alert container
+            alertOuter = document.createElement('div');
+            alertOuter.id = 'notie-alert-outer';
+            
+            // Hide alert on click
+            alertOuter.onclick = function() {
+                clearTimeout(alertTimeout1);
+                clearTimeout(alertTimeout2);
+                alertHide();
+            };
+            
+            // add alert to body
+            document.body.appendChild(alertOuter);
+            
+            // create alert inner container
+            alertInner = document.createElement('div');
+            alertInner.id = 'notie-alert-inner';
+            alertOuter.appendChild(alertInner);
+            
+            // create alert content container
+            alertContent = document.createElement('div');
+            alertContent.id = 'notie-alert-content';
+            alertInner.appendChild(alertContent);
+            
+            // Initialize alert text
+            alertText = document.createElement('span');
+            alertText.id = 'notie-alert-text';
+            alertContent.appendChild(alertText);
+        }
+    }
+
     function alertShow(type, message, seconds) {
+
+        alertInit();
 
         alertIsShowing = true;
 
         var duration = 0;
         if (typeof seconds === 'undefined' || seconds === 0) {
-            var duration = 86400000;
+            var duration = options.autohideDelay || 86400000;
         }
         else if (seconds > 0 && seconds < 1) {
             duration = 1000;
@@ -149,15 +202,15 @@ var notie = function() {
         // Set notie text
         alertText.innerHTML = message;
 
-        alertOuter.style.top = '-10000px';
+        cssPositionY( alertOuter, -10000 );
         alertOuter.style.display = 'table';
-        alertOuter.style.top = '-' + alertOuter.offsetHeight - 5 + 'px';
+        cssPositionY( alertOuter, 0 - alertOuter.offsetHeight - 5 );
 
         alertTimeout1 = setTimeout(function() {
 			
 			addClass(alertOuter, 'notie-transition');
 
-            alertOuter.style.top = 0;
+            cssPositionY( alertOuter, options.offsetTop );
 
             alertTimeout2 = setTimeout(function() {
 
@@ -173,13 +226,15 @@ var notie = function() {
 
     function alertHide(callback) {
 
-        alertOuter.style.top = '-' + alertOuter.offsetHeight - 5 + 'px';
+        alertInit();
+
+        cssPositionY( alertOuter, 0 - alertOuter.offsetHeight - 5 );
 
         setTimeout(function() {
 			
 			removeClass(alertOuter, 'notie-transition');
             
-            alertOuter.style.top = '-10000px';
+            cssPositionY( alertOuter, -10000 );
 
             alertIsShowing = false;
 
@@ -192,54 +247,21 @@ var notie = function() {
 	
 	
 	// confirm
-    // **************
-	
-	var confirmOuter = document.createElement('div');
-    confirmOuter.id = 'notie-confirm-outer';
-	
-	var confirmInner = document.createElement('div');
-    confirmInner.id = 'notie-confirm-inner';
-    confirmOuter.appendChild(confirmInner);
-	
-	var confirmText = document.createElement('span');
-    confirmText.id = 'notie-confirm-text';
-    confirmInner.appendChild(confirmText);
-	
-	var confirmYes = document.createElement('div');
-    confirmYes.id = 'notie-confirm-yes'
-    confirmOuter.appendChild(confirmYes);
-
-    var confirmNo = document.createElement('div');
-   	confirmNo.id = 'notie-confirm-no';
-	confirmOuter.appendChild(confirmNo);
-	
-	var confirmTextYes = document.createElement('span');
-    confirmTextYes.id = 'notie-confirm-text-yes';
-    confirmYes.appendChild(confirmTextYes);
-
-    var confirmTextNo = document.createElement('span');
-    confirmTextNo.id = 'notie-confirm-text-no';
-    confirmNo.appendChild(confirmTextNo);
-	
-	var confirmBackground = document.createElement('div');
-    confirmBackground.id = 'notie-confirm-background';
-	addClass(confirmBackground, 'notie-transition');
-	
-	// Hide notie.confirm on no click and background click
-    confirmBackground.onclick = function() {
-        if (options.backgroundClickDismiss) {
-            confirmHide();
-        }
-    };
-	
-	// Attach confirm elements to the body element
-    document.body.appendChild(confirmOuter);
-    document.body.appendChild(confirmBackground);
-	
+    // **************	
+	var confirmOuter
+	var confirmInner
+	var confirmText
+	var confirmYes
+    var confirmNo
+	var confirmTextYes
+    var confirmTextNo
+	var confirmBackground
 	// confirm helper variables
     var confirmIsShowing = false;
 
     function confirm(title, yesText, noText, yesCallback, noCallback) {
+
+        confirmInit();
 		
 		if (options.colorInfo.length > 0) confirmInner.style.backgroundColor = options.colorInfo;
 		if (options.colorSuccess.length > 0) confirmYes.style.backgroundColor = options.colorSuccess;
@@ -266,7 +288,58 @@ var notie = function() {
         
 
     }
+
+    function confirmInit(){
+        
+        if( !confirmOuter ){
+            confirmOuter = document.createElement('div');
+            confirmOuter.id = 'notie-confirm-outer';
+            
+            confirmInner = document.createElement('div');
+            confirmInner.id = 'notie-confirm-inner';
+            confirmOuter.appendChild(confirmInner);
+            
+            confirmText = document.createElement('span');
+            confirmText.id = 'notie-confirm-text';
+            confirmInner.appendChild(confirmText);
+            
+            confirmYes = document.createElement('div');
+            confirmYes.id = 'notie-confirm-yes'
+            confirmOuter.appendChild(confirmYes);
+
+            confirmNo = document.createElement('div');
+            confirmNo.id = 'notie-confirm-no';
+            confirmOuter.appendChild(confirmNo);
+            
+            confirmTextYes = document.createElement('span');
+            confirmTextYes.id = 'notie-confirm-text-yes';
+            confirmYes.appendChild(confirmTextYes);
+
+            confirmTextNo = document.createElement('span');
+            confirmTextNo.id = 'notie-confirm-text-no';
+            confirmNo.appendChild(confirmTextNo);
+            
+            confirmBackground = document.createElement('div');
+            confirmBackground.id = 'notie-confirm-background';
+            addClass(confirmBackground, 'notie-transition');
+            
+            // Hide notie.confirm on no click and background click
+            confirmBackground.onclick = function() {
+                if (options.backgroundClickDismiss) {
+                    confirmHide();
+                }
+            };
+            
+            // Attach confirm elements to the body element
+            document.body.appendChild(confirmOuter);
+            document.body.appendChild(confirmBackground);
+        }
+
+    }
+
     function confirmShow(title, yesText, noText, yesCallback, noCallback) {
+
+        confirmInit();
 
         scrollDisable();
 
@@ -298,16 +371,16 @@ var notie = function() {
             confirmTextNo.innerHTML = noText;
 
             // Get confirm's height
-            confirmOuter.style.top = '-10000px';
+            cssPositionY( confirmOuter, -10000 );
             confirmOuter.style.display = 'table';
-            confirmOuter.style.top = '-' + confirmOuter.offsetHeight - 5 + 'px';
+            cssPositionY( confirmOuter, 0 - confirmOuter.offsetHeight - 5 );
             confirmBackground.style.display = 'block';
 
             setTimeout(function() {
 				
                 addClass(confirmOuter, 'notie-transition');
 
-                confirmOuter.style.top = 0;
+                cssPositionY( confirmOuter, options.offsetTop );
                 confirmBackground.style.opacity = '0.75';
 
                 setTimeout(function() {
@@ -332,13 +405,15 @@ var notie = function() {
 
     function confirmHide() {
 
-        confirmOuter.style.top = '-' + confirmOuter.offsetHeight - 5 + 'px';
+        confirmInit();
+
+        cssPositionY( confirmOuter, 0 - confirmOuter.offsetHeight - 5 );
         confirmBackground.style.opacity = '0';
 
         setTimeout(function() {
 			
             removeClass(confirmOuter, 'notie-transition');
-			confirmOuter.style.top = '-10000px';
+            cssPositionY( confirmOuter, -10000 );
             confirmBackground.style.display = 'none';
 
             scrollEnable();
@@ -354,61 +429,21 @@ var notie = function() {
 	
 	// input
     // **********
-
-    var inputOuter = document.createElement('div');
-    inputOuter.id = 'notie-input-outer';
-	
-	var inputBackground = document.createElement('div');
-    inputBackground.id = 'notie-input-background';
-	addClass(inputBackground, 'notie-transition');
-	
-	var inputInner = document.createElement('div');
-    inputInner.id = 'notie-input-inner';
-    inputOuter.appendChild(inputInner);
-	
-    var inputField = document.createElement('input');
-    inputField.id = 'notie-input-field';
-	inputField.setAttribute('autocomplete', 'off');
-    inputField.setAttribute('autocorrect', 'off');
-    inputField.setAttribute('autocapitalize', 'off');
-    inputField.setAttribute('spellcheck', 'false');
-	inputOuter.appendChild(inputField);
-    
-    var inputYes = document.createElement('div');
-    inputYes.id = 'notie-input-yes';
-    inputOuter.appendChild(inputYes);
-
-    var inputNo = document.createElement('div');
-    inputNo.id = 'notie-input-no';
-    inputOuter.appendChild(inputNo);
-	
-    var inputText = document.createElement('span');
-    inputText.id = 'notie-input-text';
-    inputInner.appendChild(inputText);
-
-    var inputTextYes = document.createElement('span');
-    inputTextYes.id = 'notie-input-text-yes';
-    inputYes.appendChild(inputTextYes);
-
-    var inputTextNo = document.createElement('span');
-    inputTextNo.id = 'notie-input-text-no';
-    inputNo.appendChild(inputTextNo);
-
-    // Attach input elements to the body element
-    document.body.appendChild(inputOuter);
-    document.body.appendChild(inputBackground);	
-	
-	// Hide input on no click and background click
-    inputBackground.onclick = function() {
-        if (options.backgroundClickDismiss) {
-            inputHide();
-        }
-    };
-	
+    var inputOuter
+	var inputBackground
+	var inputInner
+    var inputField
+    var inputYes
+    var inputNo
+    var inputText
+    var inputTextYes
+    var inputTextNo
 	// input helper variables
     var inputIsShowing = false;
 	
 	function input(settings, title, submitText, cancelText, submitCallback, cancelCallback) {
+
+        inputInit();
 		
 		if (options.colorInfo.length > 0) inputInner.style.backgroundColor = options.colorInfo;
 		if (options.colorSuccess.length > 0) inputYes.style.backgroundColor = options.colorSuccess;
@@ -457,7 +492,66 @@ var notie = function() {
         }
 
     }
+
+    function inputInit(){
+
+        if( !inputOuter ){
+            inputOuter = document.createElement('div');
+            inputOuter.id = 'notie-input-outer';
+            
+            inputBackground = document.createElement('div');
+            inputBackground.id = 'notie-input-background';
+            addClass(inputBackground, 'notie-transition');
+            
+            inputInner = document.createElement('div');
+            inputInner.id = 'notie-input-inner';
+            inputOuter.appendChild(inputInner);
+            
+            inputField = document.createElement('input');
+            inputField.id = 'notie-input-field';
+            inputField.setAttribute('autocomplete', 'off');
+            inputField.setAttribute('autocorrect', 'off');
+            inputField.setAttribute('autocapitalize', 'off');
+            inputField.setAttribute('spellcheck', 'false');
+            inputOuter.appendChild(inputField);
+            
+            inputYes = document.createElement('div');
+            inputYes.id = 'notie-input-yes';
+            inputOuter.appendChild(inputYes);
+
+            inputNo = document.createElement('div');
+            inputNo.id = 'notie-input-no';
+            inputOuter.appendChild(inputNo);
+            
+            inputText = document.createElement('span');
+            inputText.id = 'notie-input-text';
+            inputInner.appendChild(inputText);
+
+            inputTextYes = document.createElement('span');
+            inputTextYes.id = 'notie-input-text-yes';
+            inputYes.appendChild(inputTextYes);
+
+            inputTextNo = document.createElement('span');
+            inputTextNo.id = 'notie-input-text-no';
+            inputNo.appendChild(inputTextNo);
+
+            // Attach input elements to the body element
+            document.body.appendChild(inputOuter);
+            document.body.appendChild(inputBackground);	
+            
+            // Hide input on no click and background click
+            inputBackground.onclick = function() {
+                if (options.backgroundClickDismiss) {
+                    inputHide();
+                }
+            };
+        }
+
+    }
+
     function inputShow(title, submitText, cancelText, submitCallback, cancelCallback) {
+
+        inputInit();
 
         scrollDisable();
 
@@ -489,16 +583,16 @@ var notie = function() {
             inputTextNo.innerHTML = cancelText;
 
             // Get input's height
-            inputOuter.style.top = '-10000px';
+            cssPositionY( inputOuter, -10000 );
             inputOuter.style.display = 'table';
-            inputOuter.style.top = '-' + inputOuter.offsetHeight - 5 + 'px';
+            cssPositionY( inputOuter, 0 - inputOuter.offsetHeight - 5 );
             inputBackground.style.display = 'block';
 
             setTimeout(function() {
 
 				addClass(inputOuter, 'notie-transition');
 				
-                inputOuter.style.top = 0;
+                cssPositionY( inputOuter, options.offsetTop );
                 inputBackground.style.opacity = '0.75';
 
                 setTimeout(function() {
@@ -527,7 +621,9 @@ var notie = function() {
 
     function inputHide() {
 
-        inputOuter.style.top = '-' + inputOuter.offsetHeight - 5 + 'px';
+        inputInit();
+
+        cssPositionY( inputOuter, 0 - inputOuter.offsetHeight - 5 );
         inputBackground.style.opacity = '0';
 
         setTimeout(function() {
@@ -535,7 +631,7 @@ var notie = function() {
 			removeClass(inputOuter, 'notie-transition');
             inputBackground.style.display = 'none';
             
-            inputOuter.style.top = '-10000px';
+            cssPositionY( inputOuter, -10000 );
 
             scrollEnable();
 
@@ -548,51 +644,19 @@ var notie = function() {
 	
 	
 	// select
-    // **************
-	
-	var selectOuter = document.createElement('div');
-    selectOuter.id = 'notie-select-outer';
-	
-	var selectInner = document.createElement('div');
-    selectInner.id = 'notie-select-inner';
-    selectOuter.appendChild(selectInner);
-	
-	var selectText = document.createElement('span');
-    selectText.id = 'notie-select-text';
-	selectInner.appendChild(selectText);
-	
-	var selectBackground = document.createElement('div');
-    selectBackground.id = 'notie-select-background';
-	addClass(selectBackground, 'notie-transition');
-	
-	var selectChoices = document.createElement('div');
-	selectChoices.id = 'notie-select-choices';
-	selectOuter.appendChild(selectChoices);
-	
-	var selectCancel = document.createElement('div');
-    selectCancel.id = 'notie-select-cancel';
-	selectCancel.innerHTML = 'Cancel';
-    selectOuter.appendChild(selectCancel);
-	
-	// Attach select elements to the body element
-    document.body.appendChild(selectOuter);
-    document.body.appendChild(selectBackground);
-	
-	// Hide input on no click and background click
-    selectBackground.onclick = function() {
-        if (options.backgroundClickDismiss) {
-            selectHide();
-        }
-    };
-	
-	selectCancel.onclick = function() {
-		selectHide();
-	}
-	
+    // **************	
+	var selectOuter
+	var selectInner
+	var selectText
+	var selectBackground
+	var selectChoices
+	var selectCancel	
 	// select helper variables
     var selectIsShowing = false;
 	
 	function select(title, choices /*, callback1, callback2, ... */) {
+
+        selectInit();
 		
 		if (options.colorInfo.length > 0) selectInner.style.backgroundColor = options.colorInfo;
 		if (options.colorNeutral.length > 0) selectCancel.style.backgroundColor = options.colorNeutral;
@@ -600,7 +664,6 @@ var notie = function() {
 			selectText.style.color = options.colorText;
 			selectCancel.style.color = options.colorText;
 		}
-		
 		var funcs = [];
 		for (var i = 0; i < arguments.length - 2; i++) {
 			funcs[i] = arguments[i + 2];
@@ -628,8 +691,55 @@ var notie = function() {
 		}
 
     }
+
+    function selectInit(){
+
+        if( !selectOuter ){
+            selectOuter = document.createElement('div');
+            selectOuter.id = 'notie-select-outer';
+            
+            selectInner = document.createElement('div');
+            selectInner.id = 'notie-select-inner';
+            selectOuter.appendChild(selectInner);
+            
+            selectText = document.createElement('span');
+            selectText.id = 'notie-select-text';
+            selectInner.appendChild(selectText);
+            
+            selectBackground = document.createElement('div');
+            selectBackground.id = 'notie-select-background';
+            addClass(selectBackground, 'notie-transition');
+            
+            selectChoices = document.createElement('div');
+            selectChoices.id = 'notie-select-choices';
+            selectOuter.appendChild(selectChoices);
+            
+            selectCancel = document.createElement('div');
+            selectCancel.id = 'notie-select-cancel';
+            selectCancel.innerHTML = 'Cancel';
+            selectOuter.appendChild(selectCancel);
+            
+            // Attach select elements to the body element
+            document.body.appendChild(selectOuter);
+            document.body.appendChild(selectBackground);
+            
+            // Hide input on no click and background click
+            selectBackground.onclick = function() {
+                if (options.backgroundClickDismiss) {
+                    selectHide();
+                }
+            };
+            
+            selectCancel.onclick = function() {
+                selectHide();
+            }
+        }
+
+    }
 	
 	function selectShow(title, choices, funcs) {
+
+        selectInit();
 		
 		scrollDisable();
 		
@@ -727,6 +837,8 @@ var notie = function() {
 	}
 	
 	function selectHide() {
+
+        selectInit();
 		
 		selectOuter.style.bottom = '-' + selectOuter.offsetHeight - 5 + 'px';
         selectBackground.style.opacity = '0';
