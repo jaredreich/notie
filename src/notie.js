@@ -117,18 +117,22 @@ var notie = (function () {
   // Set notie type (background color)
     switch (type) {
       case 1:
+      case 'success':
         if (options.colorSuccess.length > 0) alertOuter.style.backgroundColor = options.colorSuccess
         else addClass(alertOuter, 'notie-background-success')
         break
       case 2:
+      case 'warning':
         if (options.colorWarning.length > 0) alertOuter.style.backgroundColor = options.colorWarning
         else addClass(alertOuter, 'notie-background-warning')
         break
       case 3:
+      case 'error':
         if (options.colorError.length > 0) alertOuter.style.backgroundColor = options.colorError
         else addClass(alertOuter, 'notie-background-error')
         break
       case 4:
+      case 'info':
         if (options.colorInfo.length > 0) alertOuter.style.backgroundColor = options.colorInfo
         else addClass(alertOuter, 'notie-background-info')
         break
