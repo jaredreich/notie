@@ -60,7 +60,7 @@ bower install notie
 ## Usage
 
 ```javascript
-notie.alert(alertType(Number|String), message(String, timeInSeconds);
+notie.alert(alertType(Number|String), message(String), timeInSeconds);
 
 notie.confirm(title(String), yesText(String), noText(String), yesCallback(Function), noCallbackOptional(Function));
 

@@ -1,149 +1,138 @@
 <!DOCTYPE html>
 <html>
-    
-    <head>
-        <meta charset="utf-8">
-        <meta name='viewport' content="width=device-width,initial-scale=1,maximum-scale=1">
-        <title>Notie Test Page</title>
-        
-        <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="dist/notie.css">
-        
-        <!-- Font -->
-        <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-		<link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
-        
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-				font-family: 'Lato', sans-serif;
-				background-color: rgb(255, 170, 133);
-            }
-            .div-ext {
-                height: 100vh;
-                width: 100%;
-                display: table;
-                text-align: center;
-            }
-            .div-int {
-                display: table-cell;
-                vertical-align: middle;
-            }
-            button {
-                cursor: pointer;
-                font-size: 20px;
-                border: 2px solid white;
-                border-radius: 2px;
-                background-color: transparent;
-                outline: 0;
-                margin: 2px;
-				margin-top: 4px;
-				padding: 5px;
-				color: white;
-            }
-        </style>
-        
-        
-    </head>
-    
-    
-    
-    <body>
-        
-        <div class="div-ext">
-            <div class="div-int">
-                
-                <div style="font-family: 'Satisfy', cursive;color:white;font-size:80px;margin-bottom:20px;">notie.js</div>
-				
-				<div style="margin-bottom:20px;padding-left:50px;padding-right:50px;">
-					<button onclick="success();">Success</button>
-					<button onclick="warning();">Warning</button>
-					<button onclick="error();">Error</button>
-					<button onclick="info();">Info</button>
-					<button onclick="confirm();">Confirm</button>
-					<button onclick="input();">Input</button>
-					<button onclick="select();">Select</button>
-				</div>
-				
-                <div style="color:white;">Official demo page:</div>
-                <a href="https://jaredreich.com/projects/notie" target="_blank" style="color:white;">https://jaredreich.com/projects/notie</a>
-                
-            </div>
+  <head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,initial-scale=1,maximum-scale=1">
+    <title>Notie Test Page</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="dist/notie.css">
+
+    <!-- Font -->
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Lato', sans-serif;
+        background-color: rgb(255, 170, 133);
+      }
+      .div-ext {
+        height: 100vh;
+        width: 100%;
+        display: table;
+        text-align: center;
+      }
+      .div-int {
+        display: table-cell;
+        vertical-align: middle;
+      }
+      button {
+        cursor: pointer;
+        font-size: 20px;
+        border: 2px solid white;
+        border-radius: 2px;
+        background-color: transparent;
+        outline: 0;
+        margin: 2px;
+        margin-top: 4px;
+        padding: 5px;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="div-ext">
+      <div class="div-int">
+
+        <div style="font-family: 'Satisfy', cursive;color:white;font-size:80px;margin-bottom:20px;">notie.js</div>
+
+        <div style="margin-bottom:20px;padding-left:50px;padding-right:50px;">
+          <button onclick="success()">Success</button>
+          <button onclick="warning()">Warning</button>
+          <button onclick="error()">Error</button>
+          <button onclick="info()">Info</button>
+          <button onclick="confirm()">Confirm</button>
+          <button onclick="input()">Input</button>
+          <button onclick="select()">Select</button>
         </div>
-		
-		<!-- JavaScript -->
-		<script src="src/notie.js"></script>
-        <script>
-			
-			notie.setOptions({
-				colorSuccess: '#57BF57',
-				colorWarning: '#D6A14D',
-				colorError: '#E1715B',
-				colorInfo: '#4D82D6',
-				colorNeutral: '#A0A0A0',
-				colorText: '#FFFFFF',
-				animationDelay: 300,
-				backgroundClickDismiss: true
-			});
-			
-            function success() {
-                notie.alert(1, 'Success!');
-            }
-            
-            function warning() {
-                notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2);
-            }
-            
-            function error() {
-                notie.alert(3, 'Error.', 2);
-            }
-            
-            function info() {
-                notie.alert(4, 'Information.', 2);
-            }
-            
-            function confirm() {
-                notie.confirm('Are you sure you want to do that?<br><b>That\'s a bold move...</b>', 'Yes', 'Cancel', function() {
-                    notie.alert(1, 'Good choice! :D', 2);
-                }, function() {
-					notie.alert(3, 'Aw, why not? :(', 2);
-				});
-            }
-            
-            function input() {
-				notie.input({
-					type: 'text',
-					placeholder: 'name@example.com',
-					prefilledValue: ''
-				}, 'Please enter your email address:', 'Submit', 'Cancel', function(valueEntered) {
-                    notie.alert(1, 'You entered: ' + valueEntered, 2);
-                }, function(valueEntered) {
-					notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2);
-				});
-            }
-            
-            function select() {
-				notie.select('Demo item #1, owner: Jane Smith',
-				[
-					{ title: 'Share' },
-					{ title: 'Open', color: '#57BF57' },
-				 	{ title: 'Edit', type: 2 },
-					{ title: 'Delete', type: 3 }
-				],
-				function() {
-					notie.alert(1, 'Share item!', 3);
-				}, function() {
-					notie.alert(1, 'Open item!', 3);
-				}, function() {
-					notie.alert(2, 'Edit item!', 3);
-				}, function() {
-					notie.alert(3, 'Delete item!', 3);
-				});
-			}
-            
-		</script>
-        
-    </body>
-    
+
+        <div style="color:white;">Official demo page:</div>
+        <a href="https://jaredreich.com/projects/notie" target="_blank" style="color:white;">https://jaredreich.com/projects/notie</a>
+
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="src/notie.js"></script>
+    <script>
+      notie.setOptions({
+        colorSuccess: '#57BF57',
+        colorWarning: '#D6A14D',
+        colorError: '#E1715B',
+        colorInfo: '#4D82D6',
+        colorNeutral: '#A0A0A0',
+        colorText: '#FFFFFF',
+        animationDelay: 300,
+        backgroundClickDismiss: true
+      })
+
+      function success () {
+        notie.alert(1, 'Success!')
+      }
+
+      function warning () {
+        notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2)
+      }
+
+      function error () {
+        notie.alert(3, 'Error.', 2)
+      }
+
+      function info () {
+        notie.alert(4, 'Information.', 2)
+      }
+
+      function confirm () {
+        notie.confirm('Are you sure you want to do that?<br><b>That\'s a bold move...</b>', 'Yes', 'Cancel', function () {
+            notie.alert(1, 'Good choice! :D', 2)
+          }, function () {
+          notie.alert(3, 'Aw, why not? :(', 2)
+        })
+      }
+
+      function input() {
+        notie.input({
+            type: 'text',
+            placeholder: 'name@example.com',
+            prefilledValue: ''
+          }, 'Please enter your email address:', 'Submit', 'Cancel', function (valueEntered) {
+            notie.alert(1, 'You entered: ' + valueEntered, 2)
+          }, function (valueEntered) {
+            notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2)
+        })
+      }
+
+      function select() {
+        notie.select('Demo item #1, owner: Jane Smith',
+        [
+          { title: 'Share' },
+          { title: 'Open', color: '#57BF57' },
+          { title: 'Edit', type: 2 },
+          { title: 'Delete', type: 3 }
+        ],
+        function () {
+          notie.alert(1, 'Share item!', 3)
+        }, function () {
+          notie.alert(1, 'Open item!', 3)
+        }, function () {
+          notie.alert(2, 'Edit item!', 3)
+        }, function () {
+          notie.alert(3, 'Delete item!', 3)
+        })
+      }
+    </script>
+  </body>
 </html>
