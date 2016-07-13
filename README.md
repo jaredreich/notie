@@ -1,5 +1,6 @@
 # notie
 
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Join the chat at https://gitter.im/jaredreich/notie](https://badges.gitter.im/jaredreich/notie.svg)](https://gitter.im/jaredreich/notie?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 notie is a clean and simple notification suite for javascript, with no dependencies.
@@ -10,6 +11,7 @@ demo: https://jaredreich.com/projects/notie
 * Confirm user choices
 * Allow user to input information
 * Allow user to select choices
+* Do other cool stuff
 
 ![Alt text](/demo.gif?raw=true "Demo")
 
@@ -45,12 +47,12 @@ HTML:
 ```
 
 npm:
-```
+```bash
 npm install notie
 ```
 
 Bower:
-```
+```bash
 bower install notie
 ```
 
@@ -58,7 +60,7 @@ bower install notie
 ## Usage
 
 ```javascript
-notie.alert(alertType(Number), message(String, timeInSeconds);
+notie.alert(alertType(Number|String), message(String, timeInSeconds);
 
 notie.confirm(title(String), yesText(String), noText(String), yesCallback(Function), noCallbackOptional(Function));
 
@@ -69,9 +71,14 @@ notie.select(title(String), choices(Array of Objects) /*, callback1(Function), c
 For example:
 ```javascript
 notie.alert(1, 'Success!'); // Never hides unless clicked, or escape or enter is pressed
+notie.alert('success', 'Success!', 3);
 notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2); // Hides after 2 seconds
+notie.alert('warning', 'Watch it...', 4);
 notie.alert(3, 'Error.', 2.5);
+notie.alert('error', 'Oops!', 1.5);
 notie.alert(4, 'Information.', 3);
+notie.alert('info', 'FYI, blah blah blah.', 4);
+
 
 notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
     notie.alert(1, 'Good choice!', 2);

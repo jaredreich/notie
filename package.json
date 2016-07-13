@@ -2,8 +2,8 @@
   "name": "notie",
   "description": "notie - a clean and simple notification suite for javascript, with no dependencies",
   "author": "Jared Reich",
-  "version": "3.2.0",
-  "main": "notie.js",
+  "version": "3.3.0",
+  "main": "./dist/notie.min.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jaredreich/notie.git"
@@ -22,6 +22,10 @@
   "homepage": "https://jaredreich.com/projects/notie",
   "devDependencies": {
     "del": "^2.2.0",
+    "eslint": "^3.0.1",
+    "eslint-config-standard": "^5.3.5",
+    "eslint-plugin-promise": "^2.0.0",
+    "eslint-plugin-standard": "^2.0.0",
     "gulp": "^3.9.1",
     "gulp-cssnano": "^2.1.1",
     "gulp-rename": "^1.2.2",
