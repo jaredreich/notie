@@ -668,6 +668,10 @@ var notie = (function () {
     }, (options.animationDelay + 10))
   }
 
+  function isShowing () {
+    return alertIsShowing || confirmIsShowing || inputIsShowing || selectIsShowing
+  }
+
   // Internal helper functions
   // #################
 
@@ -736,7 +740,8 @@ var notie = (function () {
     alert: alert,
     confirm: confirm,
     input: input,
-    select: select
+    select: select,
+    isShowing: isShowing
   }
 }())
 
