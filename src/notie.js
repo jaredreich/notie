@@ -691,7 +691,7 @@ var notie = (function () {
   }
 
   function blur () {
-    document.activeElement.blur()
+    document.activeElement && document.activeElement.blur()
   }
 
   var originalBodyHeight, originalBodyOverflow
