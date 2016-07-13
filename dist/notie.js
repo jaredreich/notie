@@ -82,7 +82,7 @@ var notie = (function () {
       wasClickedCounter--
     }, (options.animationDelay + 10))
 
-    if (wasClickedCounter === 1) {
+    if (wasClickedCounter >= 1) {
       if (alertIsShowing) {
         clearTimeout(alertTimeout1)
         clearTimeout(alertTimeout2)
