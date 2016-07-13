@@ -140,5 +140,9 @@ notie.setOptions({
 });
 ```
 
+## Other Methods
+notie.alertHide(optionalCallback) // programmatically hide notie.alert with an optional callback function
+notie.isShowing() // true if any element of notie is showing, false otherwise
+
 ## License
 MIT

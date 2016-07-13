@@ -42,8 +42,6 @@ var notie = (function () {
 
 	// Hide alert on click
   alertOuter.onclick = function () {
-    clearTimeout(alertTimeout1)
-    clearTimeout(alertTimeout2)
     alertHide()
   }
 
@@ -84,9 +82,6 @@ var notie = (function () {
 
     if (wasClickedCounter >= 1) {
       if (alertIsShowing) {
-        clearTimeout(alertTimeout1)
-        clearTimeout(alertTimeout2)
-
         alertHide(function () {
           alertShow(type, message, seconds)
         })
@@ -159,6 +154,9 @@ var notie = (function () {
   }
 
   function alertHide (callback) {
+    clearTimeout(alertTimeout1)
+    clearTimeout(alertTimeout2)
+
     alertOuter.style.top = '-' + alertOuter.offsetHeight - 5 + 'px'
 
     setTimeout(function () {
@@ -234,8 +232,6 @@ var notie = (function () {
 
     if (alertIsShowing) {
     // Hide notie.alert
-      clearTimeout(alertTimeout1)
-      clearTimeout(alertTimeout2)
       alertHide(function () {
         confirmShow(title, yesText, noText, yesCallback, noCallback)
       })
@@ -404,8 +400,6 @@ var notie = (function () {
 
     if (alertIsShowing) {
       // Hide alert
-      clearTimeout(alertTimeout1)
-      clearTimeout(alertTimeout2)
       alertHide(function () {
         inputShow(title, submitText, cancelText, submitCallback, cancelCallback)
       })
@@ -553,8 +547,6 @@ var notie = (function () {
 
       if (alertIsShowing) {
         // Hide notie.alert
-        clearTimeout(alertTimeout1)
-        clearTimeout(alertTimeout2)
         alertHide(function () {
           selectShow(title, choices, funcs)
         })
@@ -712,8 +704,6 @@ var notie = (function () {
     var escapeClicked = (event.which === 27 || event.keyCode === 27)
     if (alertIsShowing) {
       if (enterClicked || escapeClicked) {
-        clearTimeout(alertTimeout1)
-        clearTimeout(alertTimeout2)
         alertHide()
       }
     } else if (confirmIsShowing) {
@@ -738,6 +728,7 @@ var notie = (function () {
   return {
     setOptions: setOptions,
     alert: alert,
+    alertHide: alertHide,
     confirm: confirm,
     input: input,
     select: select,
