@@ -15,7 +15,7 @@
 .notie-background-info {
   background-color: #4D82D6; }
 
-#notie-alert-outer, #notie-confirm-outer, #notie-input-outer, #notie-select-outer {
+#notie-alert-outer, #notie-confirm-outer, #notie-input-outer, #notie-select-outer, #notie-date-outer {
   position: fixed;
   top: 0;
   left: 0;
@@ -32,7 +32,7 @@
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); }
   @media (max-width: 600px) {
-    #notie-alert-outer, #notie-confirm-outer, #notie-input-outer, #notie-select-outer {
+    #notie-alert-outer, #notie-confirm-outer, #notie-input-outer, #notie-select-outer, #notie-date-outer {
       font-size: 18px; } }
 
 #notie-alert-inner {
@@ -78,7 +78,7 @@
   float: right;
   background-color: #E1715B; }
 
-#notie-confirm-background, #notie-input-background, #notie-select-background {
+#notie-confirm-background, #notie-input-background, #notie-select-background, #notie-date-background {
   position: fixed;
   top: 0;
   left: 0;
@@ -140,3 +140,47 @@
   color: #FFFFFF;
   cursor: pointer;
   background-color: #A0A0A0; }
+
+#notie-date-outer {
+  cursor: default; }
+
+#notie-date-inner {
+  background-color: #4D82D6;
+  height: 200px; }
+
+.notie-date-up, .notie-date-down {
+  height: 50px;
+  float: left;
+  width: 33.333333%;
+  cursor: pointer; }
+
+.notie-date-arrow, .notie-date-arrow-up, .notie-date-arrow-down {
+  height: 40px;
+  width: 40px;
+  background-size: 40px 40px;
+  margin: 0 auto;
+  margin-top: 5px; }
+
+.notie-date-arrow-up {
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE0IDI4bDEwLTEwIDEwIDEweiIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNMCAwaDQ4djQ4aC00OHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=); }
+
+.notie-date-arrow-down {
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE0IDIwbDEwIDEwIDEwLTEweiIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNMCAwaDQ4djQ4aC00OHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4="); }
+
+.notie-date-text {
+  height: 50px;
+  line-height: 50px;
+  float: left;
+  width: 33.333333%; }
+
+#notie-date-yes, #notie-date-no {
+  float: left;
+  width: 50%;
+  height: 50px;
+  line-height: 50px;
+  color: #FFFFFF;
+  background-color: #57BF57;
+  cursor: pointer; }
+
+#notie-date-no {
+  background-color: #E1715B; }

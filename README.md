@@ -9,9 +9,9 @@ demo: https://jaredreich.com/projects/notie
 #### With notie you can:
 * Alert users
 * Confirm user choices
-* Allow user to input information
-* Allow user to select choices
-* Do other cool stuff
+* Allow users to input information
+* Allow users to select choices
+* Allow users to select dates
 
 ![Alt text](/demo.gif?raw=true "Demo")
 
@@ -67,6 +67,12 @@ notie.confirm(title(String), yesText(String), noText(String), yesCallback(Functi
 notie.input(options(JSON), title(String), submitText(String), cancelText(String), submitCallback(Function), cancelCallbackOptional(Function));
 
 notie.select(title(String), choices(Array of Objects) /*, callback1(Function), callback2(Function), ... */);
+
+notie.date({
+  initial: Date,
+  yesCallback: Function,
+  noCallback: Function
+})
 ```
 For example:
 ```javascript
@@ -81,62 +87,72 @@ notie.alert('info', 'FYI, blah blah blah.', 4);
 
 
 notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
-    notie.alert(1, 'Good choice!', 2);
+  notie.alert(1, 'Good choice!', 2);
 });
 notie.confirm('Are you sure?', 'Yes', 'Cancel', function() {
-    notie.confirm('Are you <b>really</b> sure?', 'Yes', 'Cancel', function() {
-        notie.confirm('Are you <b>really</b> <i>really</i> sure?', 'Yes', 'Cancel', function() {
-            notie.alert(1, 'Okay, jeez...', 2);
-        });
+  notie.confirm('Are you <b>really</b> sure?', 'Yes', 'Cancel', function() {
+    notie.confirm('Are you <b>really</b> <i>really</i> sure?', 'Yes', 'Cancel', function() {
+      notie.alert(1, 'Okay, jeez...', 2);
     });
+  });
 });
 
 notie.input({
-	type: 'email'
-	placeholder: 'name@example.com',
-	prefilledValue: 'jane@doe.com'
+  type: 'email'
+  placeholder: 'name@example.com',
+  prefilledValue: 'jane@doe.com'
 }, 'Please enter your email address:', 'Submit', 'Cancel', 'email', 'name@example.com', function(valueEntered) {
-    notie.alert(1, 'You entered: ' + valueEntered, 2);
+  notie.alert(1, 'You entered: ' + valueEntered, 2);
 });
 notie.input({
-	type: 'password',
-	placeholder: 'Enter your password'
+  type: 'password',
+  placeholder: 'Enter your password'
 }, 'Please enter your password:', 'Submit', 'Cancel', function(valueEntered) {
-	notie.alert(1, 'You entered: ' + valueEntered, 2);
+  notie.alert(1, 'You entered: ' + valueEntered, 2);
 }, function(valueEntered) {
-	notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2);
+  notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2);
 });
 
 notie.select('Demo item #1, owner is Jane Smith',
 [
-	{ title: 'Share' },
-	{ title: 'Open', color: '#57BF57' },
-	{ title: 'Edit', type: 2 },
-	{ title: 'Delete', type: 3 }
+  { title: 'Share' },
+  { title: 'Open', color: '#57BF57' },
+  { title: 'Edit', type: 2 },
+  { title: 'Delete', type: 3 }
 ],
 function() {
-	notie.alert(1, 'Share item!', 3);
+  notie.alert(1, 'Share item!', 3);
 }, function() {
-	notie.alert(1, 'Open item!', 3);
+  notie.alert(1, 'Open item!', 3);
 }, function() {
-	notie.alert(2, 'Edit item!', 3);
+  notie.alert(2, 'Edit item!', 3);
 }, function() {
-	notie.alert(3, 'Delete item!', 3);
+  notie.alert(3, 'Delete item!', 3);
 });
 
+notie.date({
+  initial: new Date(2015, 8, 27),
+  yesCallback: function (date) {
+    notie.alert(1, 'You selected: ' + date.toISOString(), 5)
+  },
+  noCallback: function (date) {
+    notie.alert(3, 'You cancelled: ' + date.toISOString(), 5)
+  }
+})
 ```
 
 ## Options
 ```javascript
 notie.setOptions({
-	colorSuccess: '#57BF57',
-	colorWarning: '#D6A14D',
-	colorError: '#E1715B',
-	colorInfo: '#4D82D6',
-	colorNeutral: '#A0A0A0',
-	colorText: '#FFFFFF',
-	animationDelay: 300, // Be sure to also change "transition: all 0.3s ease" variable in .scss file
-	backgroundClickDismiss: true
+  colorSuccess: '#57BF57',
+  colorWarning: '#D6A14D',
+  colorError: '#E1715B',
+  colorInfo: '#4D82D6',
+  colorNeutral: '#A0A0A0',
+  colorText: '#FFFFFF',
+  dateMonths: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'], // For other languages
+  animationDelay: 300, // Be sure to also change "transition: all 0.3s ease" variable in .scss file
+  backgroundClickDismiss: true
 });
 ```
 

@@ -23,6 +23,7 @@ var notie = (function () {
     colorInfo: '',
     colorNeutral: '',
     colorText: '',
+    dateMonths: null,
     animationDelay: 300,
     backgroundClickDismiss: true
   }
@@ -661,7 +662,218 @@ var notie = (function () {
   }
 
   function isShowing () {
-    return alertIsShowing || confirmIsShowing || inputIsShowing || selectIsShowing
+    return alertIsShowing || confirmIsShowing || inputIsShowing || selectIsShowing || dateIsShowing
+  }
+
+  // date
+  // **************
+  var dateOuter = document.createElement('div')
+  dateOuter.id = 'notie-date-outer'
+
+  var dateInner = document.createElement('div')
+  dateInner.id = 'notie-date-inner'
+  dateOuter.appendChild(dateInner)
+
+  var dateUpArrow = '<div class="notie-date-arrow-up"></div>'
+  var dateDownArrow = '<div class="notie-date-arrow-down"></div>'
+
+  var dateUpMonth = document.createElement('div')
+  dateUpMonth.className = 'notie-date-up'
+  dateUpMonth.innerHTML = dateUpArrow
+  dateInner.appendChild(dateUpMonth)
+  dateUpMonth.onclick = dateUpMonthClick
+
+  var dateUpDay = document.createElement('div')
+  dateUpDay.className = 'notie-date-up'
+  dateUpDay.innerHTML = dateUpArrow
+  dateInner.appendChild(dateUpDay)
+  dateUpDay.onclick = dateUpDayClick
+
+  var dateUpYear = document.createElement('div')
+  dateUpYear.className = 'notie-date-up'
+  dateUpYear.innerHTML = dateUpArrow
+  dateInner.appendChild(dateUpYear)
+  dateUpYear.onclick = dateUpYearClick
+
+  var dateMonth = document.createElement('div')
+  dateMonth.className = 'notie-date-text'
+  dateInner.appendChild(dateMonth)
+
+  var dateDay = document.createElement('div')
+  dateDay.className = 'notie-date-text'
+  dateInner.appendChild(dateDay)
+
+  var dateYear = document.createElement('div')
+  dateYear.className = 'notie-date-text'
+  dateInner.appendChild(dateYear)
+
+  var dateDownMonth = document.createElement('div')
+  dateDownMonth.className = 'notie-date-down'
+  dateDownMonth.innerHTML = dateDownArrow
+  dateInner.appendChild(dateDownMonth)
+  dateDownMonth.onclick = dateDownMonthClick
+
+  var dateDownDay = document.createElement('div')
+  dateDownDay.className = 'notie-date-down'
+  dateDownDay.innerHTML = dateDownArrow
+  dateInner.appendChild(dateDownDay)
+  dateDownDay.onclick = dateDownDayClick
+
+  var dateDownYear = document.createElement('div')
+  dateDownYear.className = 'notie-date-down'
+  dateDownYear.innerHTML = dateDownArrow
+  dateInner.appendChild(dateDownYear)
+  dateDownYear.onclick = dateDownYearClick
+
+  var dateYes = document.createElement('div')
+  dateYes.id = 'notie-date-yes'
+  dateInner.appendChild(dateYes)
+
+  var dateNo = document.createElement('div')
+  dateNo.id = 'notie-date-no'
+  dateInner.appendChild(dateNo)
+
+  var dateBackground = document.createElement('div')
+  dateBackground.id = 'notie-date-background'
+  addClass(dateBackground, 'notie-transition')
+
+  // Hide notie.date on no click and background click
+  dateBackground.onclick = function () {
+    if (options.backgroundClickDismiss) {
+      dateHide()
+    }
+  }
+
+  // Attach date elements to the body element
+  document.body.appendChild(dateOuter)
+  document.body.appendChild(dateBackground)
+
+	// date helper variables
+  var dateIsShowing = false
+  var dateSelected
+
+  function date (dateOptions) {
+    if (options.colorInfo.length > 0) {
+      dateInner.style.backgroundColor = options.colorInfo
+    }
+    if (options.colorSuccess.length > 0) dateYes.style.backgroundColor = options.colorSuccess
+    if (options.colorError.length > 0) dateNo.style.backgroundColor = options.colorError
+    if (options.colorText.length > 0) dateInner.style.color = options.colorText
+
+    blur()
+
+    if (alertIsShowing) {
+    // Hide notie.alert
+      alertHide(function () {
+        dateShow(dateOptions)
+      })
+    } else {
+      dateShow(dateOptions)
+    }
+  }
+
+  function dateShow (dateOptions) {
+    scrollDisable()
+
+    // Yes callback function
+    dateYes.onclick = function () {
+      dateHide()
+      if (dateOptions.yesCallback) {
+        setTimeout(function () {
+          dateOptions.yesCallback(dateSelected)
+        }, (options.animationDelay + 10))
+      }
+    }
+
+    // No callback function
+    dateNo.onclick = function () {
+      dateHide()
+      if (dateOptions.noCallback) {
+        setTimeout(function () {
+          dateOptions.noCallback(dateSelected)
+        }, (options.animationDelay + 10))
+      }
+    }
+
+    function dateShowInner () {
+      dateSelected = dateOptions.initial || new Date()
+      dateSet(dateSelected)
+      dateYes.innerHTML = dateOptions.yesText || 'OK'
+      dateNo.innerHTML = dateOptions.noText || 'Cancel'
+
+      // Get dates's height
+      dateOuter.style.top = '-10000px'
+      dateOuter.style.display = 'table'
+      dateOuter.style.top = '-' + dateOuter.offsetHeight - 5 + 'px'
+      dateBackground.style.display = 'block'
+
+      setTimeout(function () {
+        addClass(dateOuter, 'notie-transition')
+
+        dateOuter.style.top = 0
+        dateBackground.style.opacity = '0.75'
+
+        setTimeout(function () {
+          dateIsShowing = true
+        }, (options.animationDelay + 10))
+      }, 20)
+    }
+
+    if (dateIsShowing) {
+      dateHide()
+      setTimeout(function () {
+        dateShowInner()
+      }, (options.animationDelay + 10))
+    } else {
+      dateShowInner()
+    }
+  }
+
+  function dateSet (date) {
+    var dateMonths = options.dateMonths || ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    dateMonth.innerHTML = dateMonths[date.getMonth()]
+    dateDay.innerHTML = date.getDate()
+    dateYear.innerHTML = date.getFullYear()
+  }
+
+  function dateUpMonthClick () {
+    dateSelected.setMonth(dateSelected.getMonth() - 1)
+    dateSet(dateSelected)
+  }
+  function dateDownMonthClick () {
+    dateSelected.setMonth(dateSelected.getMonth() + 1)
+    dateSet(dateSelected)
+  }
+  function dateUpDayClick () {
+    dateSelected.setDate(dateSelected.getDate() - 1)
+    dateSet(dateSelected)
+  }
+  function dateDownDayClick () {
+    dateSelected.setDate(dateSelected.getDate() + 1)
+    dateSet(dateSelected)
+  }
+  function dateUpYearClick () {
+    dateSelected.setFullYear(dateSelected.getFullYear() - 1)
+    dateSet(dateSelected)
+  }
+  function dateDownYearClick () {
+    dateSelected.setFullYear(dateSelected.getFullYear() + 1)
+    dateSet(dateSelected)
+  }
+
+  function dateHide () {
+    dateOuter.style.top = '-' + dateOuter.offsetHeight - 5 + 'px'
+    dateBackground.style.opacity = '0'
+
+    setTimeout(function () {
+      removeClass(dateOuter, 'notie-transition')
+      dateOuter.style.top = '-10000px'
+      dateBackground.style.display = 'none'
+
+      scrollEnable()
+
+      dateIsShowing = false
+    }, (options.animationDelay + 10))
   }
 
   // Internal helper functions
@@ -722,6 +934,12 @@ var notie = (function () {
       if (escapeClicked) {
         selectHide()
       }
+    } else if (dateIsShowing) {
+      if (enterClicked) {
+        dateYes.click()
+      } else if (escapeClicked) {
+        dateHide()
+      }
     }
   })
 
@@ -732,6 +950,7 @@ var notie = (function () {
     confirm: confirm,
     input: input,
     select: select,
+    date: date,
     isShowing: isShowing
   }
 }())

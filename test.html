@@ -57,6 +57,7 @@
           <button onclick="confirm()">Confirm</button>
           <button onclick="input()">Input</button>
           <button onclick="select()">Select</button>
+          <button onclick="date()">Date</button>
         </div>
 
         <div style="color:white;">Official demo page:</div>
@@ -131,6 +132,18 @@
           notie.alert(2, 'Edit item!', 3)
         }, function () {
           notie.alert(3, 'Delete item!', 3)
+        })
+      }
+
+      function date() {
+        notie.date({
+          initial: new Date(2015, 8, 27),
+          yesCallback: function (date) {
+            notie.alert(1, 'You selected: ' + date.toISOString(), 5)
+          },
+          noCallback: function (date) {
+            notie.alert(3, 'You cancelled: ' + date.toISOString(), 5)
+          }
         })
       }
     </script>
