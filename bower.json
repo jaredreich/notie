@@ -2,7 +2,7 @@
   "name": "notie",
   "description": "notie - a clean and simple notification suite for javascript, with no dependencies",
   "main": [
-      "dist/notie.js",
+      "dist/notie.min.js",
       "dist/notie.css"
   ],
   "moduleType": [
