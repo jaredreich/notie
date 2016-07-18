@@ -145,8 +145,9 @@
   cursor: default; }
 
 #notie-date-inner {
+  height: 200px;
   background-color: #4D82D6;
-  height: 200px; }
+  color: #FFFFFF; }
 
 .notie-date-up, .notie-date-down {
   height: 50px;
