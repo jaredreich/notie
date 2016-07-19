@@ -23,7 +23,7 @@ var notie = (function () {
     colorInfo: '',
     colorNeutral: '',
     colorText: '',
-    dateMonths: null,
+    dateMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     animationDelay: 300,
     backgroundClickDismiss: true
   }
@@ -830,8 +830,7 @@ var notie = (function () {
   }
 
   function dateSet (date) {
-    var dateMonths = options.dateMonths || ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    dateMonth.innerHTML = dateMonths[date.getMonth()]
+    dateMonth.innerHTML = options.dateMonths[date.getMonth()]
     dateDay.innerHTML = date.getDate()
     dateYear.innerHTML = date.getFullYear()
   }
