@@ -670,6 +670,10 @@ var notie = (function () {
   var dateOuter = document.createElement('div')
   dateOuter.id = 'notie-date-outer'
 
+  var dateSelector = document.createElement('div')
+  dateSelector.id = 'notie-date-selector'
+  dateOuter.appendChild(dateSelector)
+
   var dateInner = document.createElement('div')
   dateInner.id = 'notie-date-inner'
   dateOuter.appendChild(dateInner)
@@ -680,58 +684,58 @@ var notie = (function () {
   var dateUpMonth = document.createElement('div')
   dateUpMonth.className = 'notie-date-up'
   dateUpMonth.innerHTML = dateUpArrow
-  dateInner.appendChild(dateUpMonth)
+  dateSelector.appendChild(dateUpMonth)
   dateUpMonth.onclick = dateUpMonthClick
 
   var dateUpDay = document.createElement('div')
   dateUpDay.className = 'notie-date-up'
   dateUpDay.innerHTML = dateUpArrow
-  dateInner.appendChild(dateUpDay)
+  dateSelector.appendChild(dateUpDay)
   dateUpDay.onclick = dateUpDayClick
 
   var dateUpYear = document.createElement('div')
   dateUpYear.className = 'notie-date-up'
   dateUpYear.innerHTML = dateUpArrow
-  dateInner.appendChild(dateUpYear)
+  dateSelector.appendChild(dateUpYear)
   dateUpYear.onclick = dateUpYearClick
 
   var dateMonth = document.createElement('div')
   dateMonth.className = 'notie-date-text'
-  dateInner.appendChild(dateMonth)
+  dateSelector.appendChild(dateMonth)
 
   var dateDay = document.createElement('div')
   dateDay.className = 'notie-date-text'
-  dateInner.appendChild(dateDay)
+  dateSelector.appendChild(dateDay)
 
   var dateYear = document.createElement('div')
   dateYear.className = 'notie-date-text'
-  dateInner.appendChild(dateYear)
+  dateSelector.appendChild(dateYear)
 
   var dateDownMonth = document.createElement('div')
   dateDownMonth.className = 'notie-date-down'
   dateDownMonth.innerHTML = dateDownArrow
-  dateInner.appendChild(dateDownMonth)
+  dateSelector.appendChild(dateDownMonth)
   dateDownMonth.onclick = dateDownMonthClick
 
   var dateDownDay = document.createElement('div')
   dateDownDay.className = 'notie-date-down'
   dateDownDay.innerHTML = dateDownArrow
-  dateInner.appendChild(dateDownDay)
+  dateSelector.appendChild(dateDownDay)
   dateDownDay.onclick = dateDownDayClick
 
   var dateDownYear = document.createElement('div')
   dateDownYear.className = 'notie-date-down'
   dateDownYear.innerHTML = dateDownArrow
-  dateInner.appendChild(dateDownYear)
+  dateSelector.appendChild(dateDownYear)
   dateDownYear.onclick = dateDownYearClick
 
   var dateYes = document.createElement('div')
   dateYes.id = 'notie-date-yes'
-  dateOuter.appendChild(dateYes)
+  dateInner.appendChild(dateYes)
 
   var dateNo = document.createElement('div')
   dateNo.id = 'notie-date-no'
-  dateOuter.appendChild(dateNo)
+  dateInner.appendChild(dateNo)
 
   var dateBackground = document.createElement('div')
   dateBackground.id = 'notie-date-background'
