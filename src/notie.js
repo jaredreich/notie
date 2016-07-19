@@ -727,11 +727,11 @@ var notie = (function () {
 
   var dateYes = document.createElement('div')
   dateYes.id = 'notie-date-yes'
-  dateInner.appendChild(dateYes)
+  dateOuter.appendChild(dateYes)
 
   var dateNo = document.createElement('div')
   dateNo.id = 'notie-date-no'
-  dateInner.appendChild(dateNo)
+  dateOuter.appendChild(dateNo)
 
   var dateBackground = document.createElement('div')
   dateBackground.id = 'notie-date-background'

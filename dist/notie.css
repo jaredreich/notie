@@ -142,12 +142,15 @@
   background-color: #A0A0A0; }
 
 #notie-date-outer {
+  background-color: #4D82D6;
+  color: #FFFFFF;
   cursor: default; }
 
 #notie-date-inner {
-  height: 200px;
-  background-color: #4D82D6;
-  color: #FFFFFF; }
+  margin: 0 auto;
+  max-width: 900px;
+  padding-left: 10px;
+  padding-right: 10px; }
 
 .notie-date-up, .notie-date-down {
   height: 50px;

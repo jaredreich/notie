@@ -196,12 +196,15 @@ $notie-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
 
 #notie-date-outer {
   @extend #notie-alert-outer;
+  background-color: $notie-color-info;
+  color: $notie-color-text;
   cursor: default;
 }
 #notie-date-inner {
-  height: 200px;
-  background-color: $notie-color-info;
-  color: $notie-color-text;
+  margin: 0 auto;
+  max-width: $notie-content-width;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 #notie-date-background {
 	@extend #notie-confirm-background;
