@@ -4,16 +4,16 @@
   transition: all 0.3s ease; }
 
 .notie-background-success {
-  background-color: #57BF57; }
+  background-color: #57BF57 !important; }
 
 .notie-background-warning {
-  background-color: #D6A14D; }
+  background-color: #D6A14D !important; }
 
 .notie-background-error {
-  background-color: #E1715B; }
+  background-color: #E1715B !important; }
 
 .notie-background-info {
-  background-color: #4D82D6; }
+  background-color: #4D82D6 !important; }
 
 #notie-alert-outer, #notie-confirm-outer, #notie-input-outer, #notie-select-outer, #notie-date-outer {
   position: fixed;
@@ -140,6 +140,9 @@
   color: #FFFFFF;
   cursor: pointer;
   background-color: #A0A0A0; }
+
+.notie-select-choice-bottom-border {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
 
 #notie-date-outer {
   background-color: #4D82D6;

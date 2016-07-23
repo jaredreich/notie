@@ -571,7 +571,6 @@ var notie = (function () {
       selectChoice.innerHTML = choices[i].title
       addClass(selectChoice, 'notie-select-choice')
       selectChoices.appendChild(selectChoice)
-      selectChoice.style.backgroundColor = window.getComputedStyle(selectChoice).backgroundColor
       if (options.colorText.length > 0) selectChoice.style.color = options.colorText
 
       if (choices[i].type) {
@@ -597,8 +596,9 @@ var notie = (function () {
         selectChoice.style.backgroundColor = choices[i].color
       }
 
+      selectChoice.style.backgroundColor = window.getComputedStyle(selectChoice).backgroundColor
       if (i > 0 && selectChoice.style.backgroundColor === selectChoicePrevious.style.backgroundColor) {
-        selectChoicePrevious.style.borderBottom = '1px solid rgba(255, 255, 255, 0.2)'
+        addClass(selectChoicePrevious, 'notie-select-choice-bottom-border')
       }
 
       // onclick for this choice

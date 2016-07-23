@@ -31,16 +31,16 @@ $notie-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .notie-background-success {
-	background-color: $notie-color-success;
+	background-color: $notie-color-success !important;
 }
 .notie-background-warning {
-	background-color: $notie-color-warning;
+	background-color: $notie-color-warning !important;
 }
 .notie-background-error {
-	background-color: $notie-color-error;
+	background-color: $notie-color-error !important;
 }
 .notie-background-info {
-	background-color: $notie-color-info;
+	background-color: $notie-color-info !important;
 }
 
 #notie-alert-outer {
@@ -192,6 +192,9 @@ $notie-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
 	color: $notie-color-text;
 	cursor: pointer;
 	background-color: $notie-color-neutral;
+}
+.notie-select-choice-bottom-border {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2)
 }
 
 #notie-date-outer {
