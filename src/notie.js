@@ -509,7 +509,6 @@ var notie = (function () {
 
   var selectCancel = document.createElement('div')
   selectCancel.id = 'notie-select-cancel'
-  selectCancel.innerHTML = 'Cancel'
   selectOuter.appendChild(selectCancel)
 
   // Attach select elements to the body element
@@ -530,7 +529,7 @@ var notie = (function () {
   // select helper variables
   var selectIsShowing = false
 
-  function select (title, choices /*, callback1, callback2, ... */) {
+  function select (title, cancelText, choices) {
     if (options.colorInfo.length > 0) selectInner.style.backgroundColor = options.colorInfo
     if (options.colorNeutral.length > 0) selectCancel.style.backgroundColor = options.colorNeutral
     if (options.colorText.length > 0) {
@@ -539,8 +538,8 @@ var notie = (function () {
     }
 
     var funcs = []
-    for (var i = 0; i < arguments.length - 2; i++) {
-      funcs[i] = arguments[i + 2]
+    for (var i = 0; i < arguments.length - 3; i++) {
+      funcs[i] = arguments[i + 3]
     }
 
     if (funcs.length === choices.length) {
@@ -549,20 +548,21 @@ var notie = (function () {
       if (alertIsShowing) {
         // Hide notie.alert
         alertHide(function () {
-          selectShow(title, choices, funcs)
+          selectShow(title, cancelText, choices, funcs)
         })
       } else {
-        selectShow(title, choices, funcs)
+        selectShow(title, cancelText, choices, funcs)
       }
     } else {
       throw new Error('notie.select number of choices must match number of functions')
     }
   }
 
-  function selectShow (title, choices, funcs) {
+  function selectShow (title, cancelText, choices, funcs) {
     scrollDisable()
 
     document.getElementById('notie-select-choices').innerHTML = ''
+    selectCancel.innerHTML = cancelText
 
     var selectChoicePrevious
 

@@ -66,7 +66,7 @@ notie.confirm(title(String), yesText(String), noText(String), yesCallback(Functi
 
 notie.input(options(JSON), title(String), submitText(String), cancelText(String), submitCallback(Function), cancelCallbackOptional(Function));
 
-notie.select(title(String), choices(Array of Objects) /*, callback1(Function), callback2(Function), ... */);
+notie.select(title(String), cancelText(String), choices(Array of Objects) /*, callback1(Function), callback2(Function), ... */);
 
 notie.date({
   initial: Date,
@@ -113,7 +113,7 @@ notie.input({
   notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2);
 });
 
-notie.select('Demo item #1, owner is Jane Smith',
+notie.select('Demo item #1, owner is Jane Smith', 'Cancel',
 [
   { title: 'Share' },
   { title: 'Open', color: '#57BF57' },
