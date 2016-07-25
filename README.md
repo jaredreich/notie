@@ -101,13 +101,7 @@ notie.input({
   type: 'email'
   placeholder: 'name@example.com',
   prefilledValue: 'jane@doe.com'
-}, 'Please enter your email address:', 'Submit', 'Cancel', 'email', 'name@example.com', function(valueEntered) {
-  notie.alert(1, 'You entered: ' + valueEntered, 2);
-});
-notie.input({
-  type: 'password',
-  placeholder: 'Enter your password'
-}, 'Please enter your password:', 'Submit', 'Cancel', function(valueEntered) {
+}, 'Please enter your email:', 'Submit', 'Cancel', function(valueEntered) {
   notie.alert(1, 'You entered: ' + valueEntered, 2);
 }, function(valueEntered) {
   notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2);
