@@ -66,7 +66,7 @@ notie.confirm(title(String), yesText(String), noText(String), yesCallback(Functi
 
 notie.input(options(JSON), title(String), submitText(String), cancelText(String), submitCallback(Function), cancelCallbackOptional(Function));
 
-notie.select(title(String), cancelText(String), choices(Array of Objects) /*, callback1(Function), callback2(Function), ... */);
+notie.select(title(String), cancelText(String), choices(Array of Objects));
 
 notie.date({
   initial: Date,
@@ -109,20 +109,34 @@ notie.input({
 
 notie.select('Demo item #1, owner is Jane Smith', 'Cancel',
 [
-  { title: 'Share' },
-  { title: 'Open', color: '#57BF57' },
-  { title: 'Edit', type: 2 },
-  { title: 'Delete', type: 3 }
-],
-function() {
-  notie.alert(1, 'Share item!', 3);
-}, function() {
-  notie.alert(1, 'Open item!', 3);
-}, function() {
-  notie.alert(2, 'Edit item!', 3);
-}, function() {
-  notie.alert(3, 'Delete item!', 3);
-});
+  {
+    title: 'Share',
+    handler: function () {
+      notie.alert(1, 'Share item!', 3);
+    }
+  },
+  {
+    title: 'Open',
+    color: '#57BF57',
+    handler: function () {
+      notie.alert(1, 'Open item!', 3);
+    }
+  },
+  {
+    title: 'Edit',
+    type: 2,
+    handler: function () {
+      notie.alert(2, 'Edit item!', 3);
+    }
+  },
+  {
+    title: 'Delete',
+    type: 3,
+    handler: function () {
+      notie.alert(3, 'Delete item!', 3);
+    }
+  }
+];
 
 notie.date({
   initial: new Date(2015, 8, 27),

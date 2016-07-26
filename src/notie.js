@@ -537,28 +537,19 @@ var notie = (function () {
       selectCancel.style.color = options.colorText
     }
 
-    var funcs = []
-    for (var i = 0; i < arguments.length - 3; i++) {
-      funcs[i] = arguments[i + 3]
-    }
+    blur()
 
-    if (funcs.length === choices.length) {
-      blur()
-
-      if (alertIsShowing) {
-        // Hide notie.alert
-        alertHide(function () {
-          selectShow(title, cancelText, choices, funcs)
-        })
-      } else {
-        selectShow(title, cancelText, choices, funcs)
-      }
+    if (alertIsShowing) {
+      // Hide notie.alert
+      alertHide(function () {
+        selectShow(title, cancelText, choices)
+      })
     } else {
-      throw new Error('notie.select number of choices must match number of functions')
+      selectShow(title, cancelText, choices)
     }
   }
 
-  function selectShow (title, cancelText, choices, funcs) {
+  function selectShow (title, cancelText, choices) {
     scrollDisable()
 
     document.getElementById('notie-select-choices').innerHTML = ''
@@ -602,14 +593,18 @@ var notie = (function () {
       }
 
       // onclick for this choice
-      selectChoice.onclick = (function (i) {
-        return function () {
-          selectHide()
-          setTimeout(function () {
-            funcs[i]()
-          }, (options.animationDelay + 10))
-        }
-      })(i)
+      if (choices[i].handler) {
+        selectChoice.onclick = (function (i) {
+          return function () {
+            selectHide()
+            setTimeout(function () {
+              choices[i].handler()
+            }, (options.animationDelay + 10))
+          }
+        })(i)
+      } else {
+        throw new Error('notie.select choice "' + selectChoice.title + '" must have a handler')
+      }
 
       selectChoicePrevious = selectChoice
     }
