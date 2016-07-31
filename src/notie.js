@@ -329,10 +329,6 @@ var notie = (function () {
 
   var inputField = document.createElement('input')
   inputField.id = 'notie-input-field'
-  inputField.setAttribute('autocomplete', 'off')
-  inputField.setAttribute('autocorrect', 'off')
-  inputField.setAttribute('autocapitalize', 'off')
-  inputField.setAttribute('spellcheck', 'false')
   inputOuter.appendChild(inputField)
 
   var inputYes = document.createElement('div')
@@ -381,23 +377,21 @@ var notie = (function () {
 
     blur()
 
-    if (typeof settings.type !== 'undefined' && settings.type) {
-      inputField.setAttribute('type', settings.type)
-    } else {
-      inputField.setAttribute('type', 'text')
-    }
+    inputField.setAttribute('autocapitalize', settings.autocapitalize || 'none')
+    inputField.setAttribute('autocomplete', settings.autocomplete || 'off')
+    inputField.setAttribute('autocorrect', settings.autocorrect || 'off')
+    inputField.setAttribute('autofocus', settings.autofocus || 'true')
+    inputField.setAttribute('inputmode', settings.inputmode || 'verbatim')
+    inputField.setAttribute('max', settings.max || '')
+    inputField.setAttribute('maxlength', settings.maxlength || '')
+    inputField.setAttribute('min', settings.min || '')
+    inputField.setAttribute('minlength', settings.minlength || '')
+    inputField.setAttribute('placeholder', settings.placeholder || '')
+    inputField.setAttribute('spellcheck', settings.spellcheck || 'default')
+    inputField.setAttribute('step', settings.step || 'any')
+    inputField.setAttribute('type', settings.type || 'text')
 
-    if (typeof settings.placeholder !== 'undefined' && settings.placeholder) {
-      inputField.setAttribute('placeholder', settings.placeholder)
-    } else {
-      // Do not set placeholder
-    }
-
-    if (typeof settings.prefilledValue !== 'undefined' && settings.prefilledValue) {
-      inputField.value = settings.prefilledValue
-    } else {
-      inputField.value = ''
-    }
+    inputField.value = settings.prefilledValue || ''
 
     if (alertIsShowing) {
       // Hide alert

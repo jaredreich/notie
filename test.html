@@ -108,9 +108,8 @@
 
       function input() {
         notie.input({
-            type: 'text',
-            placeholder: 'name@example.com',
-            prefilledValue: ''
+            type: 'email',
+            placeholder: 'name@example.com'
           }, 'Please enter your email address:', 'Submit', 'Cancel', function (valueEntered) {
             notie.alert(1, 'You entered: ' + valueEntered, 2)
           }, function (valueEntered) {
@@ -124,31 +123,31 @@
           {
             title: 'Share',
             handler: function () {
-              notie.alert(1, 'Share item!', 3);
+              notie.alert(1, 'Share item!', 3)
             }
           },
           {
             title: 'Open',
             color: '#57BF57',
             handler: function () {
-              notie.alert(1, 'Open item!', 3);
+              notie.alert(1, 'Open item!', 3)
             }
           },
           {
             title: 'Edit',
             type: 2,
             handler: function () {
-              notie.alert(2, 'Edit item!', 3);
+              notie.alert(2, 'Edit item!', 3)
             }
           },
           {
             title: 'Delete',
             type: 3,
             handler: function () {
-              notie.alert(3, 'Delete item!', 3);
+              notie.alert(3, 'Delete item!', 3)
             }
           }
-        ]);
+        ])
       }
 
       function date() {
