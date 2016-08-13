@@ -393,6 +393,36 @@ var notie = (function () {
 
     inputField.value = settings.prefilledValue || ''
 
+    // As-you-type input restrictions
+    if (settings.allowed) {
+      inputField.oninput = function () {
+        if (Array.isArray(settings.allowed)) {
+          var regexString = ''
+          var allowed = settings.allowed
+          for (var i = 0; i < allowed.length; i++) {
+            if (allowed[i] === 'an') {
+              regexString += '0-9a-zA-Z'
+            } else if (allowed[i] === 'a') {
+              regexString += 'a-zA-Z'
+            } else if (allowed[i] === 'n') {
+              regexString += '0-9'
+            }
+            if (allowed[i] === 'sp') {
+              regexString += ' '
+            }
+          }
+          var regex = new RegExp('[^' + regexString + ']', 'g')
+        } else if (typeof settings.allowed === 'object') {
+          regex = settings.allowed
+        }
+        inputField.value = inputField.value.replace(regex, '')
+      }
+    } else {
+      inputField.oninput = function () {
+        return true
+      }
+    }
+
     if (alertIsShowing) {
       // Hide alert
       alertHide(function () {

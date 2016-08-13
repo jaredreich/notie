@@ -108,8 +108,9 @@
 
       function input() {
         notie.input({
-            type: 'email',
-            placeholder: 'name@example.com'
+            type: 'text',
+            placeholder: 'name@example.com',
+            allowed: ['an', 'sp']
           }, 'Please enter your email address:', 'Submit', 'Cancel', function (valueEntered) {
             notie.alert(1, 'You entered: ' + valueEntered, 2)
           }, function (valueEntered) {

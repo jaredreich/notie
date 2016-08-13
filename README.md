@@ -106,6 +106,26 @@ notie.input({
   notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2)
 })
 
+notie.input({
+  type: 'text'
+  placeholder: 'Jane Doe',
+  allowed: ['a', 'sp']
+}, 'Please enter your name:', 'Submit', 'Cancel', function(valueEntered) {
+  notie.alert(1, 'You entered: ' + valueEntered, 2)
+}, function(valueEntered) {
+  notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2)
+})
+
+notie.input({
+  type: 'text'
+  placeholder: '500',
+  allowed: new RegExp('[^0-9]', 'g')
+}, 'Please enter the price:', 'Submit', 'Cancel', function(valueEntered) {
+  notie.alert(1, 'You entered: ' + valueEntered, 2)
+}, function(valueEntered) {
+  notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2)
+})
+
 notie.select('Demo item #1, owner is Jane Smith', 'Cancel',
 [
   {
