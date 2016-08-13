@@ -206,8 +206,9 @@ notie.input({
   minlength: '1', // default: ''
   placeholder: 'Jane Smith', // default: ''
   spellcheck: 'false', // default: 'default'
-  step: '5' // default: 'any'
-  type: 'text' // default: 'text'
+  step: '5', // default: 'any'
+  type: 'text', // default: 'text'
+  allowed: ['an', 'sp'] // Default: null, 'an' = alphanumeric, 'a' = alpha, 'n' = numeric, 'sp' = spaces allowed. Can be custom RegExp, ex. allowed: new RegExp('[^0-9]', 'g')
 }, 'Please enter your name:', 'Submit', 'Cancel', function(valueEntered) {
   // submit
 }, function(valueEntered) {
