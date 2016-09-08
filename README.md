@@ -51,11 +51,6 @@ npm:
 npm install notie
 ```
 
-Bower:
-```bash
-bower install notie
-```
-
 
 ## Usage
 
@@ -63,6 +58,8 @@ bower install notie
 notie.alert(alertType(Number|String), message(String), timeInSeconds)
 
 notie.confirm(title(String), yesText(String), noText(String), yesCallback(Function), noCallbackOptional(Function))
+
+notie.force(alertType(Number|String), message(String), buttonText(String), callback(Function))
 
 notie.input(options(JSON), title(String), submitText(String), cancelText(String), submitCallback(Function), cancelCallbackOptional(Function))
 
@@ -94,6 +91,10 @@ notie.confirm('Are you sure?', 'Yes', 'Cancel', function() {
       notie.alert(1, 'Okay, jeez...', 2)
     })
   })
+})
+
+notie.force(3, 'You cannot do that, sending you back.', 'OK', function () {
+  notie.alert(3, 'Maybe when you\'re older...', 3)
 })
 
 notie.input({

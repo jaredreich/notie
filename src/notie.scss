@@ -117,6 +117,28 @@ $notie-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
 	opacity: 0;
 }
 
+/* FORCE */
+
+#notie-force-outer {
+	@extend #notie-alert-outer;
+	cursor: default;
+}
+#notie-force-inner {
+	@extend #notie-confirm-inner;
+}
+#notie-force-text {
+	color: $notie-color-text;
+}
+#notie-force-button {
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+  cursor: pointer;
+}
+#notie-force-background {
+	@extend #notie-confirm-background;
+}
+
 
 /* INPUT */
 

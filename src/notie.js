@@ -10,8 +10,6 @@ http://www.opensource.org/licenses/mit-license.php
 Project demo:
 https://jaredreich.com/projects/notie
 
-Version:  3.3.0
-
 */
 
 var notie = (function () {
@@ -110,7 +108,7 @@ var notie = (function () {
     removeClass(alertOuter, 'notie-background-error')
     removeClass(alertOuter, 'notie-background-info')
 
-  // Set notie type (background color)
+    // Set notie type (background color)
     switch (type) {
       case 1:
       case 'success':
@@ -168,6 +166,144 @@ var notie = (function () {
       alertIsShowing = false
 
       if (callback) callback()
+    }, (options.animationDelay + 10))
+  }
+
+  // force
+  // **************
+
+  var forceOuter = document.createElement('div')
+  forceOuter.id = 'notie-force-outer'
+
+  var forceInner = document.createElement('div')
+  forceInner.id = 'notie-force-inner'
+  forceOuter.appendChild(forceInner)
+
+  var forceText = document.createElement('span')
+  forceText.id = 'notie-force-text'
+  forceInner.appendChild(forceText)
+
+  var forceButton = document.createElement('div')
+  forceButton.id = 'notie-force-button'
+  forceOuter.appendChild(forceButton)
+
+  var forceBackground = document.createElement('div')
+  forceBackground.id = 'notie-force-background'
+  addClass(forceBackground, 'notie-transition')
+
+  // Attach force elements to the body element
+  document.body.appendChild(forceOuter)
+  document.body.appendChild(forceBackground)
+
+	// force helper variables
+  var forceIsShowing = false
+
+  function force (type, message, buttonText, callback) {
+    if (options.colorText.length > 0) {
+      forceText.style.color = options.colorText
+      forceButton.style.color = options.colorText
+    }
+
+    blur()
+
+    if (alertIsShowing) {
+    // Hide notie.alert
+      alertHide(function () {
+        forceShow(type, message, buttonText, callback)
+      })
+    } else {
+      forceShow(type, message, buttonText, callback)
+    }
+  }
+
+  function forceShow (type, message, buttonText, callback) {
+    scrollDisable()
+
+    // Callback function
+    forceButton.onclick = function () {
+      forceHide()
+      if (callback) {
+        setTimeout(function () {
+          callback()
+        }, (options.animationDelay + 10))
+      }
+    }
+
+    // Remove all color classes first
+    removeClass(forceOuter, 'notie-background-success')
+    removeClass(forceOuter, 'notie-background-warning')
+    removeClass(forceOuter, 'notie-background-error')
+    removeClass(forceOuter, 'notie-background-info')
+
+    // Set notie type (background color)
+    switch (type) {
+      case 1:
+      case 'success':
+        if (options.colorSuccess.length > 0) forceOuter.style.backgroundColor = options.colorSuccess
+        else addClass(forceOuter, 'notie-background-success')
+        break
+      case 2:
+      case 'warning':
+        if (options.colorWarning.length > 0) forceOuter.style.backgroundColor = options.colorWarning
+        else addClass(forceOuter, 'notie-background-warning')
+        break
+      case 3:
+      case 'error':
+        if (options.colorError.length > 0) forceOuter.style.backgroundColor = options.colorError
+        else addClass(forceOuter, 'notie-background-error')
+        break
+      case 4:
+      case 'info':
+        if (options.colorInfo.length > 0) forceOuter.style.backgroundColor = options.colorInfo
+        else addClass(forceOuter, 'notie-background-info')
+        break
+    }
+
+    function forceShowInner () {
+      // Set force text
+      forceText.innerHTML = message
+      forceButton.innerHTML = buttonText
+
+      // Get force's height
+      forceOuter.style.top = '-10000px'
+      forceOuter.style.display = 'table'
+      forceOuter.style.top = '-' + forceOuter.offsetHeight - 5 + 'px'
+      forceBackground.style.display = 'block'
+
+      setTimeout(function () {
+        addClass(forceOuter, 'notie-transition')
+
+        forceOuter.style.top = 0
+        forceBackground.style.opacity = '0.75'
+
+        setTimeout(function () {
+          forceIsShowing = true
+        }, (options.animationDelay + 10))
+      }, 20)
+    }
+
+    if (forceIsShowing) {
+      forceHide()
+      setTimeout(function () {
+        forceShowInner()
+      }, (options.animationDelay + 10))
+    } else {
+      forceShowInner()
+    }
+  }
+
+  function forceHide () {
+    forceOuter.style.top = '-' + forceOuter.offsetHeight - 5 + 'px'
+    forceBackground.style.opacity = '0'
+
+    setTimeout(function () {
+      removeClass(forceOuter, 'notie-transition')
+      forceOuter.style.top = '-10000px'
+      forceBackground.style.display = 'none'
+
+      scrollEnable()
+
+      forceIsShowing = false
     }, (options.animationDelay + 10))
   }
 
@@ -969,6 +1105,7 @@ var notie = (function () {
     setOptions: setOptions,
     alert: alert,
     alertHide: alertHide,
+    force: force,
     confirm: confirm,
     input: input,
     select: select,
