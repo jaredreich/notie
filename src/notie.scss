@@ -134,6 +134,7 @@ $notie-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
   line-height: 50px;
   width: 100%;
   cursor: pointer;
+  color: $notie-color-text;
 }
 #notie-force-background {
 	@extend #notie-confirm-background;
