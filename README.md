@@ -223,5 +223,18 @@ notie.alertHide(optionalCallback) // programmatically hide notie.alert with an o
 notie.isShowing() // true if any element of notie is showing, false otherwise
 ```
 
+## Custom Clickbinder / Touchscreen / Alternative interfacing
+
+By default notie uses `onclick` to trigger actions.
+In case of other devices or libraries like hammer.js, you can override the clickbind-function like so:
+
+```javascript
+notie.setOptions({
+  bindClick: function(el, cb){
+    el.ontouchstart = cb       // your hammerjs-code code could go here to support swipe/pan etc
+  }
+})
+```
+
 ## License
 MIT
