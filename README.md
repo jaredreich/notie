@@ -37,12 +37,12 @@ HTML:
 ```html
 <head>
   ...
-  <link rel="stylesheet" type="text/css" href="/path/to/notie.css">
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.css">
 </head>
 <body>
   ...
   <!-- Bottom of body -->
-  <script src="/path/to/notie.js"></script>
+  <script src="https://unpkg.com/notie"></script>
 </body>
 ```
 
