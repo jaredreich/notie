@@ -1,7 +1,6 @@
 # notie
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
-[![Join the chat at https://gitter.im/jaredreich/notie](https://badges.gitter.im/jaredreich/notie.svg)](https://gitter.im/jaredreich/notie?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 notie is a clean and simple notification, input, and selection suite for javascript, with no dependencies.
 demo: https://jaredreich.com/projects/notie
