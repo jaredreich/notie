@@ -17,20 +17,27 @@ var notie = (function () {
   var options = {
     colorSuccess: '',
     colorWarning: '',
-    colorError: '',
-    colorInfo: '',
+    colorError:   '',
+    colorInfo:    '',
     colorNeutral: '',
-    colorText: '',
+    colorText:    '',
     dateMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     animationDelay: 300,
     backgroundClickDismiss: true
   }
+
   function setOptions (customOptions) {
     // Custom options
     for (var key in customOptions) {
       options[key] = customOptions[key]
     }
   }
+
+  var bindClick = function(options, el, cb){
+    if( options.bindClick ) options.bindClick(el, cb)
+    else el.onclick = cb
+  }
+  bindClick = bindClick.bind(this, options)
 
 	// alert
   // **************
@@ -40,9 +47,9 @@ var notie = (function () {
   alertOuter.id = 'notie-alert-outer'
 
 	// Hide alert on click
-  alertOuter.onclick = function () {
+  bindClick( alertOuter, function () {
     alertHide()
-  }
+  })
 
   // add alert to body
   document.body.appendChild(alertOuter)
@@ -220,14 +227,14 @@ var notie = (function () {
     scrollDisable()
 
     // Callback function
-    forceButton.onclick = function () {
+    bindClick( forceButton, function () {
       forceHide()
       if (callback) {
         setTimeout(function () {
           callback()
         }, (options.animationDelay + 10))
       }
-    }
+    })
 
     // Remove all color classes first
     removeClass(forceOuter, 'notie-background-success')
@@ -342,11 +349,11 @@ var notie = (function () {
   addClass(confirmBackground, 'notie-transition')
 
   // Hide notie.confirm on no click and background click
-  confirmBackground.onclick = function () {
+  bindClick( confirmBackground,  function () {
     if (options.backgroundClickDismiss) {
       confirmHide()
     }
-  }
+  })
 
   // Attach confirm elements to the body element
   document.body.appendChild(confirmOuter)
@@ -381,24 +388,24 @@ var notie = (function () {
     scrollDisable()
 
     // Yes callback function
-    confirmYes.onclick = function () {
+    bindClick( confirmYes, function () {
       confirmHide()
       if (yesCallback) {
         setTimeout(function () {
           yesCallback()
         }, (options.animationDelay + 10))
       }
-    }
+    })
 
     // No callback function
-    confirmNo.onclick = function () {
+    bindClick( confirmNo, function () {
       confirmHide()
       if (noCallback) {
         setTimeout(function () {
           noCallback()
         }, (options.animationDelay + 10))
       }
-    }
+    })
 
     function confirmShowInner () {
       // Set confirm text
@@ -492,11 +499,11 @@ var notie = (function () {
   document.body.appendChild(inputBackground)
 
   // Hide input on no click and background click
-  inputBackground.onclick = function () {
+  bindClick( inputBackground, function () {
     if (options.backgroundClickDismiss) {
       inputHide()
     }
-  }
+  })
 
   // input helper variables
   var inputIsShowing = false
@@ -573,24 +580,24 @@ var notie = (function () {
     scrollDisable()
 
     // Yes callback function
-    inputYes.onclick = function () {
+    bindClick( inputYes, function () {
       inputHide()
       if (submitCallback) {
         setTimeout(function () {
           submitCallback(inputField.value)
         }, (options.animationDelay + 10))
       }
-    }
+    })
 
     // No callback function
-    inputNo.onclick = function () {
+    bindClick( inputNo, function () {
       inputHide()
       if (cancelCallback) {
         setTimeout(function () {
           cancelCallback(inputField.value)
         }, (options.animationDelay + 10))
       }
-    }
+    })
 
     function inputShowInner () {
       // Set input text
@@ -676,15 +683,15 @@ var notie = (function () {
   document.body.appendChild(selectBackground)
 
   // Hide input on no click and background click
-  selectBackground.onclick = function () {
+  bindClick( selectBackground, function () {
     if (options.backgroundClickDismiss) {
       selectHide()
     }
-  }
+  })
 
-  selectCancel.onclick = function () {
+  bindClick( selectCancel, function () {
     selectHide()
-  }
+  })
 
   // select helper variables
   var selectIsShowing = false
@@ -754,14 +761,15 @@ var notie = (function () {
 
       // onclick for this choice
       if (choices[i].handler) {
-        selectChoice.onclick = (function (i) {
-          return function () {
-            selectHide()
-            setTimeout(function () {
-              choices[i].handler()
-            }, (options.animationDelay + 10))
-          }
-        })(i)
+        bindClick( selectChoice, (function (i) {
+            return function () {
+              selectHide()
+              setTimeout(function () {
+                choices[i].handler()
+              }, (options.animationDelay + 10))
+            }
+          })(i)
+        )
       } else {
         throw new Error('notie.select choice "' + selectChoice.title + '" must have a handler')
       }
@@ -840,19 +848,19 @@ var notie = (function () {
   dateUpMonth.className = 'notie-date-up'
   dateUpMonth.innerHTML = dateUpArrow
   dateSelector.appendChild(dateUpMonth)
-  dateUpMonth.onclick = dateUpMonthClick
+  bindClick( dateUpMonth,  dateUpMonthClick )
 
   var dateUpDay = document.createElement('div')
   dateUpDay.className = 'notie-date-up'
   dateUpDay.innerHTML = dateUpArrow
   dateSelector.appendChild(dateUpDay)
-  dateUpDay.onclick = dateUpDayClick
+  bindClick( dateUpDay,  dateUpDayClick )
 
   var dateUpYear = document.createElement('div')
   dateUpYear.className = 'notie-date-up'
   dateUpYear.innerHTML = dateUpArrow
   dateSelector.appendChild(dateUpYear)
-  dateUpYear.onclick = dateUpYearClick
+  bindClick( dateUpYear, dateUpYearClick )
 
   var dateMonth = document.createElement('div')
   dateMonth.className = 'notie-date-text'
@@ -870,19 +878,19 @@ var notie = (function () {
   dateDownMonth.className = 'notie-date-down'
   dateDownMonth.innerHTML = dateDownArrow
   dateSelector.appendChild(dateDownMonth)
-  dateDownMonth.onclick = dateDownMonthClick
+  bindClick( dateDownMonth, dateDownMonthClick )
 
   var dateDownDay = document.createElement('div')
   dateDownDay.className = 'notie-date-down'
   dateDownDay.innerHTML = dateDownArrow
   dateSelector.appendChild(dateDownDay)
-  dateDownDay.onclick = dateDownDayClick
+  bindClick( dateDownDay,  dateDownDayClick )
 
   var dateDownYear = document.createElement('div')
   dateDownYear.className = 'notie-date-down'
   dateDownYear.innerHTML = dateDownArrow
   dateSelector.appendChild(dateDownYear)
-  dateDownYear.onclick = dateDownYearClick
+  bindClick( dateDownYear, dateDownYearClick )
 
   var dateYes = document.createElement('div')
   dateYes.id = 'notie-date-yes'
@@ -897,11 +905,11 @@ var notie = (function () {
   addClass(dateBackground, 'notie-transition')
 
   // Hide notie.date on no click and background click
-  dateBackground.onclick = function () {
+  bindClick( dateBackground, function () {
     if (options.backgroundClickDismiss) {
       dateHide()
     }
-  }
+  })
 
   // Attach date elements to the body element
   document.body.appendChild(dateOuter)
@@ -935,24 +943,24 @@ var notie = (function () {
     scrollDisable()
 
     // Yes callback function
-    dateYes.onclick = function () {
+    bindClick( dateYes, function () {
       dateHide()
       if (dateOptions.yesCallback) {
         setTimeout(function () {
           dateOptions.yesCallback(dateSelected)
         }, (options.animationDelay + 10))
       }
-    }
+    })
 
     // No callback function
-    dateNo.onclick = function () {
+    bindClick( dateNo, function () {
       dateHide()
       if (dateOptions.noCallback) {
         setTimeout(function () {
           dateOptions.noCallback(dateSelected)
         }, (options.animationDelay + 10))
       }
-    }
+    })
 
     function dateShowInner () {
       dateSelected = dateOptions.initial || new Date()
