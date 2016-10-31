@@ -24,6 +24,7 @@ var notie = function(){
     var font_size_big = '25px';
     var font_change_screen_width = 600;
     var animation_delay = 0.4;
+    var timeout_delay = animation_delay * 1000 + 10;
     var background_click_dismiss = true;
     
     // notie.alert colors
@@ -217,7 +218,7 @@ var notie = function(){
 
         setTimeout(function() {
             was_clicked_counter--;
-        }, (animation_delay * 1000 + 10));
+        }, (timeout_delay));
 
         if (was_clicked_counter == 1) {
 
@@ -316,7 +317,7 @@ var notie = function(){
 
             if (callback) { callback(); }
 
-        }, (animation_delay * 1000 + 10));
+        }, (timeout_delay));
 
     }
 
@@ -454,7 +455,7 @@ var notie = function(){
             confirm_hide();
             setTimeout(function() {
                 yes_callback();
-            }, (animation_delay * 1000 + 10));
+            }, (timeout_delay));
         }
 
         function confirm_show_inner() {
@@ -482,7 +483,7 @@ var notie = function(){
 
                 setTimeout(function() {
                     confirm_is_showing = true;
-                }, (animation_delay * 1000 + 10));
+                }, (timeout_delay));
 
             }, 20);
 
@@ -492,7 +493,7 @@ var notie = function(){
             confirm_hide();
             setTimeout(function() {
                 confirm_show_inner();
-            }, (animation_delay * 1000 + 10));
+            }, (timeout_delay));
         }
         else {
             confirm_show_inner();
@@ -519,7 +520,7 @@ var notie = function(){
 
             confirm_is_showing = false;
 
-        }, (animation_delay * 1000 + 10));
+        }, (timeout_delay));
 
     }
     
@@ -692,7 +693,7 @@ var notie = function(){
             input_hide();
             setTimeout(function() {
                 submit_callback(input_field.value);
-            }, (animation_delay * 1000 + 10));
+            }, timeout_delay);
         }
 
         function input_show_inner() {
@@ -720,7 +721,7 @@ var notie = function(){
 
                 setTimeout(function() {
                     input_is_showing = true;
-                }, (animation_delay * 1000 + 10));
+                }, timeout_delay);
 
             }, 20);
 
@@ -730,7 +731,7 @@ var notie = function(){
             input_hide();
             setTimeout(function() {
                 input_show_inner();
-            }, (animation_delay * 1000 + 10));
+            }, timeout_delay);
         }
         else {
             input_show_inner();
@@ -757,7 +758,7 @@ var notie = function(){
 
             input_is_showing = false;
 
-        }, (animation_delay * 1000 + 10));
+        }, timeout_delay);
 
     }
     
