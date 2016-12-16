@@ -36,7 +36,7 @@ HTML:
 ```html
 <head>
   ...
-  <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.css">
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
 </head>
 <body>
   ...
