@@ -2,7 +2,7 @@ var gulp = require('gulp')
 var sass = require('gulp-sass')
 var uglify = require('gulp-uglify')
 var rename = require('gulp-rename')
-// var cssnano = require('gulp-cssnano')
+var cssnano = require('gulp-cssnano')
 var del = require('del')
 
 gulp.task('clean', function () {
@@ -11,6 +11,7 @@ gulp.task('clean', function () {
 
 gulp.task('script', function () {
   gulp.src('./src/notie.js')
+    .pipe(gulp.dest('./dist'))
     .pipe(uglify())
     .pipe(rename('notie.min.js'))
     .pipe(gulp.dest('./dist'))
@@ -19,6 +20,9 @@ gulp.task('script', function () {
 gulp.task('style', function () {
   gulp.src(['./src/notie.scss'])
     .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./dist'))
+    .pipe(cssnano())
+    .pipe(rename('notie.min.css'))
     .pipe(gulp.dest('./dist'))
 })
 
