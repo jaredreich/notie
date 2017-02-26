@@ -19,11 +19,11 @@ $notie-content-width: 900px !default;
 $notie-z-index: 2147483647 !default;
 
 @mixin box-shadow($box-shadow) {
-	-o-box-shadow: $box-shadow;
-	-ms-box-shadow: $box-shadow;
-	-moz-box-shadow: $box-shadow;
-	-webkit-box-shadow: $box-shadow;
-	box-shadow: $box-shadow;
+  -o-box-shadow: $box-shadow;
+  -ms-box-shadow: $box-shadow;
+  -moz-box-shadow: $box-shadow;
+  -webkit-box-shadow: $box-shadow;
+  box-shadow: $box-shadow;
 }
 
 @mixin cursor-pointer() {

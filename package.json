@@ -2,7 +2,7 @@
   "name": "notie",
   "description": "notie - a clean and simple notification, input, and selection suite for javascript, with no dependencies",
   "author": "Jared Reich",
-  "version": "4.0.0-rc.1",
+  "version": "4.0.0-rc.2",
   "main": "./dist/notie.min.js",
   "files": [
     "dist/",
@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "dev": "gulp",
-    "build": "gulp script && gulp style"
+    "build": "gulp clean && gulp script && gulp style"
   },
   "repository": {
     "type": "git",
@@ -32,17 +32,18 @@
   },
   "homepage": "https://jaredreich.com/projects/notie",
   "devDependencies": {
-    "babel-plugin-transform-es2015-modules-umd": "6.22.0",
+    "babel-core": "6.23.1",
+    "babel-loader": "6.3.2",
     "babel-preset-es2015": "6.22.0",
-    "babel-preset-stage-3": "6.22.0",
+    "babel-preset-stage-0": "6.22.0",
     "del": "2.2.2",
     "eslint-config-jared": "latest",
     "gulp": "3.9.1",
-    "gulp-babel": "6.1.2",
     "gulp-cssnano": "2.1.2",
     "gulp-rename": "1.2.2",
     "gulp-sass": "3.1.0",
-    "gulp-uglify": "2.0.1",
-    "run-sequence": "1.2.2"
+    "gulp-webpack": "1.5.0",
+    "run-sequence": "1.2.2",
+    "webpack": "2.2.1"
   }
 }
