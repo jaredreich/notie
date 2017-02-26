@@ -559,3 +559,14 @@ export const date = ({ value = new Date(), submitText = 'OK', cancelText = 'Canc
 
   addOverlayToDocument(element)
 }
+
+export default {
+  alert,
+  force,
+  confirm,
+  input,
+  select,
+  date,
+  setOptions,
+  hideAlerts
+}

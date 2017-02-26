@@ -715,6 +715,17 @@ var date = exports.date = function date(_ref7, submitCallback, cancelCallback) {
   addOverlayToDocument(element);
 };
 
+exports.default = {
+  alert: alert,
+  force: force,
+  confirm: confirm,
+  input: input,
+  select: select,
+  date: date,
+  setOptions: setOptions,
+  hideAlerts: hideAlerts
+};
+
 /***/ })
 /******/ ]);
 });
