@@ -2,7 +2,7 @@
   "name": "notie",
   "description": "notie - a clean and simple notification, input, and selection suite for javascript, with no dependencies",
   "author": "Jared Reich",
-  "version": "4.0.0-rc.3",
+  "version": "4.0.0",
   "main": "./dist/notie.min.js",
   "files": [
     "dist/",

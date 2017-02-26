@@ -37,6 +37,12 @@ HTML:
 <head>
   ...
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
+  <style>
+    /* override styles here */
+    .notie-container {
+      box-shadow: none;
+    }
+  </style>
 </head>
 <body>
   ...
@@ -53,6 +59,21 @@ npm install notie
 
 ## Usage
 
+#### ES6:
+```javascript
+import notie from 'notie'
+// or
+import { alert, force, confirm, input, select, date, setOptions, hideAlerts } from 'notie'
+```
+
+#### Browser:
+```javascript
+notie
+// or
+window.notie
+```
+
+#### Available methods:
 ```javascript
 notie.alert({
   type: Number|String, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
@@ -112,7 +133,8 @@ notie.date({
   cancelText: String // optional, default = 'Cancel'
 }, submitCallbackOptional(date), cancelCallbackOptional(date))
 ```
-For example:
+
+#### For example:
 ```javascript
 notie.alert({ text: 'Info!')
 notie.alert({ type: 1, text: 'Success!', stay: true) // Never hides unless clicked, or escape or enter is pressed
@@ -228,7 +250,7 @@ notie.date({
 })
 ```
 
-#### Use ES6 to inherit 'this' while using notie
+#### Use ES6 to inherit `this`:
 ``` javascript
 notie.confirm('Is ES6 great?', 'Yes', 'Cancel', () => {
   this.location.href = 'htts://google.com'
