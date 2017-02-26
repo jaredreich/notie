@@ -257,6 +257,30 @@ notie.confirm('Is ES6 great?', 'Yes', 'Cancel', () => {
 })
 ```
 
+## Custom Styles
+
+#### SASS:
+```scss
+// Before notie is imported:
+$notie-color-success: #57BF57;
+$notie-color-warning: #D6A14D;
+$notie-color-error: #E1715B;
+$notie-color-info: #4D82D6;
+$notie-color-neutral: #A0A0A0;
+// See all overwriteable variables in src/notie.scss
+
+// Then import notie:
+@import '../../node_modules/notie/src/notie';
+```
+
+#### CSS:
+```css
+/* After notie styles are applied to DOM: */
+.notie-container {
+  box-shadow: none;
+}
+```
+
 ## Options & Methods
 
 ```javascript
