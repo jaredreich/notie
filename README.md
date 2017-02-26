@@ -32,7 +32,7 @@ demo: https://jaredreich.com/projects/notie
 
 ## Installation
 
-HTML:
+#### HTML:
 ```html
 <head>
   ...
@@ -51,7 +51,7 @@ HTML:
 </body>
 ```
 
-npm:
+#### npm:
 ```bash
 npm install notie
 ```
@@ -257,8 +257,8 @@ notie.confirm('Is ES6 great?', 'Yes', 'Cancel', () => {
 })
 ```
 
-## Options
-#### General
+## Options & Methods
+
 ```javascript
 // Showing all available options with defaults
 notie.setOptions({
@@ -296,7 +296,6 @@ notie.setOptions({
 })
 ```
 
-## Other Methods
 ```javascript
 // programmatically hide all alerts with an optional callback function
 notie.hideAlerts(callbackOptional)
