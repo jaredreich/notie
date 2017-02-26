@@ -1,281 +1,167 @@
+$notie-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5) !default;
+$notie-breakpoint-mobile: 400px !default;
+$notie-breakpoint-tablet: 750px !default;
+$notie-breakpoint-desktop: 900px !default;
+$notie-breakpoint-widescreen: 1050px !default;
+$notie-font-size-mobile: 1rem !default;
+$notie-font-size-tablet: 1.1rem !default;
+$notie-font-size-desktop: 1.2rem !default;
+$notie-font-size-widescreen: 1.3rem !default;
+$notie-color-text: #FFFFFF !default;
 $notie-color-success: #57BF57 !default;
 $notie-color-warning: #D6A14D !default;
 $notie-color-error: #E1715B !default;
 $notie-color-info: #4D82D6 !default;
 $notie-color-neutral: #A0A0A0 !default;
-$notie-color-text: #FFFFFF !default;
-$notie-color-background: #FFFFFF !default;
-
-$notie-font-size-small: 18px !default;
-$notie-font-size-big: 24px !default;
-$notie-breakpoint: '(max-width: 600px)' !default;
+$notie-color-white: #FFFFFF !default;
+$notie-color-overlay: #FFFFFF !default;
 $notie-content-width: 900px !default;
-$notie-transition: all 0.3s ease !default;
+$notie-z-index: 2147483647 !default;
 
-$notie-date-arrow-up: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE0IDI4bDEwLTEwIDEwIDEweiIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNMCAwaDQ4djQ4aC00OHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=' !default;
-$notie-date-arrow-down: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE0IDIwbDEwIDEwIDEwLTEweiIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNMCAwaDQ4djQ4aC00OHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=' !default;
-
-$notie-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-@mixin notie-box-shadow($notie-box-shadow) {
-	-o-box-shadow: $notie-box-shadow;
-	-ms-box-shadow: $notie-box-shadow;
-	-moz-box-shadow: $notie-box-shadow;
-	-webkit-box-shadow: $notie-box-shadow;
-	box-shadow: $notie-box-shadow;
+@mixin box-shadow($box-shadow) {
+	-o-box-shadow: $box-shadow;
+	-ms-box-shadow: $box-shadow;
+	-moz-box-shadow: $box-shadow;
+	-webkit-box-shadow: $box-shadow;
+	box-shadow: $box-shadow;
 }
 
-.notie-transition {
-	-moz-transition: $notie-transition;
-	-webkit-transition: $notie-transition;
-  transition: $notie-transition;
+@mixin cursor-pointer() {
+  cursor: pointer;
+}
+
+@mixin border-box-box-sizing() {
+  box-sizing: border-box;
+}
+
+@mixin contained() {
+  margin: 0 auto;
+  max-width: $notie-content-width;
+}
+
+@mixin unselectable() {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.notie-container {
+  font-size: $notie-font-size-widescreen;
+  height: auto;
+  left: 0;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  z-index: $notie-z-index;
+
+  @include border-box-box-sizing();
+  @include box-shadow($notie-box-shadow);
+
+  @media screen and (max-width: $notie-breakpoint-desktop) {
+    font-size: $notie-font-size-desktop;
+  }
+  @media screen and (max-width: $notie-breakpoint-tablet) {
+    font-size: $notie-font-size-tablet;
+  }
+  @media screen and (max-width: $notie-breakpoint-mobile) {
+    font-size: $notie-font-size-mobile;
+  }
 }
 
 .notie-background-success {
-	background-color: $notie-color-success !important;
+  background-color: $notie-color-success;
 }
 .notie-background-warning {
-	background-color: $notie-color-warning !important;
+  background-color: $notie-color-warning;
 }
 .notie-background-error {
-	background-color: $notie-color-error !important;
+  background-color: $notie-color-error;
 }
 .notie-background-info {
-	background-color: $notie-color-info !important;
-}
-
-#notie-alert-outer {
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 999999999;
-	height: auto;
-	width: 100%;
-	display: none;
-	text-align: center;
-	cursor: pointer;
-	font-size: $notie-font-size-big;
-	@include notie-box-shadow($notie-box-shadow);
-	@media #{$notie-breakpoint} {
-		font-size: $notie-font-size-small;
-	}
-}
-#notie-alert-inner {
-	padding: 20px;
-  display: table-cell;
-}
-#notie-alert-content {
-	max-width: $notie-content-width;
-	margin: 0 auto;
-}
-#notie-alert-text {
-	color: $notie-color-text;
-}
-
-#notie-confirm-outer {
-	@extend #notie-alert-outer;
-	cursor: default;
-}
-#notie-confirm-inner {
-	box-sizing: border-box;
-  width: 100%;
-  padding: 20px;
-  display: block;
-  cursor: default;
-	background-color: $notie-color-info;
-}
-#notie-confirm-text {
-	color: $notie-color-text;
-}
-#notie-confirm-text-yes {
-	color: $notie-color-text;
-}
-#notie-confirm-text-no {
-	color: $notie-color-text;
-}
-#notie-confirm-yes {
-  float: left;
-  height: 50px;
-  line-height: 50px;
-  width: 50%;
-  cursor: pointer;
-  background-color: $notie-color-success;
-}
-#notie-confirm-no {
-	@extend #notie-confirm-yes;
-	float: right;
-  background-color: $notie-color-error;
-}
-#notie-confirm-background {
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 999999980;
-	height: 100%;
-	width: 100%;
-	display: none;
-	background-color: $notie-color-background;
-	opacity: 0;
-}
-
-/* FORCE */
-
-#notie-force-outer {
-	@extend #notie-alert-outer;
-	cursor: default;
-}
-#notie-force-inner {
-	@extend #notie-confirm-inner;
-}
-#notie-force-text {
-	color: $notie-color-text;
-}
-#notie-force-button {
-  height: 50px;
-  line-height: 50px;
-  width: 100%;
-  cursor: pointer;
-  color: $notie-color-text;
-}
-#notie-force-background {
-	@extend #notie-confirm-background;
-}
-
-
-/* INPUT */
-
-#notie-input-outer {
-	@extend #notie-alert-outer;
-	cursor: default;
-}
-#notie-input-inner {
-	@extend #notie-confirm-inner;
-}
-#notie-input-field {
-	display: block;
-	box-sizing: border-box;
-	height: 55px;
-	width: 100%;
-	text-align: center;
-	outline: 0;
-	border: 0;
-	background-color: $notie-color-background;
-	font-family: inherit;
-  font-size: $notie-font-size-big;
-	@media #{$notie-breakpoint} {
-		font-size: $notie-font-size-small;
-	}
-}
-#notie-input-background {
-	@extend #notie-confirm-background;
-}
-#notie-input-yes {
-	@extend #notie-confirm-yes;
-}
-#notie-input-no {
-	@extend #notie-confirm-no;
-}
-#notie-input-text {
-	color: $notie-color-text;
-}
-#notie-input-text-yes {
-	color: $notie-color-text;
-}
-#notie-input-text-no {
-	color: $notie-color-text;
-}
-
-#notie-select-outer {
-	@extend #notie-alert-outer;
-	top: auto;
-	bottom: 0;
-	cursor: default;
-}
-#notie-select-inner {
-	@extend #notie-confirm-inner;
-}
-#notie-select-background {
-	@extend #notie-confirm-background;
-}
-#notie-select-text {
-	color: $notie-color-text;
-}
-#notie-select-choices {
-	background-color: $notie-color-success;
-}
-.notie-select-choice {
-	@extend #notie-select-choices;
-  height: 50px;
-  line-height: 50px;
-  color: $notie-color-text;
-  cursor: pointer;
-}
-#notie-select-cancel {
-	height: 60px;
-  line-height: 60px;
-	color: $notie-color-text;
-	cursor: pointer;
-	background-color: $notie-color-neutral;
-}
-.notie-select-choice-bottom-border {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2)
-}
-
-#notie-date-outer {
-  @extend #notie-alert-outer;
   background-color: $notie-color-info;
-  color: $notie-color-text;
-  cursor: default;
 }
-#notie-date-selector {
-  margin: 0 auto;
-  max-width: $notie-content-width;
-  padding-left: 10px;
-  padding-right: 10px;
+.notie-background-neutral {
+  background-color: $notie-color-neutral;
 }
-#notie-date-background {
-	@extend #notie-confirm-background;
-}
-.notie-date-up {
-  height: 50px;
-  float: left;
-  width: 33.333333%;
-  cursor: pointer;
-}
-.notie-date-arrow {
-  height: 40px;
-  width: 40px;
-  background-size: 40px 40px;
-  margin: 0 auto;
-  margin-top: 5px;
-}
-.notie-date-arrow-up {
-  @extend .notie-date-arrow;
-  background-image: url(#{$notie-date-arrow-up});
-}
-.notie-date-arrow-down {
-  @extend .notie-date-arrow;
-  background-image: url($notie-date-arrow-down);
-}
-.notie-date-down {
-  @extend .notie-date-up;
-}
-.notie-date-text {
-  height: 50px;
-  line-height: 50px;
-  float: left;
-  width: 33.333333%;
+.notie-background-overlay {
+  background-color: $notie-color-overlay;
 }
 
-#notie-date-yes {
-  float: left;
-  width: 50%;
-  height: 50px;
-  line-height: 50px;
+.notie-textbox {
   color: $notie-color-text;
-  background-color: $notie-color-success;
-  cursor: pointer;
+  padding: 20px;
 }
-#notie-date-no {
-  @extend #notie-date-yes;
-  background-color: $notie-color-error;
+
+.notie-textbox-inner {
+  @include contained();
+}
+
+.notie-overlay {
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: $notie-z-index - 1;
+}
+
+.notie-button {
+  color: $notie-color-text;
+  padding: 10px;
+
+  @include cursor-pointer();
+}
+
+.notie-element {
+  color: $notie-color-text;
+  padding: 10px;
+}
+
+.notie-element-half {
+  display: inline-block;
+  width: 50%;
+
+  @include border-box-box-sizing();
+}
+
+.notie-element-third {
+  display: inline-block;
+  width: 33.3333%;
+
+  @include border-box-box-sizing();
+}
+
+.notie-alert {
+  @include cursor-pointer();
+}
+
+.notie-input-field {
+  background-color: $notie-color-white;
+  border: 0;
+  font-family: inherit;
+  font-size: inherit;
+  outline: 0;
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+
+  @include border-box-box-sizing();
+}
+
+.notie-select-choice-repeated {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  @include border-box-box-sizing();
+}
+
+.notie-date-selector-inner {
+  @include contained();
+  @include unselectable();
+}
+
+.notie-date-selector-up {
+  transform: rotate(180deg)
 }

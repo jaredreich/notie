@@ -2,13 +2,14 @@
   "name": "notie",
   "description": "notie - a clean and simple notification, input, and selection suite for javascript, with no dependencies",
   "author": "Jared Reich",
-  "version": "3.9.5",
+  "version": "4.0.0-rc.1",
   "main": "./dist/notie.min.js",
   "files": [
     "dist/",
     "src/"
   ],
   "scripts": {
+    "dev": "gulp",
     "build": "gulp script && gulp style"
   },
   "repository": {
@@ -17,9 +18,12 @@
   },
   "keywords": [
     "javascript",
-    "alert",
     "notification",
+    "alert",
+    "prompt",
+    "confirm",
     "growl",
+    "toast",
     "message"
   ],
   "license": "MIT",
@@ -28,15 +32,17 @@
   },
   "homepage": "https://jaredreich.com/projects/notie",
   "devDependencies": {
-    "del": "2.2.0",
-    "eslint": "3.0.1",
-    "eslint-config-standard": "5.3.5",
-    "eslint-plugin-promise": "2.0.0",
-    "eslint-plugin-standard": "2.0.0",
+    "babel-plugin-transform-es2015-modules-umd": "6.22.0",
+    "babel-preset-es2015": "6.22.0",
+    "babel-preset-stage-3": "6.22.0",
+    "del": "2.2.2",
+    "eslint-config-jared": "latest",
     "gulp": "3.9.1",
-    "gulp-cssnano": "2.1.1",
+    "gulp-babel": "6.1.2",
+    "gulp-cssnano": "2.1.2",
     "gulp-rename": "1.2.2",
-    "gulp-sass": "2.2.0",
-    "gulp-uglify": "1.5.3"
+    "gulp-sass": "3.1.0",
+    "gulp-uglify": "2.0.1",
+    "run-sequence": "1.2.2"
   }
 }

@@ -7,16 +7,24 @@
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="dist/notie.css">
+    <style>
+      /* Styles can be overwritten after inlcuding notie.css */
+      .notie-container {
+        /*box-shadow: none;*/
+      }
+      .notie-background-overlay {
+        /*background-color: #F0F0F0;*/
+      }
+    </style>
 
     <!-- Font -->
-    <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
 
     <style>
       body {
         margin: 0;
         padding: 0;
-        font-family: 'Lato', sans-serif;
+        font-family: 'Roboto Mono', monospace;
         background-color: #E8E8E8;
       }
       .div-ext {
@@ -49,7 +57,7 @@
     <div class="div-ext">
       <div class="div-int">
 
-        <div style="font-family: 'Satisfy', cursive;font-size:80px;margin-bottom:20px;">notie.js</div>
+        <div style="font-size:40px;margin-bottom:20px;">notie.js</div>
 
         <div style="margin-bottom:20px;padding-left:50px;padding-right:50px;">
           <button onclick="success()">Success</button>
@@ -64,109 +72,106 @@
         </div>
 
         <div><b>Official demo page:</b></div>
-        <a href="https://jaredreich.com/projects/notie" target="_blank">https://jaredreich.com/projects/notie</a>
+        <a href="https://jaredreich.com/projects/notie" target="_blank" style="font-size:12px;">https://jaredreich.com/projects/notie</a>
 
       </div>
     </div>
 
     <!-- JavaScript -->
-    <script src="src/notie.js"></script>
+    <script src="dist/notie.js"></script>
     <script>
       notie.setOptions({
-        colorSuccess: '#57BF57',
-        colorWarning: '#D6A14D',
-        colorError: '#E1715B',
-        colorInfo: '#4D82D6',
-        colorNeutral: '#A0A0A0',
-        colorText: '#FFFFFF',
-        animationDelay: 300,
-        backgroundClickDismiss: true
+        alertTime: 3,
+        overlayClickDismiss: false,
+        transitionDuration: 0.3
       })
 
       function success () {
-        notie.alert(1, 'Success!')
+        notie.alert({ type: 1, text: 'Success!', time: 2 })
       }
 
       function warning () {
-        notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2)
+        notie.alert({ type: 2, text: 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', time: 2 })
       }
 
       function error () {
-        notie.alert(3, 'Error.', 2)
+        notie.alert({ type: 3, text: 'Error.', time: 2 })
       }
 
       function info () {
-        notie.alert(4, 'Information.', 2)
+        notie.alert({ type: 4, text: 'Information.', time: 2 })
       }
 
       function force () {
-        notie.force(2, 'You cannot do that, sending you back.', 'OK', function () {
-          notie.alert(3, 'Maybe when you\'re older...', 3)
+        notie.force({ text: 'You cannot do that, sending you back.' }, function () {
+          notie.alert({ type: 3, text: 'Maybe when you\'re older...', time: 2 })
         })
       }
 
       function confirm () {
-        notie.confirm('Are you sure you want to do that?<br><b>That\'s a bold move...</b>', 'Yes', 'Cancel', function () {
-            notie.alert(1, 'Good choice! :D', 2)
-          }, function () {
-          notie.alert(3, 'Aw, why not? :(', 2)
+        notie.confirm({
+          text: 'Are you sure you want to do that?<br><b>That\'s a bold move...</b>'
+        }, function () {
+          notie.alert({ type: 1, text: 'Good choice! :D', time: 2 })
+        }, function () {
+          notie.alert({ type: 3, text: 'Aw, why not? :(', time: 2 })
         })
       }
 
       function input() {
         notie.input({
-            type: 'text',
-            placeholder: 'name@example.com',
-            allowed: ['an', 'sp']
-          }, 'Please enter your email address:', 'Submit', 'Cancel', function (valueEntered) {
-            notie.alert(1, 'You entered: ' + valueEntered, 2)
-          }, function (valueEntered) {
-            notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2)
+          text: 'Please enter your email address:',
+          type: 'text',
+          placeholder: 'name@example.com',
+          spellcheck: 'false'
+        }, function (value) {
+            notie.alert({ type: 1, text: 'You entered: ' + value, time: 2 })
+        }, function (value) {
+            notie.alert({ type: 3, text: 'You cancelled with this value: ' + value, time: 2 })
         })
       }
 
       function select() {
-        notie.select('Demo item #1, owner is Jane Smith', 'Cancel',
-        [
-          {
-            title: 'Share',
-            handler: function () {
-              notie.alert(1, 'Share item!', 3)
+        notie.select({
+          text: 'Demo item #1, owner is Jane Smith',
+          choices: [
+            {
+              text: 'Share',
+              handler: function () {
+                notie.alert({ type: 1, text: 'Share item!', time: 3 })
+              }
+            },
+            {
+              text: 'Open',
+              handler: function () {
+                notie.alert({ type: 1, text: 'Open item!', time: 3 })
+              }
+            },
+            {
+              type: 2,
+              text: 'Edit',
+              handler: function () {
+                notie.alert({ type: 2, text: 'Edit item!', time: 3 })
+              }
+            },
+            {
+              type: 3,
+              text: 'Delete',
+              handler: function () {
+                notie.alert({ type: 3, text: 'Delete item!', time: 3 })
+              }
             }
-          },
-          {
-            title: 'Open',
-            color: '#57BF57',
-            handler: function () {
-              notie.alert(1, 'Open item!', 3)
-            }
-          },
-          {
-            title: 'Edit',
-            type: 2,
-            handler: function () {
-              notie.alert(2, 'Edit item!', 3)
-            }
-          },
-          {
-            title: 'Delete',
-            type: 3,
-            handler: function () {
-              notie.alert(3, 'Delete item!', 3)
-            }
-          }
-        ])
+          ]
+        })
       }
 
       function date() {
         notie.date({
-          initial: new Date(2015, 8, 27),
-          yesCallback: function (date) {
-            notie.alert(1, 'You selected: ' + date.toISOString(), 5)
-          },
-          noCallback: function (date) {
-            notie.alert(3, 'You cancelled: ' + date.toISOString(), 5)
-          }
+          value: new Date(2015, 8, 27)
+        }, function (date) {
+          notie.alert({ type: 1, text: 'You selected: ' + date.toISOString() })
+        }, function (date) {
+          notie.alert({ type: 3, text: 'You cancelled: ' + date.toISOString() })
         })
       }
     </script>

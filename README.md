@@ -16,10 +16,10 @@ demo: https://jaredreich.com/projects/notie
 
 ## Features
 
-* Pure JavaScript, no dependencies
+* Pure JavaScript, no dependencies, written in ES6
 * Easily customizable
 * Change colors to match your style/brand
-* Modify styling with the sass file (notie.scss)
+* Modify styling with the sass file (notie.scss) or overwrite the CSS
 * Font size auto-adjusts based on screen size
 
 ## Browser Support
@@ -54,147 +54,29 @@ npm install notie
 ## Usage
 
 ```javascript
-notie.alert(alertType(Number|String), message(String), timeInSeconds)
-
-notie.confirm(title(String), yesText(String), noText(String), yesCallback(Function), noCallbackOptional(Function))
-
-notie.force(alertType(Number|String), message(String), buttonText(String), callback(Function))
-
-notie.input(options(JSON), title(String), submitText(String), cancelText(String), submitCallback(Function), cancelCallbackOptional(Function))
-
-notie.select(title(String), cancelText(String), choices(Array of Objects))
-
-notie.date({
-  initial: Date,
-  yesCallback: Function,
-  noCallback: Function
-})
-```
-For example:
-```javascript
-notie.alert(1, 'Success!') // Never hides unless clicked, or escape or enter is pressed
-notie.alert('success', 'Success!', 3)
-notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2) // Hides after 2 seconds
-notie.alert('warning', 'Watch it...', 4)
-notie.alert(3, 'Error.', 2.5)
-notie.alert('error', 'Oops!', 1.5)
-notie.alert(4, 'Information.', 3)
-notie.alert('info', 'FYI, blah blah blah.', 4)
-
-notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
-  notie.alert(1, 'Good choice!', 2)
-})
-notie.confirm('Are you sure?', 'Yes', 'Cancel', function() {
-  notie.confirm('Are you <b>really</b> sure?', 'Yes', 'Cancel', function() {
-    notie.confirm('Are you <b>really</b> <i>really</i> sure?', 'Yes', 'Cancel', function() {
-      notie.alert(1, 'Okay, jeez...', 2)
-    })
-  })
+notie.alert({
+  type: Number|String, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
+  message: String,
+  stay: Boolean, // optional, default = false
+  time: Number // optional, default = 3, minimum = 1
 })
 
-notie.force(3, 'You cannot do that, sending you back.', 'OK', function () {
-  notie.alert(3, 'Maybe when you\'re older...', 3)
-})
+notie.force({
+  type: Number|String, // optional, default = 5, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
+  text: String,
+  buttonText: String // optional, default = 'OK'
+}, callback())
+
+notie.confirm({
+  text: String,
+  yesText: String, // optional, default = 'Yes'
+  noText: String // optional, default = 'Cancel'
+}, yesCallbackOptional(), noCallbackOptional())
 
 notie.input({
-  type: 'email'
-  placeholder: 'name@example.com',
-  prefilledValue: 'jane@doe.com'
-}, 'Please enter your email:', 'Submit', 'Cancel', function(valueEntered) {
-  notie.alert(1, 'You entered: ' + valueEntered, 2)
-}, function(valueEntered) {
-  notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2)
-})
-
-notie.input({
-  type: 'text'
-  placeholder: 'Jane Doe',
-  allowed: ['a', 'sp']
-}, 'Please enter your name:', 'Submit', 'Cancel', function(valueEntered) {
-  notie.alert(1, 'You entered: ' + valueEntered, 2)
-}, function(valueEntered) {
-  notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2)
-})
-
-notie.input({
-  type: 'text'
-  placeholder: '500',
-  allowed: new RegExp('[^0-9]', 'g')
-}, 'Please enter the price:', 'Submit', 'Cancel', function(valueEntered) {
-  notie.alert(1, 'You entered: ' + valueEntered, 2)
-}, function(valueEntered) {
-  notie.alert(3, 'You cancelled with this value: ' + valueEntered, 2)
-})
-
-notie.select('Demo item #1, owner is Jane Smith', 'Cancel',
-[
-  {
-    title: 'Share',
-    handler: function () {
-      notie.alert(1, 'Share item!', 3)
-    }
-  },
-  {
-    title: 'Open',
-    color: '#57BF57',
-    handler: function () {
-      notie.alert(1, 'Open item!', 3)
-    }
-  },
-  {
-    title: 'Edit',
-    type: 2,
-    handler: function () {
-      notie.alert(2, 'Edit item!', 3)
-    }
-  },
-  {
-    title: 'Delete',
-    type: 3,
-    handler: function () {
-      notie.alert(3, 'Delete item!', 3)
-    }
-  }
-]
-
-notie.date({
-  initial: new Date(2015, 8, 27),
-  yesCallback: function (date) {
-    notie.alert(1, 'You selected: ' + date.toISOString(), 5)
-  },
-  noCallback: function (date) {
-    notie.alert(3, 'You cancelled: ' + date.toISOString(), 5)
-  }
-})
-```
-
-#### Use ES6 to inherit 'this' while using notie
-``` javascript
-notie.confirm('Is ES6 great?', 'Yes', 'Cancel', () => {
-  this.location.href = 'htts://google.com'
-})
-```
-
-## Options
-#### General
-```javascript
-notie.setOptions({
-  colorSuccess: '#57BF57',
-  colorWarning: '#D6A14D',
-  colorError: '#E1715B',
-  colorInfo: '#4D82D6',
-  colorNeutral: '#A0A0A0',
-  colorText: '#FFFFFF',
-  dateMonths: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'], // For other languages
-  animationDelay: 300, // Be sure to also change "transition: all 0.3s ease" variable in .scss file
-  backgroundClickDismiss: true
-})
-```
-
-#### Select
-[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes)
-```javascript
-notie.input({
+  text: String,
+  submitText: String, // optional, default = 'Submit'
+  cancelText: String // optional, default = 'Cancel'
   autocapitalize: 'words', // default: 'none'
   autocomplete: 'on', // default: 'off'
   autocorrect: 'off', // default: 'off'
@@ -208,18 +90,194 @@ notie.input({
   spellcheck: 'false', // default: 'default'
   step: '5', // default: 'any'
   type: 'text', // default: 'text'
-  allowed: ['an', 'sp'] // Default: null, 'an' = alphanumeric, 'a' = alpha, 'n' = numeric, 'sp' = spaces allowed. Can be custom RegExp, ex. allowed: new RegExp('[^0-9]', 'g')
-}, 'Please enter your name:', 'Submit', 'Cancel', function(valueEntered) {
-  // submit
-}, function(valueEntered) {
-  // cancel
+  allowed: ['an', 's'] // Default: null, 'an' = alphanumeric, 'a' = alpha, 'n' = numeric, 's' = spaces allowed. Can be custom RegExp, ex. allowed: new RegExp('[^0-9]', 'g')
+}, submitCallbackOptional(value), cancelCallbackOptional(value))
+
+notie.select({
+  text: String,
+  cancelText: String,
+  choices: [
+    {
+      type: Number|String, // optional, default = 1
+      text: String,
+      handler: Function
+    }
+    ...
+  ]
+})
+
+notie.date({
+  value: Date,
+  submitText: String, // optional, default = 'OK'
+  cancelText: String // optional, default = 'Cancel'
+}, submitCallbackOptional(date), cancelCallbackOptional(date))
+```
+For example:
+```javascript
+notie.alert({ text: 'Info!')
+notie.alert({ type: 1, text: 'Success!', stay: true) // Never hides unless clicked, or escape or enter is pressed
+notie.alert({ type: 'success', text: 'Success!', time: 2 }) // Hides after 2 seconds
+notie.alert({ type: 2, text: 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>' })
+notie.alert({ type: 'warning', text: 'Watch it...' })
+notie.alert({ type: 3, text: 'Error.' })
+notie.alert({ type: 'error', text: 'Oops!' })
+notie.alert({ type: 4, text: 'Information.' })
+notie.alert({ type: 'info', text: 'FYI, blah blah blah.' })
+
+notie.force({
+  type: 3,
+  text: 'You cannot do that, sending you back.',
+  buttonText: 'OK'
+}, function () {
+  notie.alert({ type: 3, text: 'Maybe when you\'re older...' })
+})
+
+notie.confirm({
+  text: 'Are you sure you want to do that?',
+  yesText: 'Yes',
+  noText: 'Cancel'
+}, function () {
+  notie.alert({ type: 1, text: 'Good choice!' })
+}, function () {
+  notie.alert({ type: 3, text: 'Aw, why not? :(' })
+})
+notie.confirm({ text: 'Are you sure?' }, function() {
+  notie.confirm({ text: 'Are you <b>really</b> sure?' }, function() {
+    notie.confirm({ text: 'Are you <b>really</b> <i>really</i> sure?' }, function() {
+      notie.alert({ text: 'Okay, jeez...' })
+    })
+  })
+})
+
+notie.input({
+  text: 'Please enter your email:',
+  submitText: 'Submit',
+  cancelText: 'Cancel',
+  value: 'jane@doe.com',
+  type: 'email',
+  placeholder: 'name@example.com'
+}, function(value) {
+  notie.alert({ type: 1, text: 'You entered: ' + value })
+}, function(value) {
+  notie.alert({ type: 3, text: 'You cancelled with this value: ' + value })
+})
+
+notie.input({
+  text: 'Please enter your name:',
+  type: 'text',
+  placeholder: 'Jane Doe',
+  allowed: ['a', 's']
+}, function(value) {
+  notie.alert({ type: 1, text: 'You entered: ' + value })
+}, function(value) {
+  notie.alert({ type: 3, text: 'You cancelled with this value: ' + value })
+})
+
+notie.input({
+  text: 'Please enter the price:',
+  type: 'text',
+  placeholder: '500',
+  allowed: new RegExp('[^0-9]', 'g')
+}, function(value) {
+  notie.alert({ type: 1, text: 'You entered: ' + value })
+}, function(value) {
+  notie.alert({ type: 3, text: 'You cancelled with this value: ' + value })
+})
+
+notie.select({
+  text: 'Demo item #1, owner is Jane Smith',
+  cancelText: 'Cancel',
+  choices: [
+    {
+      text: 'Share',
+      handler: function () {
+        notie.alert({ type: 1, text: 'Share item!' })
+      }
+    },
+    {
+      text: 'Open',
+      handler: function () {
+        notie.alert({ type: 1, text: 'Open item!' })
+      }
+    },
+    {
+      type: 2,
+      text: 'Edit',
+      handler: function () {
+        notie.alert({ type: 2, text: 'Edit item!' })
+      }
+    },
+    {
+      type: 3,
+      text: 'Delete',
+      handler: function () {
+        notie.alert({ type: 3, text: 'Delete item!' })
+      }
+    }
+  ]
+})
+
+notie.date({
+  value: new Date(2015, 8, 27),
+  submitText: 'Submit',
+  cancelText: 'Cancel'
+}, function (date) {
+  notie.alert({ type: 1, text: 'You selected: ' + date.toISOString() })
+}, function (date) {
+  notie.alert({ type: 3, text: 'You cancelled: ' + date.toISOString() })
+})
+```
+
+#### Use ES6 to inherit 'this' while using notie
+``` javascript
+notie.confirm('Is ES6 great?', 'Yes', 'Cancel', () => {
+  this.location.href = 'htts://google.com'
+})
+```
+
+## Options
+#### General
+```javascript
+// Showing all available options with defaults
+notie.setOptions({
+  alertTime: 3,
+  dateMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  overlayClickDismiss: true,
+  overlayOpacity: 0.75,
+  transitionCurve: 'ease',
+  transitionDuration: 0.3,
+  transitionSelector: 'all'
+  classes: {
+    container: 'notie-container',
+    textbox: 'notie-textbox',
+    textboxInner: 'notie-textbox-inner',
+    button: 'notie-button',
+    element: 'notie-element',
+    elementHalf: 'notie-element-half',
+    elementThird: 'notie-element-third',
+    overlay: 'notie-overlay',
+    backgroundSuccess: 'notie-background-success',
+    backgroundWarning: 'notie-background-warning',
+    backgroundError: 'notie-background-error',
+    backgroundInfo: 'notie-background-info',
+    backgroundNeutral: 'notie-background-neutral',
+    backgroundOverlay: 'notie-background-overlay',
+    alert: 'notie-alert',
+    inputField: 'notie-input-field',
+    selectChoiceRepeated: 'notie-select-choice-repeated',
+    dateSelectorInner: 'notie-date-selector-inner',
+    dateSelectorUp: 'notie-date-selector-up'
+  },
+  ids: {
+    overlay: 'notie-overlay'
+  }
 })
 ```
 
 ## Other Methods
 ```javascript
-notie.alertHide(optionalCallback) // programmatically hide notie.alert with an optional callback function
-notie.isShowing() // true if any element of notie is showing, false otherwise
+// programmatically hide all alerts with an optional callback function
+notie.hideAlerts(callbackOptional)
 ```
 
 ## License
