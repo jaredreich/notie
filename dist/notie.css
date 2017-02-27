@@ -1,5 +1,5 @@
 .notie-container {
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   height: auto;
   left: 0;
   position: fixed;
@@ -14,10 +14,10 @@
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5); }
   @media screen and (max-width: 900px) {
     .notie-container {
-      font-size: 1.2rem; } }
+      font-size: 1.4rem; } }
   @media screen and (max-width: 750px) {
     .notie-container {
-      font-size: 1.1rem; } }
+      font-size: 1.2rem; } }
   @media screen and (max-width: 400px) {
     .notie-container {
       font-size: 1rem; } }
