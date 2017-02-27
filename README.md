@@ -77,7 +77,7 @@ window.notie
 ```javascript
 notie.alert({
   type: Number|String, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
-  message: String,
+  text: String,
   stay: Boolean, // optional, default = false
   time: Number // optional, default = 3, minimum = 1
 })
