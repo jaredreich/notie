@@ -4,7 +4,8 @@
 
 let options = {
   alertTime: 3,
-  dateMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  dateMonths: ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'],
   overlayClickDismiss: true,
   overlayOpacity: 0.75,
   transitionCurve: 'ease',
@@ -79,9 +80,7 @@ const typeToClassLookup = {
   neutral: options.classes.backgroundNeutral
 }
 
-const getTransitionStyle = () => (
-  `${options.transitionSelector} ${options.transitionDuration}s ${options.transitionCurve}`
-)
+const transitionFull = `${options.transitionSelector} ${options.transitionDuration}s ${options.transitionCurve}`
 
 const enterClicked = event => event.keyCode === 13
 const escapeClicked = event => event.keyCode === 27
@@ -95,7 +94,7 @@ const addToDocument = (element, from = 'top') => {
   if (element.listener) window.addEventListener('keydown', element.listener)
 
   tick().then(() => {
-    element.style.transition = getTransitionStyle()
+    element.style.transition = transitionFull
     element.style[from] = 0
   })
 }
@@ -128,7 +127,7 @@ const addOverlayToDocument = (owner, from) => {
   document.body.appendChild(element)
 
   tick().then(() => {
-    element.style.transition = getTransitionStyle()
+    element.style.transition = transitionFull
     element.style.opacity = options.overlayOpacity
   })
 }
@@ -156,7 +155,12 @@ export const hideAlerts = callback => {
 // exports
 // ====================
 
-export const alert = ({ type = 4, text, time = options.alertTime, stay = false }) => {
+export const alert = ({
+  type = 4,
+  text,
+  time = options.alertTime,
+  stay = false
+}) => {
   blur()
   hideAlerts()
 
@@ -179,7 +183,12 @@ export const alert = ({ type = 4, text, time = options.alertTime, stay = false }
   if (!stay && time) wait(time).then(() => removeFromDocument(id))
 }
 
-export const force = ({ type = 5, text, buttonText = 'OK' }, callback) => {
+export const force = ({
+  type = 5,
+  text,
+  buttonText = 'OK',
+  callback
+}, callbackArg) => {
   blur()
   hideAlerts()
 
@@ -187,10 +196,10 @@ export const force = ({ type = 5, text, buttonText = 'OK' }, callback) => {
   const id = generateRandomId()
   element.id = id
 
-  const elementMessage = document.createElement('div')
-  elementMessage.classList.add(options.classes.textbox)
-  elementMessage.classList.add(options.classes.backgroundInfo)
-  elementMessage.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
+  const elementText = document.createElement('div')
+  elementText.classList.add(options.classes.textbox)
+  elementText.classList.add(options.classes.backgroundInfo)
+  elementText.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
 
   const elementButton = document.createElement('div')
   elementButton.classList.add(options.classes.button)
@@ -200,9 +209,10 @@ export const force = ({ type = 5, text, buttonText = 'OK' }, callback) => {
     removeFromDocument(id)
     removeOverlayFromDocument()
     if (callback) callback()
+    else if (callbackArg) callbackArg()
   }
 
-  element.appendChild(elementMessage)
+  element.appendChild(elementText)
   element.appendChild(elementButton)
 
   element.listener = event => {
@@ -214,7 +224,13 @@ export const force = ({ type = 5, text, buttonText = 'OK' }, callback) => {
   addOverlayToDocument()
 }
 
-export const confirm = ({ text, yesText = 'Yes', noText = 'Cancel' }, yesCallback, noCallback) => {
+export const confirm = ({
+  text,
+  submitText = 'Yes',
+  cancelText = 'Cancel',
+  submitCallback,
+  cancelCallback
+}, submitCallbackArg, cancelCallbackArg) => {
   blur()
   hideAlerts()
 
@@ -222,34 +238,36 @@ export const confirm = ({ text, yesText = 'Yes', noText = 'Cancel' }, yesCallbac
   const id = generateRandomId()
   element.id = id
 
-  const elementMessage = document.createElement('div')
-  elementMessage.classList.add(options.classes.textbox)
-  elementMessage.classList.add(options.classes.backgroundInfo)
-  elementMessage.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
+  const elementText = document.createElement('div')
+  elementText.classList.add(options.classes.textbox)
+  elementText.classList.add(options.classes.backgroundInfo)
+  elementText.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
 
   const elementButtonLeft = document.createElement('div')
   elementButtonLeft.classList.add(options.classes.button)
   elementButtonLeft.classList.add(options.classes.elementHalf)
   elementButtonLeft.classList.add(options.classes.backgroundSuccess)
-  elementButtonLeft.innerHTML = yesText
+  elementButtonLeft.innerHTML = submitText
   elementButtonLeft.onclick = () => {
     removeFromDocument(id)
     removeOverlayFromDocument()
-    if (yesCallback) yesCallback()
+    if (submitCallback) submitCallback()
+    else if (submitCallbackArg) submitCallbackArg()
   }
 
   const elementButtonRight = document.createElement('div')
   elementButtonRight.classList.add(options.classes.button)
   elementButtonRight.classList.add(options.classes.elementHalf)
   elementButtonRight.classList.add(options.classes.backgroundError)
-  elementButtonRight.innerHTML = noText
+  elementButtonRight.innerHTML = cancelText
   elementButtonRight.onclick = () => {
     removeFromDocument(id)
     removeOverlayFromDocument()
-    if (noCallback) noCallback()
+    if (cancelCallback) cancelCallback()
+    else if (cancelCallbackArg) cancelCallbackArg()
   }
 
-  element.appendChild(elementMessage)
+  element.appendChild(elementText)
   element.appendChild(elementButtonLeft)
   element.appendChild(elementButtonRight)
 
@@ -263,7 +281,14 @@ export const confirm = ({ text, yesText = 'Yes', noText = 'Cancel' }, yesCallbac
   addOverlayToDocument(element)
 }
 
-export const input = ({ text, submitText = 'Submit', cancelText = 'Cancel', ...settings }, submitCallback, cancelCallback) => {
+export const input = ({
+  text,
+  submitText = 'Submit',
+  cancelText = 'Cancel',
+  submitCallback,
+  cancelCallback,
+  ...settings
+}, submitCallbackArg, cancelCallbackArg) => {
   blur()
   hideAlerts()
 
@@ -271,10 +296,10 @@ export const input = ({ text, submitText = 'Submit', cancelText = 'Cancel', ...s
   const id = generateRandomId()
   element.id = id
 
-  const elementMessage = document.createElement('div')
-  elementMessage.classList.add(options.classes.textbox)
-  elementMessage.classList.add(options.classes.backgroundInfo)
-  elementMessage.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
+  const elementText = document.createElement('div')
+  elementText.classList.add(options.classes.textbox)
+  elementText.classList.add(options.classes.backgroundInfo)
+  elementText.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
 
   const elementInput = document.createElement('input')
   elementInput.classList.add(options.classes.inputField)
@@ -325,6 +350,7 @@ export const input = ({ text, submitText = 'Submit', cancelText = 'Cancel', ...s
     removeFromDocument(id)
     removeOverlayFromDocument()
     if (submitCallback) submitCallback(elementInput.value)
+    else if (submitCallbackArg) submitCallbackArg(elementInput.value)
   }
 
   const elementButtonRight = document.createElement('div')
@@ -336,9 +362,10 @@ export const input = ({ text, submitText = 'Submit', cancelText = 'Cancel', ...s
     removeFromDocument(id)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback(elementInput.value)
+    else if (cancelCallbackArg) cancelCallbackArg(elementInput.value)
   }
 
-  element.appendChild(elementMessage)
+  element.appendChild(elementText)
   element.appendChild(elementInput)
   element.appendChild(elementButtonLeft)
   element.appendChild(elementButtonRight)
@@ -355,7 +382,12 @@ export const input = ({ text, submitText = 'Submit', cancelText = 'Cancel', ...s
   addOverlayToDocument(element)
 }
 
-export const select = ({ text, cancelText = 'Cancel', choices }) => {
+export const select = ({
+  text,
+  cancelText = 'Cancel',
+  cancelCallback,
+  choices
+}, cancelCallbackArg) => {
   blur()
   hideAlerts()
 
@@ -365,12 +397,12 @@ export const select = ({ text, cancelText = 'Cancel', choices }) => {
   const id = generateRandomId()
   element.id = id
 
-  const elementMessage = document.createElement('div')
-  elementMessage.classList.add(options.classes.textbox)
-  elementMessage.classList.add(options.classes.backgroundInfo)
-  elementMessage.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
+  const elementText = document.createElement('div')
+  elementText.classList.add(options.classes.textbox)
+  elementText.classList.add(options.classes.backgroundInfo)
+  elementText.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
 
-  element.appendChild(elementMessage)
+  element.appendChild(elementText)
 
   choices.forEach(({ type = 1, text, handler }, index) => {
     const elementChoice = document.createElement('div')
@@ -401,6 +433,8 @@ export const select = ({ text, cancelText = 'Cancel', choices }) => {
   elementCancel.onclick = () => {
     removeFromDocument(id, from)
     removeOverlayFromDocument()
+    if (cancelCallback) cancelCallback()
+    else if (cancelCallbackArg) cancelCallbackArg()
   }
 
   element.appendChild(elementCancel)
@@ -414,7 +448,13 @@ export const select = ({ text, cancelText = 'Cancel', choices }) => {
   addOverlayToDocument(element, from)
 }
 
-export const date = ({ value = new Date(), submitText = 'OK', cancelText = 'Cancel' }, submitCallback, cancelCallback) => {
+export const date = ({
+  value = new Date(),
+  submitText = 'OK',
+  cancelText = 'Cancel',
+  submitCallback,
+  cancelCallback
+}, submitCallbackArg, cancelCallbackArg) => {
   blur()
   hideAlerts()
 
@@ -523,6 +563,7 @@ export const date = ({ value = new Date(), submitText = 'OK', cancelText = 'Canc
     removeFromDocument(id)
     removeOverlayFromDocument()
     if (submitCallback) submitCallback(value)
+    else if (submitCallbackArg) submitCallbackArg(value)
   }
 
   const elementButtonRight = document.createElement('div')
@@ -534,6 +575,7 @@ export const date = ({ value = new Date(), submitText = 'OK', cancelText = 'Canc
     removeFromDocument(id)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback(value)
+    else if (cancelCallbackArg) cancelCallbackArg(value)
   }
 
   elementDateSelectorInner.appendChild(elementDateUpMonth)

@@ -103,62 +103,75 @@
       }
 
       function force () {
-        notie.force({ text: 'You cannot do that, sending you back.' }, function () {
-          notie.alert({ type: 3, text: 'Maybe when you\'re older...', time: 2 })
+        notie.force({
+          type: 3,
+          text: 'You cannot do that, sending you back.',
+          buttonText: 'OK',
+          callback: function () {
+            notie.alert({ type: 3, text: 'Maybe when you\'re older...' })
+          }
         })
       }
 
       function confirm () {
         notie.confirm({
-          text: 'Are you sure you want to do that?<br><b>That\'s a bold move...</b>'
-        }, function () {
-          notie.alert({ type: 1, text: 'Good choice! :D', time: 2 })
-        }, function () {
-          notie.alert({ type: 3, text: 'Aw, why not? :(', time: 2 })
+          text: 'Are you sure you want to do that?<br><b>That\'s a bold move...</b>',
+          cancelCallback: function () {
+            notie.alert({ type: 3, text: 'Aw, why not? :(', time: 2 })
+          },
+          submitCallback: function () {
+            notie.alert({ type: 1, text: 'Good choice! :D', time: 2 })
+          }
         })
       }
 
       function input() {
         notie.input({
           text: 'Please enter your email address:',
+          cancelCallback: function (value) {
+            notie.alert({ type: 3, text: 'You cancelled with this value: ' + value, time: 2 })
+          },
+          submitCallback: function (value) {
+              notie.alert({ type: 1, text: 'You entered: ' + value, time: 2 })
+          },
           type: 'text',
           placeholder: 'name@example.com',
           spellcheck: 'false'
-        }, function (value) {
-            notie.alert({ type: 1, text: 'You entered: ' + value, time: 2 })
-        }, function (value) {
-            notie.alert({ type: 3, text: 'You cancelled with this value: ' + value, time: 2 })
         })
       }
 
       function select() {
         notie.select({
           text: 'Demo item #1, owner is Jane Smith',
+          cancelText: 'Close',
+          cancelCallback: function () {
+            notie.alert({ type: 5, text: 'Cancel!' })
+          },
           choices: [
             {
               text: 'Share',
               handler: function () {
-                notie.alert({ type: 1, text: 'Share item!', time: 3 })
+                notie.alert({ type: 1, text: 'Share item!' })
               }
             },
             {
               text: 'Open',
               handler: function () {
-                notie.alert({ type: 1, text: 'Open item!', time: 3 })
+                notie.alert({ type: 1, text: 'Open item!' })
               }
             },
             {
               type: 2,
               text: 'Edit',
               handler: function () {
-                notie.alert({ type: 2, text: 'Edit item!', time: 3 })
+                notie.alert({ type: 2, text: 'Edit item!' })
               }
             },
             {
               type: 3,
               text: 'Delete',
               handler: function () {
-                notie.alert({ type: 3, text: 'Delete item!', time: 3 })
+                notie.alert({ type: 3, text: 'Delete item!' })
               }
             }
           ]
@@ -167,11 +180,13 @@
 
       function date() {
         notie.date({
-          value: new Date(2015, 8, 27)
-        }, function (date) {
-          notie.alert({ type: 1, text: 'You selected: ' + date.toISOString() })
-        }, function (date) {
-          notie.alert({ type: 3, text: 'You cancelled: ' + date.toISOString() })
+          value: new Date(2015, 8, 27),
+          cancelCallback: function (date) {
+            notie.alert({ type: 3, text: 'You cancelled: ' + date.toISOString() })
+          },
+          submitCallback: function (date) {
+            notie.alert({ type: 1, text: 'You selected: ' + date.toISOString() })
+          }
         })
       }
     </script>

@@ -85,19 +85,24 @@ notie.alert({
 notie.force({
   type: Number|String, // optional, default = 5, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
   text: String,
-  buttonText: String // optional, default = 'OK'
-}, callback())
+  buttonText: String, // optional, default = 'OK'
+  callback: Function // optional
+}, callbackOptional())
 
 notie.confirm({
   text: String,
-  yesText: String, // optional, default = 'Yes'
-  noText: String // optional, default = 'Cancel'
-}, yesCallbackOptional(), noCallbackOptional())
+  submitText: String, // optional, default = 'Yes'
+  cancelText: String, // optional, default = 'Cancel'
+  submitCallback: Function, // optional
+  cancelCallback: Function // optional
+}, submitCallbackOptional(), cancelCallbackOptional())
 
 notie.input({
   text: String,
   submitText: String, // optional, default = 'Submit'
   cancelText: String // optional, default = 'Cancel'
+  submitCallback: Function(value), // optional
+  cancelCallback: Function(value), // optional
   autocapitalize: 'words', // default: 'none'
   autocomplete: 'on', // default: 'off'
   autocorrect: 'off', // default: 'off'
@@ -116,7 +121,8 @@ notie.input({
 
 notie.select({
   text: String,
-  cancelText: String,
+  cancelText: String, // optional, default = 'Cancel'
+  cancelCallback: Function, // optional
   choices: [
     {
       type: Number|String, // optional, default = 1
@@ -125,12 +131,14 @@ notie.select({
     }
     ...
   ]
-})
+}, cancelCallbackOptional())
 
 notie.date({
   value: Date,
   submitText: String, // optional, default = 'OK'
-  cancelText: String // optional, default = 'Cancel'
+  cancelText: String, // optional, default = 'Cancel'
+  submitCallback: Function(date), // optional
+  cancelCallback: Function(date) // optional
 }, submitCallbackOptional(date), cancelCallbackOptional(date))
 ```
 
@@ -149,19 +157,20 @@ notie.alert({ type: 'info', text: 'FYI, blah blah blah.' })
 notie.force({
   type: 3,
   text: 'You cannot do that, sending you back.',
-  buttonText: 'OK'
-}, function () {
-  notie.alert({ type: 3, text: 'Maybe when you\'re older...' })
+  buttonText: 'OK',
+  callback: function () {
+    notie.alert({ type: 3, text: 'Maybe when you\'re older...' })
+  }
 })
 
 notie.confirm({
-  text: 'Are you sure you want to do that?',
-  yesText: 'Yes',
-  noText: 'Cancel'
-}, function () {
-  notie.alert({ type: 1, text: 'Good choice!' })
-}, function () {
-  notie.alert({ type: 3, text: 'Aw, why not? :(' })
+  text: 'Are you sure you want to do that?<br><b>That\'s a bold move...</b>',
+  cancelCallback: function () {
+    notie.alert({ type: 3, text: 'Aw, why not? :(', time: 2 })
+  },
+  submitCallback: function () {
+    notie.alert({ type: 1, text: 'Good choice! :D', time: 2 })
+  }
 })
 notie.confirm({ text: 'Are you sure?' }, function() {
   notie.confirm({ text: 'Are you <b>really</b> sure?' }, function() {
@@ -175,13 +184,15 @@ notie.input({
   text: 'Please enter your email:',
   submitText: 'Submit',
   cancelText: 'Cancel',
+  cancelCallback: function (value) {
+    notie.alert({ type: 3, text: 'You cancelled with this value: ' + value })
+  },
+  submitCallback: function (value) {
+    notie.alert({ type: 1, text: 'You entered: ' + value })
+  },
   value: 'jane@doe.com',
   type: 'email',
   placeholder: 'name@example.com'
-}, function(value) {
-  notie.alert({ type: 1, text: 'You entered: ' + value })
-}, function(value) {
-  notie.alert({ type: 3, text: 'You cancelled with this value: ' + value })
 })
 
 notie.input({
@@ -197,18 +208,23 @@ notie.input({
 
 notie.input({
   text: 'Please enter the price:',
+  cancelCallback: function (value) {
+    notie.alert({ type: 3, text: 'You cancelled with this value: ' + value })
+  },
+  submitCallback: function (value) {
+    notie.alert({ type: 1, text: 'You entered: ' + value })
+  },
   type: 'text',
   placeholder: '500',
   allowed: new RegExp('[^0-9]', 'g')
-}, function(value) {
-  notie.alert({ type: 1, text: 'You entered: ' + value })
-}, function(value) {
-  notie.alert({ type: 3, text: 'You cancelled with this value: ' + value })
 })
 
 notie.select({
   text: 'Demo item #1, owner is Jane Smith',
-  cancelText: 'Cancel',
+  cancelText: 'Close',
+  cancelCallback: function () {
+    notie.alert({ type: 5, text: 'Cancel!' })
+  },
   choices: [
     {
       text: 'Share',
@@ -239,15 +255,17 @@ notie.select({
   ]
 })
 
-notie.date({
-  value: new Date(2015, 8, 27),
-  submitText: 'Submit',
-  cancelText: 'Cancel'
-}, function (date) {
-  notie.alert({ type: 1, text: 'You selected: ' + date.toISOString() })
-}, function (date) {
-  notie.alert({ type: 3, text: 'You cancelled: ' + date.toISOString() })
-})
+function date() {
+  notie.date({
+    value: new Date(2015, 8, 27),
+    cancelCallback: function (date) {
+      notie.alert({ type: 3, text: 'You cancelled: ' + date.toISOString() })
+    },
+    submitCallback: function (date) {
+      notie.alert({ type: 1, text: 'You selected: ' + date.toISOString() })
+    }
+  })
+}
 ```
 
 #### Use ES6 to inherit `this`:

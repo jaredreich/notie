@@ -180,9 +180,7 @@ var typeToClassLookup = {
   neutral: options.classes.backgroundNeutral
 };
 
-var getTransitionStyle = function getTransitionStyle() {
-  return options.transitionSelector + ' ' + options.transitionDuration + 's ' + options.transitionCurve;
-};
+var transitionFull = options.transitionSelector + ' ' + options.transitionDuration + 's ' + options.transitionCurve;
 
 var enterClicked = function enterClicked(event) {
   return event.keyCode === 13;
@@ -202,7 +200,7 @@ var addToDocument = function addToDocument(element) {
   if (element.listener) window.addEventListener('keydown', element.listener);
 
   tick().then(function () {
-    element.style.transition = getTransitionStyle();
+    element.style.transition = transitionFull;
     element.style[from] = 0;
   });
 };
@@ -237,7 +235,7 @@ var addOverlayToDocument = function addOverlayToDocument(owner, from) {
   document.body.appendChild(element);
 
   tick().then(function () {
-    element.style.transition = getTransitionStyle();
+    element.style.transition = transitionFull;
     element.style.opacity = options.overlayOpacity;
   });
 };
@@ -302,12 +300,13 @@ var alert = exports.alert = function alert(_ref) {
   });
 };
 
-var force = exports.force = function force(_ref2, callback) {
+var force = exports.force = function force(_ref2, callbackArg) {
   var _ref2$type = _ref2.type,
       type = _ref2$type === undefined ? 5 : _ref2$type,
       text = _ref2.text,
       _ref2$buttonText = _ref2.buttonText,
-      buttonText = _ref2$buttonText === undefined ? 'OK' : _ref2$buttonText;
+      buttonText = _ref2$buttonText === undefined ? 'OK' : _ref2$buttonText,
+      callback = _ref2.callback;
 
   blur();
   hideAlerts();
@@ -316,10 +315,10 @@ var force = exports.force = function force(_ref2, callback) {
   var id = generateRandomId();
   element.id = id;
 
-  var elementMessage = document.createElement('div');
-  elementMessage.classList.add(options.classes.textbox);
-  elementMessage.classList.add(options.classes.backgroundInfo);
-  elementMessage.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
+  var elementText = document.createElement('div');
+  elementText.classList.add(options.classes.textbox);
+  elementText.classList.add(options.classes.backgroundInfo);
+  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
 
   var elementButton = document.createElement('div');
   elementButton.classList.add(options.classes.button);
@@ -328,10 +327,10 @@ var force = exports.force = function force(_ref2, callback) {
   elementButton.onclick = function () {
     removeFromDocument(id);
     removeOverlayFromDocument();
-    if (callback) callback();
+    if (callback) callback();else if (callbackArg) callbackArg();
   };
 
-  element.appendChild(elementMessage);
+  element.appendChild(elementText);
   element.appendChild(elementButton);
 
   element.listener = function (event) {
@@ -343,12 +342,14 @@ var force = exports.force = function force(_ref2, callback) {
   addOverlayToDocument();
 };
 
-var confirm = exports.confirm = function confirm(_ref3, yesCallback, noCallback) {
+var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cancelCallbackArg) {
   var text = _ref3.text,
-      _ref3$yesText = _ref3.yesText,
-      yesText = _ref3$yesText === undefined ? 'Yes' : _ref3$yesText,
-      _ref3$noText = _ref3.noText,
-      noText = _ref3$noText === undefined ? 'Cancel' : _ref3$noText;
+      _ref3$submitText = _ref3.submitText,
+      submitText = _ref3$submitText === undefined ? 'Yes' : _ref3$submitText,
+      _ref3$cancelText = _ref3.cancelText,
+      cancelText = _ref3$cancelText === undefined ? 'Cancel' : _ref3$cancelText,
+      submitCallback = _ref3.submitCallback,
+      cancelCallback = _ref3.cancelCallback;
 
   blur();
   hideAlerts();
@@ -357,34 +358,34 @@ var confirm = exports.confirm = function confirm(_ref3, yesCallback, noCallback)
   var id = generateRandomId();
   element.id = id;
 
-  var elementMessage = document.createElement('div');
-  elementMessage.classList.add(options.classes.textbox);
-  elementMessage.classList.add(options.classes.backgroundInfo);
-  elementMessage.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
+  var elementText = document.createElement('div');
+  elementText.classList.add(options.classes.textbox);
+  elementText.classList.add(options.classes.backgroundInfo);
+  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
 
   var elementButtonLeft = document.createElement('div');
   elementButtonLeft.classList.add(options.classes.button);
   elementButtonLeft.classList.add(options.classes.elementHalf);
   elementButtonLeft.classList.add(options.classes.backgroundSuccess);
-  elementButtonLeft.innerHTML = yesText;
+  elementButtonLeft.innerHTML = submitText;
   elementButtonLeft.onclick = function () {
     removeFromDocument(id);
     removeOverlayFromDocument();
-    if (yesCallback) yesCallback();
+    if (submitCallback) submitCallback();else if (submitCallbackArg) submitCallbackArg();
   };
 
   var elementButtonRight = document.createElement('div');
   elementButtonRight.classList.add(options.classes.button);
   elementButtonRight.classList.add(options.classes.elementHalf);
   elementButtonRight.classList.add(options.classes.backgroundError);
-  elementButtonRight.innerHTML = noText;
+  elementButtonRight.innerHTML = cancelText;
   elementButtonRight.onclick = function () {
     removeFromDocument(id);
     removeOverlayFromDocument();
-    if (noCallback) noCallback();
+    if (cancelCallback) cancelCallback();else if (cancelCallbackArg) cancelCallbackArg();
   };
 
-  element.appendChild(elementMessage);
+  element.appendChild(elementText);
   element.appendChild(elementButtonLeft);
   element.appendChild(elementButtonRight);
 
@@ -397,13 +398,15 @@ var confirm = exports.confirm = function confirm(_ref3, yesCallback, noCallback)
   addOverlayToDocument(element);
 };
 
-var input = function input(_ref4, submitCallback, cancelCallback) {
+var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   var text = _ref4.text,
       _ref4$submitText = _ref4.submitText,
       submitText = _ref4$submitText === undefined ? 'Submit' : _ref4$submitText,
       _ref4$cancelText = _ref4.cancelText,
       cancelText = _ref4$cancelText === undefined ? 'Cancel' : _ref4$cancelText,
-      settings = _objectWithoutProperties(_ref4, ['text', 'submitText', 'cancelText']);
+      submitCallback = _ref4.submitCallback,
+      cancelCallback = _ref4.cancelCallback,
+      settings = _objectWithoutProperties(_ref4, ['text', 'submitText', 'cancelText', 'submitCallback', 'cancelCallback']);
 
   blur();
   hideAlerts();
@@ -412,10 +415,10 @@ var input = function input(_ref4, submitCallback, cancelCallback) {
   var id = generateRandomId();
   element.id = id;
 
-  var elementMessage = document.createElement('div');
-  elementMessage.classList.add(options.classes.textbox);
-  elementMessage.classList.add(options.classes.backgroundInfo);
-  elementMessage.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
+  var elementText = document.createElement('div');
+  elementText.classList.add(options.classes.textbox);
+  elementText.classList.add(options.classes.backgroundInfo);
+  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
 
   var elementInput = document.createElement('input');
   elementInput.classList.add(options.classes.inputField);
@@ -463,7 +466,7 @@ var input = function input(_ref4, submitCallback, cancelCallback) {
   elementButtonLeft.onclick = function () {
     removeFromDocument(id);
     removeOverlayFromDocument();
-    if (submitCallback) submitCallback(elementInput.value);
+    if (submitCallback) submitCallback(elementInput.value);else if (submitCallbackArg) submitCallbackArg(elementInput.value);
   };
 
   var elementButtonRight = document.createElement('div');
@@ -474,10 +477,10 @@ var input = function input(_ref4, submitCallback, cancelCallback) {
   elementButtonRight.onclick = function () {
     removeFromDocument(id);
     removeOverlayFromDocument();
-    if (cancelCallback) cancelCallback(elementInput.value);
+    if (cancelCallback) cancelCallback(elementInput.value);else if (cancelCallbackArg) cancelCallbackArg(elementInput.value);
   };
 
-  element.appendChild(elementMessage);
+  element.appendChild(elementText);
   element.appendChild(elementInput);
   element.appendChild(elementButtonLeft);
   element.appendChild(elementButtonRight);
@@ -494,10 +497,11 @@ var input = function input(_ref4, submitCallback, cancelCallback) {
 };
 
 exports.input = input;
-var select = exports.select = function select(_ref5) {
+var select = exports.select = function select(_ref5, cancelCallbackArg) {
   var text = _ref5.text,
       _ref5$cancelText = _ref5.cancelText,
       cancelText = _ref5$cancelText === undefined ? 'Cancel' : _ref5$cancelText,
+      cancelCallback = _ref5.cancelCallback,
       choices = _ref5.choices;
 
   blur();
@@ -509,12 +513,12 @@ var select = exports.select = function select(_ref5) {
   var id = generateRandomId();
   element.id = id;
 
-  var elementMessage = document.createElement('div');
-  elementMessage.classList.add(options.classes.textbox);
-  elementMessage.classList.add(options.classes.backgroundInfo);
-  elementMessage.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
+  var elementText = document.createElement('div');
+  elementText.classList.add(options.classes.textbox);
+  elementText.classList.add(options.classes.backgroundInfo);
+  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
 
-  element.appendChild(elementMessage);
+  element.appendChild(elementText);
 
   choices.forEach(function (_ref6, index) {
     var _ref6$type = _ref6.type,
@@ -550,6 +554,7 @@ var select = exports.select = function select(_ref5) {
   elementCancel.onclick = function () {
     removeFromDocument(id, from);
     removeOverlayFromDocument();
+    if (cancelCallback) cancelCallback();else if (cancelCallbackArg) cancelCallbackArg();
   };
 
   element.appendChild(elementCancel);
@@ -563,13 +568,15 @@ var select = exports.select = function select(_ref5) {
   addOverlayToDocument(element, from);
 };
 
-var date = exports.date = function date(_ref7, submitCallback, cancelCallback) {
+var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
   var _ref7$value = _ref7.value,
       value = _ref7$value === undefined ? new Date() : _ref7$value,
       _ref7$submitText = _ref7.submitText,
       submitText = _ref7$submitText === undefined ? 'OK' : _ref7$submitText,
       _ref7$cancelText = _ref7.cancelText,
-      cancelText = _ref7$cancelText === undefined ? 'Cancel' : _ref7$cancelText;
+      cancelText = _ref7$cancelText === undefined ? 'Cancel' : _ref7$cancelText,
+      submitCallback = _ref7.submitCallback,
+      cancelCallback = _ref7.cancelCallback;
 
   blur();
   hideAlerts();
@@ -678,7 +685,7 @@ var date = exports.date = function date(_ref7, submitCallback, cancelCallback) {
   elementButtonLeft.onclick = function () {
     removeFromDocument(id);
     removeOverlayFromDocument();
-    if (submitCallback) submitCallback(value);
+    if (submitCallback) submitCallback(value);else if (submitCallbackArg) submitCallbackArg(value);
   };
 
   var elementButtonRight = document.createElement('div');
@@ -689,7 +696,7 @@ var date = exports.date = function date(_ref7, submitCallback, cancelCallback) {
   elementButtonRight.onclick = function () {
     removeFromDocument(id);
     removeOverlayFromDocument();
-    if (cancelCallback) cancelCallback(value);
+    if (cancelCallback) cancelCallback(value);else if (cancelCallbackArg) cancelCallbackArg(value);
   };
 
   elementDateSelectorInner.appendChild(elementDateUpMonth);
