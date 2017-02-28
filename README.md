@@ -144,8 +144,8 @@ notie.date({
 
 #### For example:
 ```javascript
-notie.alert({ text: 'Info!')
-notie.alert({ type: 1, text: 'Success!', stay: true) // Never hides unless clicked, or escape or enter is pressed
+notie.alert({ text: 'Info!'})
+notie.alert({ type: 1, text: 'Success!', stay: true}) // Never hides unless clicked, or escape or enter is pressed
 notie.alert({ type: 'success', text: 'Success!', time: 2 }) // Hides after 2 seconds
 notie.alert({ type: 2, text: 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>' })
 notie.alert({ type: 'warning', text: 'Watch it...' })
