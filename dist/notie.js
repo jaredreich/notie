@@ -585,6 +585,53 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
 
   var arrow = '&#9662';
 
+  var elementDateMonth = document.createElement('div');
+  var elementDateDay = document.createElement('div');
+  var elementDateYear = document.createElement('div');
+
+  var setValueHTML = function setValueHTML(date) {
+    elementDateMonth.innerHTML = options.dateMonths[date.getMonth()];
+    elementDateDay.innerHTML = date.getDate();
+    elementDateYear.innerHTML = date.getFullYear();
+  };
+
+  var handleDayInput = function handleDayInput(event) {
+    var daysInMonth = new Date(value.getFullYear(), value.getMonth() + 1, 0).getDate();
+    var day = event.target.textContent.replace(/^0+/, '').replace(/[^\d]/g, '').slice(0, 2);
+    if (Number(day) > daysInMonth) day = daysInMonth.toString();
+    event.target.textContent = day;
+    if (Number(day) < 1) day = '1';
+    value.setDate(Number(day));
+  };
+
+  var handleYearInput = function handleYearInput(event) {
+    var year = event.target.textContent.replace(/^0+/, '').replace(/[^\d]/g, '').slice(0, 4);
+    event.target.textContent = year;
+    value.setFullYear(Number(year));
+  };
+
+  var handleBlur = function handleBlur(event) {
+    setValueHTML(value);
+  };
+
+  var updateMonth = function updateMonth(amount) {
+    var daysInNextMonth = new Date(value.getFullYear(), value.getMonth() + amount + 1, 0).getDate();
+    if (value.getDate() > daysInNextMonth) value.setDate(daysInNextMonth);
+    value.setMonth(value.getMonth() + amount);
+    setValueHTML(value);
+  };
+
+  var updateDay = function updateDay(amount) {
+    value.setDate(value.getDate() + amount);
+    setValueHTML(value);
+  };
+
+  var updateYear = function updateYear(amount) {
+    var nextYear = value.getFullYear() + amount;
+    if (nextYear < 0) value.setFullYear(0);else value.setFullYear(value.getFullYear() + amount);
+    setValueHTML(value);
+  };
+
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
@@ -613,38 +660,22 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
   elementDateUpYear.classList.add(options.classes.dateSelectorUp);
   elementDateUpYear.innerHTML = arrow;
 
-  var elementDateMonth = document.createElement('div');
   elementDateMonth.classList.add(options.classes.element);
   elementDateMonth.classList.add(options.classes.elementThird);
   elementDateMonth.innerHTML = options.dateMonths[value.getMonth()];
 
-  var handleDayInput = function handleDayInput(event) {
-    var daysInMonth = new Date(value.getFullYear(), value.getMonth() + 1, 0).getDate();
-    var day = event.target.textContent.replace(/^0+/, '').replace(/[^\d]/g, '').slice(0, 2);
-    if (Number(day) > daysInMonth) day = daysInMonth.toString();
-    event.target.textContent = day;
-    if (Number(day) < 1) day = '1';
-    value.setDate(Number(day));
-  };
-
-  var elementDateDay = document.createElement('div');
   elementDateDay.classList.add(options.classes.element);
   elementDateDay.classList.add(options.classes.elementThird);
   elementDateDay.setAttribute('contentEditable', true);
   elementDateDay.addEventListener('input', handleDayInput);
+  elementDateDay.addEventListener('blur', handleBlur);
   elementDateDay.innerHTML = value.getDate();
 
-  var handleYearInput = function handleYearInput(event) {
-    var year = event.target.textContent.replace(/^0+/, '').replace(/[^\d]/g, '').slice(0, 4);
-    event.target.textContent = year;
-    value.setFullYear(Number(year));
-  };
-
-  var elementDateYear = document.createElement('div');
   elementDateYear.classList.add(options.classes.element);
   elementDateYear.classList.add(options.classes.elementThird);
   elementDateYear.setAttribute('contentEditable', true);
   elementDateYear.addEventListener('input', handleYearInput);
+  elementDateYear.addEventListener('blur', handleBlur);
   elementDateYear.innerHTML = value.getFullYear();
 
   var elementDateDownMonth = document.createElement('div');
@@ -661,30 +692,6 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
   elementDateDownYear.classList.add(options.classes.button);
   elementDateDownYear.classList.add(options.classes.elementThird);
   elementDateDownYear.innerHTML = arrow;
-
-  var setValueHTML = function setValueHTML(date) {
-    elementDateMonth.innerHTML = options.dateMonths[date.getMonth()];
-    elementDateDay.innerHTML = date.getDate();
-    elementDateYear.innerHTML = date.getFullYear();
-  };
-
-  var updateMonth = function updateMonth(amount) {
-    var daysInNextMonth = new Date(value.getFullYear(), value.getMonth() + amount + 1, 0).getDate();
-    if (value.getDate() > daysInNextMonth) value.setDate(daysInNextMonth);
-    value.setMonth(value.getMonth() + amount);
-    setValueHTML(value);
-  };
-
-  var updateDay = function updateDay(amount) {
-    value.setDate(value.getDate() + amount);
-    setValueHTML(value);
-  };
-
-  var updateYear = function updateYear(amount) {
-    var nextYear = value.getFullYear() + amount;
-    if (nextYear < 0) value.setFullYear(0);else value.setFullYear(value.getFullYear() + amount);
-    setValueHTML(value);
-  };
 
   elementDateUpMonth.onclick = function () {
     return updateMonth(1);

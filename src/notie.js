@@ -462,6 +462,68 @@ export const date = ({
 
   const arrow = '&#9662'
 
+  const elementDateMonth = document.createElement('div')
+  const elementDateDay = document.createElement('div')
+  const elementDateYear = document.createElement('div')
+
+  const setValueHTML = date => {
+    elementDateMonth.innerHTML = options.dateMonths[date.getMonth()]
+    elementDateDay.innerHTML = date.getDate()
+    elementDateYear.innerHTML = date.getFullYear()
+  }
+
+  const handleDayInput = event => {
+    const daysInMonth = new Date(
+      value.getFullYear(),
+      value.getMonth() + 1,
+      0
+    ).getDate()
+    let day = event.target.textContent
+      .replace(/^0+/, '')
+      .replace(/[^\d]/g, '')
+      .slice(0, 2)
+    if (Number(day) > daysInMonth) day = daysInMonth.toString()
+    event.target.textContent = day
+    if (Number(day) < 1) day = '1'
+    value.setDate(Number(day))
+  }
+
+  const handleYearInput = event => {
+    const year = event.target.textContent
+      .replace(/^0+/, '')
+      .replace(/[^\d]/g, '')
+      .slice(0, 4)
+    event.target.textContent = year
+    value.setFullYear(Number(year))
+  }
+
+  const handleBlur = event => {
+    setValueHTML(value)
+  }
+
+  const updateMonth = amount => {
+    const daysInNextMonth = new Date(
+      value.getFullYear(),
+      value.getMonth() + amount + 1,
+      0
+    ).getDate()
+    if (value.getDate() > daysInNextMonth) value.setDate(daysInNextMonth)
+    value.setMonth(value.getMonth() + amount)
+    setValueHTML(value)
+  }
+
+  const updateDay = amount => {
+    value.setDate(value.getDate() + amount)
+    setValueHTML(value)
+  }
+
+  const updateYear = amount => {
+    const nextYear = value.getFullYear() + amount
+    if (nextYear < 0) value.setFullYear(0)
+    else value.setFullYear(value.getFullYear() + amount)
+    setValueHTML(value)
+  }
+
   const element = document.createElement('div')
   const id = generateRandomId()
   element.id = id
@@ -490,48 +552,22 @@ export const date = ({
   elementDateUpYear.classList.add(options.classes.dateSelectorUp)
   elementDateUpYear.innerHTML = arrow
 
-  const elementDateMonth = document.createElement('div')
   elementDateMonth.classList.add(options.classes.element)
   elementDateMonth.classList.add(options.classes.elementThird)
   elementDateMonth.innerHTML = options.dateMonths[value.getMonth()]
 
-  const handleDayInput = event => {
-    const daysInMonth = new Date(
-      value.getFullYear(),
-      value.getMonth() + 1,
-      0
-    ).getDate()
-    let day = event.target.textContent
-      .replace(/^0+/, '')
-      .replace(/[^\d]/g, '')
-      .slice(0, 2)
-    if (Number(day) > daysInMonth) day = daysInMonth.toString()
-    event.target.textContent = day
-    if (Number(day) < 1) day = '1'
-    value.setDate(Number(day))
-  }
-
-  const elementDateDay = document.createElement('div')
   elementDateDay.classList.add(options.classes.element)
   elementDateDay.classList.add(options.classes.elementThird)
   elementDateDay.setAttribute('contentEditable', true)
   elementDateDay.addEventListener('input', handleDayInput)
+  elementDateDay.addEventListener('blur', handleBlur)
   elementDateDay.innerHTML = value.getDate()
 
-  const handleYearInput = event => {
-    const year = event.target.textContent
-      .replace(/^0+/, '')
-      .replace(/[^\d]/g, '')
-      .slice(0, 4)
-    event.target.textContent = year
-    value.setFullYear(Number(year))
-  }
-
-  const elementDateYear = document.createElement('div')
   elementDateYear.classList.add(options.classes.element)
   elementDateYear.classList.add(options.classes.elementThird)
   elementDateYear.setAttribute('contentEditable', true)
   elementDateYear.addEventListener('input', handleYearInput)
+  elementDateYear.addEventListener('blur', handleBlur)
   elementDateYear.innerHTML = value.getFullYear()
 
   const elementDateDownMonth = document.createElement('div')
@@ -548,35 +584,6 @@ export const date = ({
   elementDateDownYear.classList.add(options.classes.button)
   elementDateDownYear.classList.add(options.classes.elementThird)
   elementDateDownYear.innerHTML = arrow
-
-  const setValueHTML = date => {
-    elementDateMonth.innerHTML = options.dateMonths[date.getMonth()]
-    elementDateDay.innerHTML = date.getDate()
-    elementDateYear.innerHTML = date.getFullYear()
-  }
-
-  const updateMonth = amount => {
-    const daysInNextMonth = new Date(
-      value.getFullYear(),
-      value.getMonth() + amount + 1,
-      0
-    ).getDate()
-    if (value.getDate() > daysInNextMonth) value.setDate(daysInNextMonth)
-    value.setMonth(value.getMonth() + amount)
-    setValueHTML(value)
-  }
-
-  const updateDay = amount => {
-    value.setDate(value.getDate() + amount)
-    setValueHTML(value)
-  }
-
-  const updateYear = amount => {
-    const nextYear = value.getFullYear() + amount
-    if (nextYear < 0) value.setFullYear(0)
-    else value.setFullYear(value.getFullYear() + amount)
-    setValueHTML(value)
-  }
 
   elementDateUpMonth.onclick = () => updateMonth(1)
   elementDateUpDay.onclick = () => updateDay(1)
