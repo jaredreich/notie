@@ -160,6 +160,10 @@ $notie-z-index: 2147483647 !default;
 .notie-date-selector-inner {
   @include contained();
   @include unselectable();
+
+  [contenteditable], [contenteditable]:focus {
+    outline: 0px solid transparent;
+  }
 }
 
 .notie-date-selector-up {

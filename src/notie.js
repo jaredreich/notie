@@ -80,7 +80,9 @@ const typeToClassLookup = {
   neutral: options.classes.backgroundNeutral
 }
 
-const transitionFull = `${options.transitionSelector} ${options.transitionDuration}s ${options.transitionCurve}`
+const getTransition = () => (
+  `${options.transitionSelector} ${options.transitionDuration}s ${options.transitionCurve}`
+)
 
 const enterClicked = event => event.keyCode === 13
 const escapeClicked = event => event.keyCode === 27
@@ -94,7 +96,7 @@ const addToDocument = (element, from = 'top') => {
   if (element.listener) window.addEventListener('keydown', element.listener)
 
   tick().then(() => {
-    element.style.transition = transitionFull
+    element.style.transition = getTransition()
     element.style[from] = 0
   })
 }
@@ -127,7 +129,7 @@ const addOverlayToDocument = (owner, from) => {
   document.body.appendChild(element)
 
   tick().then(() => {
-    element.style.transition = transitionFull
+    element.style.transition = getTransition()
     element.style.opacity = options.overlayOpacity
   })
 }
@@ -493,14 +495,43 @@ export const date = ({
   elementDateMonth.classList.add(options.classes.elementThird)
   elementDateMonth.innerHTML = options.dateMonths[value.getMonth()]
 
+  const handleDayInput = event => {
+    const daysInMonth = new Date(
+      value.getFullYear(),
+      value.getMonth() + 1,
+      0
+    ).getDate()
+    let day = event.target.textContent
+      .replace(/^0+/, '')
+      .replace(/[^\d]/g, '')
+      .slice(0, 2)
+    if (Number(day) > daysInMonth) day = daysInMonth.toString()
+    event.target.textContent = day
+    if (Number(day) < 1) day = '1'
+    value.setDate(Number(day))
+  }
+
   const elementDateDay = document.createElement('div')
   elementDateDay.classList.add(options.classes.element)
   elementDateDay.classList.add(options.classes.elementThird)
+  elementDateDay.setAttribute('contentEditable', true)
+  elementDateDay.addEventListener('input', handleDayInput)
   elementDateDay.innerHTML = value.getDate()
+
+  const handleYearInput = event => {
+    const year = event.target.textContent
+      .replace(/^0+/, '')
+      .replace(/[^\d]/g, '')
+      .slice(0, 4)
+    event.target.textContent = year
+    value.setFullYear(Number(year))
+  }
 
   const elementDateYear = document.createElement('div')
   elementDateYear.classList.add(options.classes.element)
   elementDateYear.classList.add(options.classes.elementThird)
+  elementDateYear.setAttribute('contentEditable', true)
+  elementDateYear.addEventListener('input', handleYearInput)
   elementDateYear.innerHTML = value.getFullYear()
 
   const elementDateDownMonth = document.createElement('div')
@@ -524,35 +555,35 @@ export const date = ({
     elementDateYear.innerHTML = date.getFullYear()
   }
 
-  elementDateUpMonth.onclick = () => {
-    value.setMonth(value.getMonth() - 1)
+  const updateMonth = amount => {
+    const daysInNextMonth = new Date(
+      value.getFullYear(),
+      value.getMonth() + amount + 1,
+      0
+    ).getDate()
+    if (value.getDate() > daysInNextMonth) value.setDate(daysInNextMonth)
+    value.setMonth(value.getMonth() + amount)
     setValueHTML(value)
   }
 
-  elementDateUpDay.onclick = () => {
-    value.setDate(value.getDate() - 1)
+  const updateDay = amount => {
+    value.setDate(value.getDate() + amount)
     setValueHTML(value)
   }
 
-  elementDateUpYear.onclick = () => {
-    value.setFullYear(value.getFullYear() - 1)
+  const updateYear = amount => {
+    const nextYear = value.getFullYear() + amount
+    if (nextYear < 0) value.setFullYear(0)
+    else value.setFullYear(value.getFullYear() + amount)
     setValueHTML(value)
   }
 
-  elementDateDownMonth.onclick = () => {
-    value.setMonth(value.getMonth() + 1)
-    setValueHTML(value)
-  }
-
-  elementDateDownDay.onclick = () => {
-    value.setDate(value.getDate() + 1)
-    setValueHTML(value)
-  }
-
-  elementDateDownYear.onclick = () => {
-    value.setFullYear(value.getFullYear() + 1)
-    setValueHTML(value)
-  }
+  elementDateUpMonth.onclick = () => updateMonth(1)
+  elementDateUpDay.onclick = () => updateDay(1)
+  elementDateUpYear.onclick = () => updateYear(1)
+  elementDateDownMonth.onclick = () => updateMonth(-1)
+  elementDateDownDay.onclick = () => updateDay(-1)
+  elementDateDownYear.onclick = () => updateYear(-1)
 
   const elementButtonLeft = document.createElement('div')
   elementButtonLeft.classList.add(options.classes.button)

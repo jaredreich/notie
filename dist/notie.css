@@ -102,6 +102,8 @@
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none; }
+  .notie-date-selector-inner [contenteditable], .notie-date-selector-inner [contenteditable]:focus {
+    outline: 0px solid transparent; }
 
 .notie-date-selector-up {
   transform: rotate(180deg); }
