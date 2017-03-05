@@ -97,6 +97,11 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 // options
 // ====================
 
+var positions = {
+  top: 'top',
+  bottom: 'bottom'
+};
+
 var options = {
   alertTime: 3,
   dateMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -128,13 +133,22 @@ var options = {
   },
   ids: {
     overlay: 'notie-overlay'
+  },
+  positions: {
+    alert: positions.top,
+    force: positions.top,
+    confirm: positions.top,
+    input: positions.top,
+    select: positions.bottom,
+    date: positions.top
   }
 };
 
 var setOptions = exports.setOptions = function setOptions(newOptions) {
   options = _extends({}, options, newOptions, {
     classes: _extends({}, options.classes, newOptions.classes),
-    ids: _extends({}, options.ids, newOptions.ids)
+    ids: _extends({}, options.ids, newOptions.ids),
+    positions: _extends({}, options.positions, newOptions.positions)
   });
 };
 
@@ -191,28 +205,24 @@ var escapeClicked = function escapeClicked(event) {
   return event.keyCode === 27;
 };
 
-var addToDocument = function addToDocument(element) {
-  var from = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'top';
-
+var addToDocument = function addToDocument(element, position) {
   element.classList.add(options.classes.container);
-  element.style[from] = '-10000px';
+  element.style[position] = '-10000px';
   document.body.appendChild(element);
-  element.style[from] = '-' + element.offsetHeight + 'px';
+  element.style[position] = '-' + element.offsetHeight + 'px';
 
   if (element.listener) window.addEventListener('keydown', element.listener);
 
   tick().then(function () {
     element.style.transition = getTransition();
-    element.style[from] = 0;
+    element.style[position] = 0;
   });
 };
 
-var removeFromDocument = function removeFromDocument(id) {
-  var from = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'top';
-
+var removeFromDocument = function removeFromDocument(id, position) {
   var element = document.getElementById(id);
   if (!element) return;
-  element.style[from] = '-' + element.offsetHeight + 'px';
+  element.style[position] = '-' + element.offsetHeight + 'px';
 
   if (element.listener) window.removeEventListener('keydown', element.listener);
 
@@ -221,7 +231,7 @@ var removeFromDocument = function removeFromDocument(id) {
   });
 };
 
-var addOverlayToDocument = function addOverlayToDocument(owner, from) {
+var addOverlayToDocument = function addOverlayToDocument(owner, position) {
   var element = document.createElement('div');
   element.id = options.ids.overlay;
   element.classList.add(options.classes.overlay);
@@ -229,7 +239,7 @@ var addOverlayToDocument = function addOverlayToDocument(owner, from) {
   element.style.opacity = 0;
   if (owner && options.overlayClickDismiss) {
     element.onclick = function () {
-      removeFromDocument(owner.id, from);
+      removeFromDocument(owner.id, position);
       removeOverlayFromDocument();
     };
   }
@@ -255,7 +265,7 @@ var hideAlerts = exports.hideAlerts = function hideAlerts(callback) {
   if (alertsShowing.length) {
     for (var i = 0; i < alertsShowing.length; i++) {
       var _alert = alertsShowing[i];
-      removeFromDocument(_alert.id);
+      removeFromDocument(_alert.id, _alert.position);
     }
     if (callback) wait(options.transitionDuration).then(function () {
       return callback();
@@ -274,7 +284,9 @@ var alert = exports.alert = function alert(_ref) {
       _ref$time = _ref.time,
       time = _ref$time === undefined ? options.alertTime : _ref$time,
       _ref$stay = _ref.stay,
-      stay = _ref$stay === undefined ? false : _ref$stay;
+      stay = _ref$stay === undefined ? false : _ref$stay,
+      _ref$position = _ref.position,
+      position = _ref$position === undefined ? options.positions.alert || position.top : _ref$position;
 
   blur();
   hideAlerts();
@@ -282,23 +294,24 @@ var alert = exports.alert = function alert(_ref) {
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
+  element.position = position;
   element.classList.add(options.classes.textbox);
   element.classList.add(typeToClassLookup[type]);
   element.classList.add(options.classes.alert);
   element.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
   element.onclick = function () {
-    return removeFromDocument(id);
+    return removeFromDocument(id, position);
   };
 
   element.listener = function (event) {
     if (enterClicked(event) || escapeClicked(event)) hideAlerts();
   };
 
-  addToDocument(element);
+  addToDocument(element, position);
 
   if (time && time < 1) time = 1;
   if (!stay && time) wait(time).then(function () {
-    return removeFromDocument(id);
+    return removeFromDocument(id, position);
   });
 };
 
@@ -308,7 +321,9 @@ var force = exports.force = function force(_ref2, callbackArg) {
       text = _ref2.text,
       _ref2$buttonText = _ref2.buttonText,
       buttonText = _ref2$buttonText === undefined ? 'OK' : _ref2$buttonText,
-      callback = _ref2.callback;
+      callback = _ref2.callback,
+      _ref2$position = _ref2.position,
+      position = _ref2$position === undefined ? options.positions.force || position.top : _ref2$position;
 
   blur();
   hideAlerts();
@@ -327,7 +342,7 @@ var force = exports.force = function force(_ref2, callbackArg) {
   elementButton.classList.add(typeToClassLookup[type]);
   elementButton.innerHTML = buttonText;
   elementButton.onclick = function () {
-    removeFromDocument(id);
+    removeFromDocument(id, position);
     removeOverlayFromDocument();
     if (callback) callback();else if (callbackArg) callbackArg();
   };
@@ -339,7 +354,7 @@ var force = exports.force = function force(_ref2, callbackArg) {
     if (enterClicked(event)) elementButton.click();
   };
 
-  addToDocument(element);
+  addToDocument(element, position);
 
   addOverlayToDocument();
 };
@@ -351,7 +366,9 @@ var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cance
       _ref3$cancelText = _ref3.cancelText,
       cancelText = _ref3$cancelText === undefined ? 'Cancel' : _ref3$cancelText,
       submitCallback = _ref3.submitCallback,
-      cancelCallback = _ref3.cancelCallback;
+      cancelCallback = _ref3.cancelCallback,
+      _ref3$position = _ref3.position,
+      position = _ref3$position === undefined ? options.positions.confirm || position.top : _ref3$position;
 
   blur();
   hideAlerts();
@@ -371,7 +388,7 @@ var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cance
   elementButtonLeft.classList.add(options.classes.backgroundSuccess);
   elementButtonLeft.innerHTML = submitText;
   elementButtonLeft.onclick = function () {
-    removeFromDocument(id);
+    removeFromDocument(id, position);
     removeOverlayFromDocument();
     if (submitCallback) submitCallback();else if (submitCallbackArg) submitCallbackArg();
   };
@@ -382,7 +399,7 @@ var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cance
   elementButtonRight.classList.add(options.classes.backgroundError);
   elementButtonRight.innerHTML = cancelText;
   elementButtonRight.onclick = function () {
-    removeFromDocument(id);
+    removeFromDocument(id, position);
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback();else if (cancelCallbackArg) cancelCallbackArg();
   };
@@ -395,9 +412,9 @@ var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cance
     if (enterClicked(event)) elementButtonLeft.click();else if (escapeClicked(event)) elementButtonRight.click();
   };
 
-  addToDocument(element);
+  addToDocument(element, position);
 
-  addOverlayToDocument(element);
+  addOverlayToDocument(element, position);
 };
 
 var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
@@ -408,7 +425,9 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
       cancelText = _ref4$cancelText === undefined ? 'Cancel' : _ref4$cancelText,
       submitCallback = _ref4.submitCallback,
       cancelCallback = _ref4.cancelCallback,
-      settings = _objectWithoutProperties(_ref4, ['text', 'submitText', 'cancelText', 'submitCallback', 'cancelCallback']);
+      _ref4$position = _ref4.position,
+      position = _ref4$position === undefined ? options.positions.input || position.top : _ref4$position,
+      settings = _objectWithoutProperties(_ref4, ['text', 'submitText', 'cancelText', 'submitCallback', 'cancelCallback', 'position']);
 
   blur();
   hideAlerts();
@@ -466,7 +485,7 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   elementButtonLeft.classList.add(options.classes.backgroundSuccess);
   elementButtonLeft.innerHTML = submitText;
   elementButtonLeft.onclick = function () {
-    removeFromDocument(id);
+    removeFromDocument(id, position);
     removeOverlayFromDocument();
     if (submitCallback) submitCallback(elementInput.value);else if (submitCallbackArg) submitCallbackArg(elementInput.value);
   };
@@ -477,7 +496,7 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   elementButtonRight.classList.add(options.classes.backgroundError);
   elementButtonRight.innerHTML = cancelText;
   elementButtonRight.onclick = function () {
-    removeFromDocument(id);
+    removeFromDocument(id, position);
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback(elementInput.value);else if (cancelCallbackArg) cancelCallbackArg(elementInput.value);
   };
@@ -491,11 +510,11 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
     if (enterClicked(event)) elementButtonLeft.click();else if (escapeClicked(event)) elementButtonRight.click();
   };
 
-  addToDocument(element);
+  addToDocument(element, position);
 
   elementInput.focus();
 
-  addOverlayToDocument(element);
+  addOverlayToDocument(element, position);
 };
 
 exports.input = input;
@@ -504,12 +523,12 @@ var select = exports.select = function select(_ref5, cancelCallbackArg) {
       _ref5$cancelText = _ref5.cancelText,
       cancelText = _ref5$cancelText === undefined ? 'Cancel' : _ref5$cancelText,
       cancelCallback = _ref5.cancelCallback,
-      choices = _ref5.choices;
+      choices = _ref5.choices,
+      _ref5$position = _ref5.position,
+      position = _ref5$position === undefined ? options.positions.select || position.top : _ref5$position;
 
   blur();
   hideAlerts();
-
-  var from = 'bottom';
 
   var element = document.createElement('div');
   var id = generateRandomId();
@@ -541,7 +560,7 @@ var select = exports.select = function select(_ref5, cancelCallbackArg) {
 
     elementChoice.innerHTML = text;
     elementChoice.onclick = function () {
-      removeFromDocument(id, from);
+      removeFromDocument(id, position);
       removeOverlayFromDocument();
       handler();
     };
@@ -554,7 +573,7 @@ var select = exports.select = function select(_ref5, cancelCallbackArg) {
   elementCancel.classList.add(options.classes.button);
   elementCancel.innerHTML = cancelText;
   elementCancel.onclick = function () {
-    removeFromDocument(id, from);
+    removeFromDocument(id, position);
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback();else if (cancelCallbackArg) cancelCallbackArg();
   };
@@ -565,9 +584,9 @@ var select = exports.select = function select(_ref5, cancelCallbackArg) {
     if (escapeClicked(event)) elementCancel.click();
   };
 
-  addToDocument(element, from);
+  addToDocument(element, position);
 
-  addOverlayToDocument(element, from);
+  addOverlayToDocument(element, position);
 };
 
 var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
@@ -578,7 +597,9 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
       _ref7$cancelText = _ref7.cancelText,
       cancelText = _ref7$cancelText === undefined ? 'Cancel' : _ref7$cancelText,
       submitCallback = _ref7.submitCallback,
-      cancelCallback = _ref7.cancelCallback;
+      cancelCallback = _ref7.cancelCallback,
+      _ref7$position = _ref7.position,
+      position = _ref7$position === undefined ? options.positions.date || position.top : _ref7$position;
 
   blur();
   hideAlerts();
@@ -718,7 +739,7 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
   elementButtonLeft.classList.add(options.classes.backgroundSuccess);
   elementButtonLeft.innerHTML = submitText;
   elementButtonLeft.onclick = function () {
-    removeFromDocument(id);
+    removeFromDocument(id, position);
     removeOverlayFromDocument();
     if (submitCallback) submitCallback(value);else if (submitCallbackArg) submitCallbackArg(value);
   };
@@ -729,7 +750,7 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
   elementButtonRight.classList.add(options.classes.backgroundError);
   elementButtonRight.innerHTML = cancelText;
   elementButtonRight.onclick = function () {
-    removeFromDocument(id);
+    removeFromDocument(id, position);
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback(value);else if (cancelCallbackArg) cancelCallbackArg(value);
   };
@@ -752,9 +773,9 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
     if (enterClicked(event)) elementButtonLeft.click();else if (escapeClicked(event)) elementButtonRight.click();
   };
 
-  addToDocument(element);
+  addToDocument(element, position);
 
-  addOverlayToDocument(element);
+  addOverlayToDocument(element, position);
 };
 
 exports.default = {

@@ -2,6 +2,11 @@
 // options
 // ====================
 
+const positions = {
+  top: 'top',
+  bottom: 'bottom'
+}
+
 let options = {
   alertTime: 3,
   dateMonths: ['January', 'February', 'March', 'April', 'May', 'June',
@@ -34,6 +39,14 @@ let options = {
   },
   ids: {
     overlay: 'notie-overlay'
+  },
+  positions: {
+    alert: positions.top,
+    force: positions.top,
+    confirm: positions.top,
+    input: positions.top,
+    select: positions.bottom,
+    date: positions.top
   }
 }
 
@@ -42,7 +55,8 @@ export const setOptions = newOptions => {
     ...options,
     ...newOptions,
     classes: { ...options.classes, ...newOptions.classes },
-    ids: { ...options.ids, ...newOptions.ids }
+    ids: { ...options.ids, ...newOptions.ids },
+    positions: { ...options.positions, ...newOptions.positions }
   }
 }
 
@@ -87,24 +101,24 @@ const getTransition = () => (
 const enterClicked = event => event.keyCode === 13
 const escapeClicked = event => event.keyCode === 27
 
-const addToDocument = (element, from = 'top') => {
+const addToDocument = (element, position) => {
   element.classList.add(options.classes.container)
-  element.style[from] = '-10000px'
+  element.style[position] = '-10000px'
   document.body.appendChild(element)
-  element.style[from] = `-${element.offsetHeight}px`
+  element.style[position] = `-${element.offsetHeight}px`
 
   if (element.listener) window.addEventListener('keydown', element.listener)
 
   tick().then(() => {
     element.style.transition = getTransition()
-    element.style[from] = 0
+    element.style[position] = 0
   })
 }
 
-const removeFromDocument = (id, from = 'top') => {
+const removeFromDocument = (id, position) => {
   const element = document.getElementById(id)
   if (!element) return
-  element.style[from] = `-${element.offsetHeight}px`
+  element.style[position] = `-${element.offsetHeight}px`
 
   if (element.listener) window.removeEventListener('keydown', element.listener)
 
@@ -113,7 +127,7 @@ const removeFromDocument = (id, from = 'top') => {
   })
 }
 
-const addOverlayToDocument = (owner, from) => {
+const addOverlayToDocument = (owner, position) => {
   const element = document.createElement('div')
   element.id = options.ids.overlay
   element.classList.add(options.classes.overlay)
@@ -121,7 +135,7 @@ const addOverlayToDocument = (owner, from) => {
   element.style.opacity = 0
   if (owner && options.overlayClickDismiss) {
     element.onclick = () => {
-      removeFromDocument(owner.id, from)
+      removeFromDocument(owner.id, position)
       removeOverlayFromDocument()
     }
   }
@@ -147,7 +161,7 @@ export const hideAlerts = callback => {
   if (alertsShowing.length) {
     for (let i = 0; i < alertsShowing.length; i++) {
       const alert = alertsShowing[i]
-      removeFromDocument(alert.id)
+      removeFromDocument(alert.id, alert.position)
     }
     if (callback) wait(options.transitionDuration).then(() => callback())
   }
@@ -161,7 +175,8 @@ export const alert = ({
   type = 4,
   text,
   time = options.alertTime,
-  stay = false
+  stay = false,
+  position = options.positions.alert || position.top
 }) => {
   blur()
   hideAlerts()
@@ -169,27 +184,29 @@ export const alert = ({
   const element = document.createElement('div')
   const id = generateRandomId()
   element.id = id
+  element.position = position
   element.classList.add(options.classes.textbox)
   element.classList.add(typeToClassLookup[type])
   element.classList.add(options.classes.alert)
   element.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
-  element.onclick = () => removeFromDocument(id)
+  element.onclick = () => removeFromDocument(id, position)
 
   element.listener = event => {
     if (enterClicked(event) || escapeClicked(event)) hideAlerts()
   }
 
-  addToDocument(element)
+  addToDocument(element, position)
 
   if (time && time < 1) time = 1
-  if (!stay && time) wait(time).then(() => removeFromDocument(id))
+  if (!stay && time) wait(time).then(() => removeFromDocument(id, position))
 }
 
 export const force = ({
   type = 5,
   text,
   buttonText = 'OK',
-  callback
+  callback,
+  position = options.positions.force || position.top
 }, callbackArg) => {
   blur()
   hideAlerts()
@@ -208,7 +225,7 @@ export const force = ({
   elementButton.classList.add(typeToClassLookup[type])
   elementButton.innerHTML = buttonText
   elementButton.onclick = () => {
-    removeFromDocument(id)
+    removeFromDocument(id, position)
     removeOverlayFromDocument()
     if (callback) callback()
     else if (callbackArg) callbackArg()
@@ -221,7 +238,7 @@ export const force = ({
     if (enterClicked(event)) elementButton.click()
   }
 
-  addToDocument(element)
+  addToDocument(element, position)
 
   addOverlayToDocument()
 }
@@ -231,7 +248,8 @@ export const confirm = ({
   submitText = 'Yes',
   cancelText = 'Cancel',
   submitCallback,
-  cancelCallback
+  cancelCallback,
+  position = options.positions.confirm || position.top
 }, submitCallbackArg, cancelCallbackArg) => {
   blur()
   hideAlerts()
@@ -251,7 +269,7 @@ export const confirm = ({
   elementButtonLeft.classList.add(options.classes.backgroundSuccess)
   elementButtonLeft.innerHTML = submitText
   elementButtonLeft.onclick = () => {
-    removeFromDocument(id)
+    removeFromDocument(id, position)
     removeOverlayFromDocument()
     if (submitCallback) submitCallback()
     else if (submitCallbackArg) submitCallbackArg()
@@ -263,7 +281,7 @@ export const confirm = ({
   elementButtonRight.classList.add(options.classes.backgroundError)
   elementButtonRight.innerHTML = cancelText
   elementButtonRight.onclick = () => {
-    removeFromDocument(id)
+    removeFromDocument(id, position)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback()
     else if (cancelCallbackArg) cancelCallbackArg()
@@ -278,9 +296,9 @@ export const confirm = ({
     else if (escapeClicked(event)) elementButtonRight.click()
   }
 
-  addToDocument(element)
+  addToDocument(element, position)
 
-  addOverlayToDocument(element)
+  addOverlayToDocument(element, position)
 }
 
 export const input = ({
@@ -289,6 +307,7 @@ export const input = ({
   cancelText = 'Cancel',
   submitCallback,
   cancelCallback,
+  position = options.positions.input || position.top,
   ...settings
 }, submitCallbackArg, cancelCallbackArg) => {
   blur()
@@ -349,7 +368,7 @@ export const input = ({
   elementButtonLeft.classList.add(options.classes.backgroundSuccess)
   elementButtonLeft.innerHTML = submitText
   elementButtonLeft.onclick = () => {
-    removeFromDocument(id)
+    removeFromDocument(id, position)
     removeOverlayFromDocument()
     if (submitCallback) submitCallback(elementInput.value)
     else if (submitCallbackArg) submitCallbackArg(elementInput.value)
@@ -361,7 +380,7 @@ export const input = ({
   elementButtonRight.classList.add(options.classes.backgroundError)
   elementButtonRight.innerHTML = cancelText
   elementButtonRight.onclick = () => {
-    removeFromDocument(id)
+    removeFromDocument(id, position)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback(elementInput.value)
     else if (cancelCallbackArg) cancelCallbackArg(elementInput.value)
@@ -377,23 +396,22 @@ export const input = ({
     else if (escapeClicked(event)) elementButtonRight.click()
   }
 
-  addToDocument(element)
+  addToDocument(element, position)
 
   elementInput.focus()
 
-  addOverlayToDocument(element)
+  addOverlayToDocument(element, position)
 }
 
 export const select = ({
   text,
   cancelText = 'Cancel',
   cancelCallback,
-  choices
+  choices,
+  position = options.positions.select || position.top
 }, cancelCallbackArg) => {
   blur()
   hideAlerts()
-
-  const from = 'bottom'
 
   const element = document.createElement('div')
   const id = generateRandomId()
@@ -420,7 +438,7 @@ export const select = ({
 
     elementChoice.innerHTML = text
     elementChoice.onclick = () => {
-      removeFromDocument(id, from)
+      removeFromDocument(id, position)
       removeOverlayFromDocument()
       handler()
     }
@@ -433,7 +451,7 @@ export const select = ({
   elementCancel.classList.add(options.classes.button)
   elementCancel.innerHTML = cancelText
   elementCancel.onclick = () => {
-    removeFromDocument(id, from)
+    removeFromDocument(id, position)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback()
     else if (cancelCallbackArg) cancelCallbackArg()
@@ -445,9 +463,9 @@ export const select = ({
     if (escapeClicked(event)) elementCancel.click()
   }
 
-  addToDocument(element, from)
+  addToDocument(element, position)
 
-  addOverlayToDocument(element, from)
+  addOverlayToDocument(element, position)
 }
 
 export const date = ({
@@ -455,7 +473,8 @@ export const date = ({
   submitText = 'OK',
   cancelText = 'Cancel',
   submitCallback,
-  cancelCallback
+  cancelCallback,
+  position = options.positions.date || position.top
 }, submitCallbackArg, cancelCallbackArg) => {
   blur()
   hideAlerts()
@@ -598,7 +617,7 @@ export const date = ({
   elementButtonLeft.classList.add(options.classes.backgroundSuccess)
   elementButtonLeft.innerHTML = submitText
   elementButtonLeft.onclick = () => {
-    removeFromDocument(id)
+    removeFromDocument(id, position)
     removeOverlayFromDocument()
     if (submitCallback) submitCallback(value)
     else if (submitCallbackArg) submitCallbackArg(value)
@@ -610,7 +629,7 @@ export const date = ({
   elementButtonRight.classList.add(options.classes.backgroundError)
   elementButtonRight.innerHTML = cancelText
   elementButtonRight.onclick = () => {
-    removeFromDocument(id)
+    removeFromDocument(id, position)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback(value)
     else if (cancelCallbackArg) cancelCallbackArg(value)
@@ -635,9 +654,9 @@ export const date = ({
     else if (escapeClicked(event)) elementButtonRight.click()
   }
 
-  addToDocument(element)
+  addToDocument(element, position)
 
-  addOverlayToDocument(element)
+  addOverlayToDocument(element, position)
 }
 
 export default {

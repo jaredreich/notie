@@ -79,13 +79,15 @@ notie.alert({
   type: Number|String, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
   text: String,
   stay: Boolean, // optional, default = false
-  time: Number // optional, default = 3, minimum = 1
+  time: Number, // optional, default = 3, minimum = 1,
+  position: String // optional, default = 'top', enum: ['top', 'bottom']
 })
 
 notie.force({
   type: Number|String, // optional, default = 5, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
   text: String,
   buttonText: String, // optional, default = 'OK'
+  position: String, // optional, default = 'top', enum: ['top', 'bottom']
   callback: Function // optional
 }, callbackOptional())
 
@@ -93,6 +95,7 @@ notie.confirm({
   text: String,
   submitText: String, // optional, default = 'Yes'
   cancelText: String, // optional, default = 'Cancel'
+  position: String, // optional, default = 'top', enum: ['top', 'bottom']
   submitCallback: Function, // optional
   cancelCallback: Function // optional
 }, submitCallbackOptional(), cancelCallbackOptional())
@@ -100,7 +103,8 @@ notie.confirm({
 notie.input({
   text: String,
   submitText: String, // optional, default = 'Submit'
-  cancelText: String // optional, default = 'Cancel'
+  cancelText: String, // optional, default = 'Cancel'
+  position: String, // optional, default = 'top', enum: ['top', 'bottom']
   submitCallback: Function(value), // optional
   cancelCallback: Function(value), // optional
   autocapitalize: 'words', // default: 'none'
@@ -122,7 +126,7 @@ notie.input({
 notie.select({
   text: String,
   cancelText: String, // optional, default = 'Cancel'
-  cancelCallback: Function, // optional
+  position: String, // optional, default = 'bottom', enum: ['top', 'bottom']
   choices: [
     {
       type: Number|String, // optional, default = 1
@@ -130,13 +134,15 @@ notie.select({
       handler: Function
     }
     ...
-  ]
+  ],
+  cancelCallback: Function // optional
 }, cancelCallbackOptional())
 
 notie.date({
   value: Date,
   submitText: String, // optional, default = 'OK'
   cancelText: String, // optional, default = 'Cancel'
+  position: String, // optional, default = 'top', enum: ['top', 'bottom']
   submitCallback: Function(date), // optional
   cancelCallback: Function(date) // optional
 }, submitCallbackOptional(date), cancelCallbackOptional(date))
@@ -149,7 +155,7 @@ notie.alert({ type: 1, text: 'Success!', stay: true }) // Never hides unless cli
 notie.alert({ type: 'success', text: 'Success!', time: 2 }) // Hides after 2 seconds
 notie.alert({ type: 2, text: 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>' })
 notie.alert({ type: 'warning', text: 'Watch it...' })
-notie.alert({ type: 3, text: 'Error.' })
+notie.alert({ type: 3, text: 'Error.', position: 'bottom' })
 notie.alert({ type: 'error', text: 'Oops!' })
 notie.alert({ type: 4, text: 'Information.' })
 notie.alert({ type: 'info', text: 'FYI, blah blah blah.' })
@@ -334,6 +340,14 @@ notie.setOptions({
   },
   ids: {
     overlay: 'notie-overlay'
+  },
+  positions: {
+    alert: 'top',
+    force: 'top',
+    confirm: 'top',
+    input: 'top',
+    select: 'bottom',
+    date: 'top'
   }
 })
 ```
