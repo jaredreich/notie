@@ -274,10 +274,24 @@ function date() {
 }
 ```
 
-#### Use ES6 to inherit `this`:
+#### Use ES6 for nicer code and to inherit `this`:
 ``` javascript
-notie.confirm('Is ES6 great?', 'Yes', 'Cancel', () => {
-  this.location.href = 'htts://google.com'
+notie.confirm({
+  text: 'Leave the page?',
+  submitCallback: () => this.location.href = 'https://google.com'
+})
+
+notie.confirm({
+  text: 'Is ES6 great?',
+  cancelCallback: () => notie.alert({ type: 3, text: 'Why not?' }),
+  submitCallback: () => notie.alert({ type: 1, text: 'I Agree' })
+})
+
+notie.force({
+  type: 3,
+  text: 'You cannot do that, sending you back.',
+  buttonText: 'OK',
+  callback: () => notie.alert({ type: 3, text: 'Maybe when you\'re older...' })
 })
 ```
 
