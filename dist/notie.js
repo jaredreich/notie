@@ -220,8 +220,6 @@ var addToDocument = function addToDocument(element, position) {
     } else {
       element.style.transform = 'translate3d(0, ' + element.offsetHeight + 'px, 0)';
     }
-
-    // element.style[position] = 0
   });
 };
 
@@ -233,7 +231,6 @@ var removeFromDocument = function removeFromDocument(id, position) {
   } else {
     element.style.transform = 'translate3d(0, -' + element.offsetHeight + 'px, 0)';
   }
-  // element.style[position] = `-${element.offsetHeight}px`
 
   if (element.listener) window.removeEventListener('keydown', element.listener);
 
