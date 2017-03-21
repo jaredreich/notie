@@ -7,6 +7,7 @@ $notie-font-size-mobile: 1rem !default;
 $notie-font-size-tablet: 1.2rem !default;
 $notie-font-size-desktop: 1.4rem !default;
 $notie-font-size-widescreen: 1.6rem !default;
+$notie-background-container: transparent !default;
 $notie-color-text: #FFFFFF !default;
 $notie-color-success: #57BF57 !default;
 $notie-color-warning: #D6A14D !default;
@@ -49,6 +50,7 @@ $notie-z-index: 2147483647 !default;
 
 .notie-container {
   font-size: $notie-font-size-widescreen;
+  background-color: $notie-background-container;
   height: auto;
   left: 0;
   position: fixed;

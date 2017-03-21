@@ -94,6 +94,7 @@ notie.force({
 notie.confirm({
   text: String,
   submitText: String, // optional, default = 'Yes'
+  submitPosition: String, // optional, default = 'Yes'
   cancelText: String, // optional, default = 'Cancel'
   position: String, // optional, default = 'top', enum: ['top', 'bottom']
   submitCallback: Function, // optional
@@ -336,6 +337,7 @@ notie.setOptions({
     textbox: 'notie-textbox',
     textboxInner: 'notie-textbox-inner',
     button: 'notie-button',
+    buttonGroup: 'notie-button-group',
     element: 'notie-element',
     elementHalf: 'notie-element-half',
     elementThird: 'notie-element-third',
@@ -347,6 +349,11 @@ notie.setOptions({
     backgroundNeutral: 'notie-background-neutral',
     backgroundOverlay: 'notie-background-overlay',
     alert: 'notie-alert',
+    confirm: 'notie-confirm',
+    force: 'notie-force',
+    input: 'notie-input',
+    select: 'notie-select',
+    date: 'notie-date',
     inputField: 'notie-input-field',
     selectChoiceRepeated: 'notie-select-choice-repeated',
     dateSelectorInner: 'notie-date-selector-inner',

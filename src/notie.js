@@ -21,6 +21,7 @@ let options = {
     textbox: 'notie-textbox',
     textboxInner: 'notie-textbox-inner',
     button: 'notie-button',
+    buttonGroup: 'notie-button-group',
     element: 'notie-element',
     elementHalf: 'notie-element-half',
     elementThird: 'notie-element-third',
@@ -32,6 +33,11 @@ let options = {
     backgroundNeutral: 'notie-background-neutral',
     backgroundOverlay: 'notie-background-overlay',
     alert: 'notie-alert',
+    confirm: 'notie-confirm',
+    force: 'notie-force',
+    input: 'notie-input',
+    select: 'notie-select',
+    date: 'notie-date',
     inputField: 'notie-input-field',
     selectChoiceRepeated: 'notie-select-choice-repeated',
     dateSelectorInner: 'notie-date-selector-inner',
@@ -245,6 +251,7 @@ export const force = ({
 
 export const confirm = ({
   text,
+  submitPosition = 'left',
   submitText = 'Yes',
   cancelText = 'Cancel',
   submitCallback,
@@ -257,39 +264,45 @@ export const confirm = ({
   const element = document.createElement('div')
   const id = generateRandomId()
   element.id = id
+  element.classList.add(options.classes.confirm)
 
   const elementText = document.createElement('div')
   elementText.classList.add(options.classes.textbox)
   elementText.classList.add(options.classes.backgroundInfo)
   elementText.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
 
-  const elementButtonLeft = document.createElement('div')
-  elementButtonLeft.classList.add(options.classes.button)
-  elementButtonLeft.classList.add(options.classes.elementHalf)
-  elementButtonLeft.classList.add(options.classes.backgroundSuccess)
-  elementButtonLeft.innerHTML = submitText
-  elementButtonLeft.onclick = () => {
+  const elementSubmitButton = document.createElement('div')
+  elementSubmitButton.classList.add(options.classes.button)
+  elementSubmitButton.classList.add(options.classes.elementHalf)
+  elementSubmitButton.classList.add(options.classes.backgroundSuccess)
+  elementSubmitButton.innerHTML = submitText
+  elementSubmitButton.onclick = () => {
     removeFromDocument(id, position)
     removeOverlayFromDocument()
     if (submitCallback) submitCallback()
     else if (submitCallbackArg) submitCallbackArg()
   }
 
-  const elementButtonRight = document.createElement('div')
-  elementButtonRight.classList.add(options.classes.button)
-  elementButtonRight.classList.add(options.classes.elementHalf)
-  elementButtonRight.classList.add(options.classes.backgroundError)
-  elementButtonRight.innerHTML = cancelText
-  elementButtonRight.onclick = () => {
+  const elementCancelButton = document.createElement('div')
+  elementCancelButton.classList.add(options.classes.button)
+  elementCancelButton.classList.add(options.classes.elementHalf)
+  elementCancelButton.classList.add(options.classes.backgroundError)
+  elementCancelButton.innerHTML = cancelText
+  elementCancelButton.onclick = () => {
     removeFromDocument(id, position)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback()
     else if (cancelCallbackArg) cancelCallbackArg()
   }
 
+  const elementButtonGroup = document.createElement('div')
+  elementButtonGroup.classList.add(options.classes.buttonGroup)
+
+  elementButtonGroup.appendChild(submitPosition === 'right' ? elementCancelButton : elementSubmitButton)
+  elementButtonGroup.appendChild(submitPosition === 'right' ? elementSubmitButton : elementCancelButton)
+
   element.appendChild(elementText)
-  element.appendChild(elementButtonLeft)
-  element.appendChild(elementButtonRight)
+  element.appendChild(elementButtonGroup)
 
   element.listener = event => {
     if (enterClicked(event)) elementButtonLeft.click()
@@ -316,6 +329,7 @@ export const input = ({
   const element = document.createElement('div')
   const id = generateRandomId()
   element.id = id
+  element.classList.add(options.classes.input)
 
   const elementText = document.createElement('div')
   elementText.classList.add(options.classes.textbox)
@@ -416,6 +430,7 @@ export const select = ({
   const element = document.createElement('div')
   const id = generateRandomId()
   element.id = id
+  element.classList.add(options.classes.select)
 
   const elementText = document.createElement('div')
   elementText.classList.add(options.classes.textbox)
@@ -546,6 +561,7 @@ export const date = ({
   const element = document.createElement('div')
   const id = generateRandomId()
   element.id = id
+  element.classList.add(options.classes.date)
 
   const elementDateSelector = document.createElement('div')
   elementDateSelector.classList.add(options.classes.backgroundInfo)
