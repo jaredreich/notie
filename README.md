@@ -94,7 +94,7 @@ notie.force({
 notie.confirm({
   text: String,
   submitText: String, // optional, default = 'Yes'
-  submitPosition: String, // optional, default = 'Yes'
+  submitPosition: String, // optional, default = 'left', enum: ['left', 'right']
   cancelText: String, // optional, default = 'Cancel'
   position: String, // optional, default = 'top', enum: ['top', 'bottom']
   submitCallback: Function, // optional
