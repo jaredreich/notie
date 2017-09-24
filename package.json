@@ -36,7 +36,7 @@
   "bugs": {
     "url": "https://github.com/jaredreich/notie/issues"
   },
-  "homepage": "https://jaredreich.com/projects/notie",
+  "homepage": "https://jaredreich.com/notie",
   "devDependencies": {
     "babel-core": "6.23.1",
     "babel-loader": "6.3.2",

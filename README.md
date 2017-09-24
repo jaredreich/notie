@@ -3,7 +3,7 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 notie is a clean and simple notification, input, and selection suite for javascript, with no dependencies.
-demo: https://jaredreich.com/projects/notie
+demo: https://jaredreich.com/notie
 
 #### With notie you can:
 * Alert users
