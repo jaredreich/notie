@@ -1,3 +1,7 @@
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/M1dqXUAHgdV9R3AjAqs5fF2M/jaredreich/notie'>
+  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/M1dqXUAHgdV9R3AjAqs5fF2M/jaredreich/notie.svg' />
+</a>
+
 # notie
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
@@ -373,9 +377,3 @@ notie.hideAlerts(callbackOptional)
 
 ## License
 MIT
-
-## Sponsors
-
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/M1dqXUAHgdV9R3AjAqs5fF2M/jaredreich/notie'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/M1dqXUAHgdV9R3AjAqs5fF2M/jaredreich/notie.svg' />
-</a>
