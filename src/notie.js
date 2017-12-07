@@ -9,6 +9,7 @@ const positions = {
 
 let options = {
   alertTime: 3,
+  alertOverlay: false,
   dateMonths: ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'],
   overlayClickDismiss: true,
@@ -176,7 +177,8 @@ export const alert = ({
   text,
   time = options.alertTime,
   stay = false,
-  position = options.positions.alert || position.top
+  position = options.positions.alert || position.top,
+  overlay = options.alertOverlay
 }) => {
   blur()
   hideAlerts()
@@ -196,6 +198,8 @@ export const alert = ({
   }
 
   addToDocument(element, position)
+
+  if (overlay) addOverlayToDocument(element)
 
   if (time && time < 1) time = 1
   if (!stay && time) wait(time).then(() => removeFromDocument(id, position))

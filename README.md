@@ -84,7 +84,8 @@ notie.alert({
   text: String,
   stay: Boolean, // optional, default = false
   time: Number, // optional, default = 3, minimum = 1,
-  position: String // optional, default = 'top', enum: ['top', 'bottom']
+  position: String, // optional, default = 'top', enum: ['top', 'bottom']
+  overlay: Boolean // optional, default = false
 })
 
 notie.force({
@@ -329,6 +330,7 @@ $notie-color-neutral: #A0A0A0;
 // Showing all available options with defaults
 notie.setOptions({
   alertTime: 3,
+  alertOverlay: false,
   dateMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   overlayClickDismiss: true,
   overlayOpacity: 0.75,
