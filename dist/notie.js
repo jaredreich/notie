@@ -309,7 +309,6 @@ var alert = exports.alert = function alert(_ref) {
 
   element.listener = function (event) {
     if (enterClicked(event) || escapeClicked(event)) {
-      removeOverlayFromDocument();
       hideAlerts();
     }
   };

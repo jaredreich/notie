@@ -198,7 +198,6 @@ export const alert = ({
 
   element.listener = event => {
     if (enterClicked(event) || escapeClicked(event)) {
-      removeOverlayFromDocument()
       hideAlerts()
     }
   }
