@@ -191,10 +191,16 @@ export const alert = ({
   element.classList.add(typeToClassLookup[type])
   element.classList.add(options.classes.alert)
   element.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
-  element.onclick = () => removeFromDocument(id, position)
+  element.onclick = () => {
+    removeOverlayFromDocument()
+    removeFromDocument(id, position)
+  }
 
   element.listener = event => {
-    if (enterClicked(event) || escapeClicked(event)) hideAlerts()
+    if (enterClicked(event) || escapeClicked(event)) {
+      removeOverlayFromDocument()
+      hideAlerts()
+    }
   }
 
   addToDocument(element, position)
@@ -202,7 +208,10 @@ export const alert = ({
   if (overlay) addOverlayToDocument(element)
 
   if (time && time < 1) time = 1
-  if (!stay && time) wait(time).then(() => removeFromDocument(id, position))
+  if (!stay && time) wait(time).then(() => {
+    removeOverlayFromDocument()
+    removeFromDocument(id, position)
+  })
 }
 
 export const force = ({

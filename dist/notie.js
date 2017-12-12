@@ -303,11 +303,15 @@ var alert = exports.alert = function alert(_ref) {
   element.classList.add(options.classes.alert);
   element.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
   element.onclick = function () {
-    return removeFromDocument(id, position);
+    removeOverlayFromDocument();
+    removeFromDocument(id, position);
   };
 
   element.listener = function (event) {
-    if (enterClicked(event) || escapeClicked(event)) hideAlerts();
+    if (enterClicked(event) || escapeClicked(event)) {
+      removeOverlayFromDocument();
+      hideAlerts();
+    }
   };
 
   addToDocument(element, position);
@@ -316,7 +320,8 @@ var alert = exports.alert = function alert(_ref) {
 
   if (time && time < 1) time = 1;
   if (!stay && time) wait(time).then(function () {
-    return removeFromDocument(id, position);
+    removeOverlayFromDocument();
+    removeFromDocument(id, position);
   });
 };
 
