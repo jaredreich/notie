@@ -233,6 +233,7 @@ var removeFromDocument = function removeFromDocument(id, position) {
 };
 
 var addOverlayToDocument = function addOverlayToDocument(owner, position) {
+  removeOverlayFromDocument();
   var element = document.createElement('div');
   element.id = options.ids.overlay;
   element.classList.add(options.classes.overlay);
@@ -255,10 +256,12 @@ var addOverlayToDocument = function addOverlayToDocument(owner, position) {
 
 var removeOverlayFromDocument = function removeOverlayFromDocument() {
   var element = document.getElementById(options.ids.overlay);
-  element.style.opacity = 0;
-  wait(options.transitionDuration).then(function () {
-    if (element.parentNode) element.parentNode.removeChild(element);
-  });
+  if (element) {
+    element.style.opacity = 0;
+    wait(options.transitionDuration).then(function () {
+      if (element.parentNode) element.parentNode.removeChild(element);
+    });
+  }
 };
 
 var hideAlerts = exports.hideAlerts = function hideAlerts(callback) {

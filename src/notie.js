@@ -129,6 +129,7 @@ const removeFromDocument = (id, position) => {
 }
 
 const addOverlayToDocument = (owner, position) => {
+  removeOverlayFromDocument()
   const element = document.createElement('div')
   element.id = options.ids.overlay
   element.classList.add(options.classes.overlay)
@@ -151,10 +152,12 @@ const addOverlayToDocument = (owner, position) => {
 
 const removeOverlayFromDocument = () => {
   const element = document.getElementById(options.ids.overlay)
-  element.style.opacity = 0
-  wait(options.transitionDuration).then(() => {
-    if (element.parentNode) element.parentNode.removeChild(element)
-  })
+  if (element) {
+    element.style.opacity = 0
+    wait(options.transitionDuration).then(() => {
+      if (element.parentNode) element.parentNode.removeChild(element)
+    })
+  }
 }
 
 export const hideAlerts = callback => {
