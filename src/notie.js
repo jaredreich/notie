@@ -177,7 +177,7 @@ export const alert = ({
   time = options.alertTime,
   stay = false,
   position = options.positions.alert || position.top
-}) => {
+}, callbackArg) => {
   blur()
   hideAlerts()
 
@@ -189,7 +189,10 @@ export const alert = ({
   element.classList.add(typeToClassLookup[type])
   element.classList.add(options.classes.alert)
   element.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
-  element.onclick = () => removeFromDocument(id, position)
+  element.onclick = () => {
+    removeFromDocument(id, position)
+    if (callbackArg) callbackArg()
+  }
 
   element.listener = event => {
     if (enterClicked(event) || escapeClicked(event)) hideAlerts()
@@ -198,7 +201,10 @@ export const alert = ({
   addToDocument(element, position)
 
   if (time && time < 1) time = 1
-  if (!stay && time) wait(time).then(() => removeFromDocument(id, position))
+  if (!stay && time) wait(time).then(() => {
+    removeFromDocument(id, position)
+    if (callbackArg) callbackArg()
+  })
 }
 
 export const force = ({

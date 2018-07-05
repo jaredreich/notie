@@ -84,7 +84,8 @@ notie.alert({
   text: String,
   stay: Boolean, // optional, default = false
   time: Number, // optional, default = 3, minimum = 1,
-  position: String // optional, default = 'top', enum: ['top', 'bottom']
+  position: String, // optional, default = 'top', enum: ['top', 'bottom']
+  callback: Function // optional
 })
 
 notie.force({
