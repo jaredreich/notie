@@ -1,13 +1,11 @@
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/M1dqXUAHgdV9R3AjAqs5fF2M/jaredreich/notie'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/M1dqXUAHgdV9R3AjAqs5fF2M/jaredreich/notie.svg' />
-</a>
-
 # notie
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![npm](https://img.shields.io/npm/v/notie.svg)](https://www.npmjs.com/package/notie)
+[![cdnjs](https://img.shields.io/cdnjs/v/notie.svg)](https://cdnjs.com/libraries/notie)
 
-notie is a clean and simple notification, input, and selection suite for javascript, with no dependencies.
-demo: https://jaredreich.com/notie
+> notie is a clean and simple notification, input, and selection suite for javascript, with no dependencies
+
+Live demo: [https://jaredreich.com/notie](https://jaredreich.com/notie)
 
 #### With notie you can:
 * Alert users
@@ -64,21 +62,21 @@ npm install notie
 ## Usage
 
 #### ES6:
-```javascript
+```js
 import notie from 'notie'
 // or
 import { alert, force, confirm, input, select, date, setOptions, hideAlerts } from 'notie'
 ```
 
 #### Browser:
-```javascript
+```js
 notie
 // or
 window.notie
 ```
 
 #### Available methods:
-```javascript
+```js
 notie.alert({
   type: Number|String, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
   text: String,
@@ -121,6 +119,7 @@ notie.input({
   min: '5', // default: ''
   minlength: '1', // default: ''
   placeholder: 'Jane Smith', // default: ''
+  value: String, // default: ''
   spellcheck: 'false', // default: 'default'
   step: '5', // default: 'any'
   type: 'text', // default: 'text'
@@ -153,7 +152,7 @@ notie.date({
 ```
 
 #### For example:
-```javascript
+```js
 notie.alert({ text: 'Info!' })
 notie.alert({ type: 1, text: 'Success!', stay: true }) // Never hides unless clicked, or escape or enter is pressed
 notie.alert({ type: 'success', text: 'Success!', time: 2 }) // Hides after 2 seconds
@@ -325,7 +324,7 @@ $notie-color-neutral: #A0A0A0;
 
 ## Options & Methods
 
-```javascript
+```js
 // Showing all available options with defaults
 notie.setOptions({
   alertTime: 3,
@@ -370,7 +369,7 @@ notie.setOptions({
 })
 ```
 
-```javascript
+```js
 // programmatically hide all alerts with an optional callback function
 notie.hideAlerts(callbackOptional)
 ```
