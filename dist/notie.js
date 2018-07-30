@@ -115,6 +115,7 @@ var options = {
     textbox: 'notie-textbox',
     textboxInner: 'notie-textbox-inner',
     button: 'notie-button',
+    buttonGroup: 'notie-button-group',
     element: 'notie-element',
     elementHalf: 'notie-element-half',
     elementThird: 'notie-element-third',
@@ -126,6 +127,11 @@ var options = {
     backgroundNeutral: 'notie-background-neutral',
     backgroundOverlay: 'notie-background-overlay',
     alert: 'notie-alert',
+    confirm: 'notie-confirm',
+    force: 'notie-force',
+    input: 'notie-input',
+    select: 'notie-select',
+    date: 'notie-date',
     inputField: 'notie-input-field',
     selectChoiceRepeated: 'notie-select-choice-repeated',
     dateSelectorInner: 'notie-date-selector-inner',
@@ -361,6 +367,8 @@ var force = exports.force = function force(_ref2, callbackArg) {
 
 var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cancelCallbackArg) {
   var text = _ref3.text,
+      _ref3$submitPosition = _ref3.submitPosition,
+      submitPosition = _ref3$submitPosition === undefined ? 'left' : _ref3$submitPosition,
       _ref3$submitText = _ref3.submitText,
       submitText = _ref3$submitText === undefined ? 'Yes' : _ref3$submitText,
       _ref3$cancelText = _ref3.cancelText,
@@ -376,37 +384,43 @@ var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cance
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
+  element.classList.add(options.classes.confirm);
 
   var elementText = document.createElement('div');
   elementText.classList.add(options.classes.textbox);
   elementText.classList.add(options.classes.backgroundInfo);
   elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
 
-  var elementButtonLeft = document.createElement('div');
-  elementButtonLeft.classList.add(options.classes.button);
-  elementButtonLeft.classList.add(options.classes.elementHalf);
-  elementButtonLeft.classList.add(options.classes.backgroundSuccess);
-  elementButtonLeft.innerHTML = submitText;
-  elementButtonLeft.onclick = function () {
+  var elementSubmitButton = document.createElement('div');
+  elementSubmitButton.classList.add(options.classes.button);
+  elementSubmitButton.classList.add(options.classes.elementHalf);
+  elementSubmitButton.classList.add(options.classes.backgroundSuccess);
+  elementSubmitButton.innerHTML = submitText;
+  elementSubmitButton.onclick = function () {
     removeFromDocument(id, position);
     removeOverlayFromDocument();
     if (submitCallback) submitCallback();else if (submitCallbackArg) submitCallbackArg();
   };
 
-  var elementButtonRight = document.createElement('div');
-  elementButtonRight.classList.add(options.classes.button);
-  elementButtonRight.classList.add(options.classes.elementHalf);
-  elementButtonRight.classList.add(options.classes.backgroundError);
-  elementButtonRight.innerHTML = cancelText;
-  elementButtonRight.onclick = function () {
+  var elementCancelButton = document.createElement('div');
+  elementCancelButton.classList.add(options.classes.button);
+  elementCancelButton.classList.add(options.classes.elementHalf);
+  elementCancelButton.classList.add(options.classes.backgroundError);
+  elementCancelButton.innerHTML = cancelText;
+  elementCancelButton.onclick = function () {
     removeFromDocument(id, position);
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback();else if (cancelCallbackArg) cancelCallbackArg();
   };
 
+  var elementButtonGroup = document.createElement('div');
+  elementButtonGroup.classList.add(options.classes.buttonGroup);
+
+  elementButtonGroup.appendChild(submitPosition === 'right' ? elementCancelButton : elementSubmitButton);
+  elementButtonGroup.appendChild(submitPosition === 'right' ? elementSubmitButton : elementCancelButton);
+
   element.appendChild(elementText);
-  element.appendChild(elementButtonLeft);
-  element.appendChild(elementButtonRight);
+  element.appendChild(elementButtonGroup);
 
   element.listener = function (event) {
     if (enterClicked(event)) elementButtonLeft.click();else if (escapeClicked(event)) elementButtonRight.click();
@@ -435,6 +449,7 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
+  element.classList.add(options.classes.input);
 
   var elementText = document.createElement('div');
   elementText.classList.add(options.classes.textbox);
@@ -533,6 +548,7 @@ var select = exports.select = function select(_ref5, cancelCallbackArg) {
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
+  element.classList.add(options.classes.select);
 
   var elementText = document.createElement('div');
   elementText.classList.add(options.classes.textbox);
@@ -656,6 +672,7 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
+  element.classList.add(options.classes.date);
 
   var elementDateSelector = document.createElement('div');
   elementDateSelector.classList.add(options.classes.backgroundInfo);
