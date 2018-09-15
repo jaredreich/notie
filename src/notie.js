@@ -101,6 +101,14 @@ const getTransition = () => (
 const enterClicked = event => event.keyCode === 13
 const escapeClicked = event => event.keyCode === 27
 
+const makeElement = (elemType, classes) => {
+  const element = document.createElement(elemType)
+  if (classes) {
+    classes.forEach(c => element.classList.add(c))
+  }
+  return element
+}
+
 const addToDocument = (element, position) => {
   element.classList.add(options.classes.container)
   element.style[position] = '-10000px'
@@ -128,10 +136,11 @@ const removeFromDocument = (id, position) => {
 }
 
 const addOverlayToDocument = (owner, position) => {
-  const element = document.createElement('div')
+  const element = makeElement('div', [
+    options.classes.overlay,
+    options.classes.backgroundOverlay
+  ])
   element.id = options.ids.overlay
-  element.classList.add(options.classes.overlay)
-  element.classList.add(options.classes.backgroundOverlay)
   element.style.opacity = 0
   if (owner && options.overlayClickDismiss) {
     element.onclick = () => {
@@ -168,6 +177,29 @@ export const hideAlerts = callback => {
 }
 
 // ====================
+// shared elements
+// ====================
+
+const div = classes => {
+  const element = makeElement('div', classes)
+  element.id = generateRandomId()
+  return element
+}
+
+const button = (innerHTML, classes, onclick) => {
+  const element = makeElement('div', classes)
+  element.innerHTML = innerHTML
+  element.onclick = onclick
+  return element
+}
+
+const textbox = (text, classes) => {
+  const element = div(classes)
+  element.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
+  return element
+}
+
+// ====================
 // exports
 // ====================
 
@@ -181,15 +213,13 @@ export const alert = ({
   blur()
   hideAlerts()
 
-  const element = document.createElement('div')
-  const id = generateRandomId()
-  element.id = id
+  const element = textbox(text, [
+    options.classes.textbox,
+    typeToClassLookup[type],
+    options.classes.alert
+  ])
   element.position = position
-  element.classList.add(options.classes.textbox)
-  element.classList.add(typeToClassLookup[type])
-  element.classList.add(options.classes.alert)
-  element.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
-  element.onclick = () => removeFromDocument(id, position)
+  element.onclick = () => removeFromDocument(element.id, position)
 
   element.listener = event => {
     if (enterClicked(event) || escapeClicked(event)) hideAlerts()
@@ -198,7 +228,7 @@ export const alert = ({
   addToDocument(element, position)
 
   if (time && time < 1) time = 1
-  if (!stay && time) wait(time).then(() => removeFromDocument(id, position))
+  if (!stay && time) wait(time).then(() => removeFromDocument(element.id, position))
 }
 
 export const force = ({
@@ -211,25 +241,22 @@ export const force = ({
   blur()
   hideAlerts()
 
-  const element = document.createElement('div')
-  const id = generateRandomId()
-  element.id = id
+  const element = div()
 
-  const elementText = document.createElement('div')
-  elementText.classList.add(options.classes.textbox)
-  elementText.classList.add(options.classes.backgroundInfo)
-  elementText.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
+  const elementText = textbox(text, [
+    options.classes.textbox,
+    options.classes.backgroundInfo
+  ])
 
-  const elementButton = document.createElement('div')
-  elementButton.classList.add(options.classes.button)
-  elementButton.classList.add(typeToClassLookup[type])
-  elementButton.innerHTML = buttonText
-  elementButton.onclick = () => {
-    removeFromDocument(id, position)
+  const elementButton = button(buttonText, [
+    options.classes.button,
+    typeToClassLookup[type]
+  ], () => {
+    removeFromDocument(element.id, position)
     removeOverlayFromDocument()
     if (callback) callback()
     else if (callbackArg) callbackArg()
-  }
+  })
 
   element.appendChild(elementText)
   element.appendChild(elementButton)
@@ -254,38 +281,34 @@ export const confirm = ({
   blur()
   hideAlerts()
 
-  const element = document.createElement('div')
-  const id = generateRandomId()
-  element.id = id
+  const element = div()
 
-  const elementText = document.createElement('div')
-  elementText.classList.add(options.classes.textbox)
-  elementText.classList.add(options.classes.backgroundInfo)
-  elementText.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
+  const elementText = textbox(text, [
+    options.classes.textbox,
+    options.classes.backgroundInfo
+  ])
 
-  const elementButtonLeft = document.createElement('div')
-  elementButtonLeft.classList.add(options.classes.button)
-  elementButtonLeft.classList.add(options.classes.elementHalf)
-  elementButtonLeft.classList.add(options.classes.backgroundSuccess)
-  elementButtonLeft.innerHTML = submitText
-  elementButtonLeft.onclick = () => {
-    removeFromDocument(id, position)
+  const elementButtonLeft = button(submitText, [
+    options.classes.button,
+    options.classes.elementHalf,
+    options.classes.backgroundSuccess
+  ], () => {
+    removeFromDocument(element.id, position)
     removeOverlayFromDocument()
     if (submitCallback) submitCallback()
     else if (submitCallbackArg) submitCallbackArg()
-  }
+  })
 
-  const elementButtonRight = document.createElement('div')
-  elementButtonRight.classList.add(options.classes.button)
-  elementButtonRight.classList.add(options.classes.elementHalf)
-  elementButtonRight.classList.add(options.classes.backgroundError)
-  elementButtonRight.innerHTML = cancelText
-  elementButtonRight.onclick = () => {
-    removeFromDocument(id, position)
+  const elementButtonRight = button(cancelText, [
+    options.classes.button,
+    options.classes.elementHalf,
+    options.classes.backgroundError
+  ], () => {
+    removeFromDocument(element.id, position)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback()
     else if (cancelCallbackArg) cancelCallbackArg()
-  }
+  })
 
   element.appendChild(elementText)
   element.appendChild(elementButtonLeft)
@@ -313,17 +336,16 @@ export const input = ({
   blur()
   hideAlerts()
 
-  const element = document.createElement('div')
-  const id = generateRandomId()
-  element.id = id
+  const element = div()
 
-  const elementText = document.createElement('div')
-  elementText.classList.add(options.classes.textbox)
-  elementText.classList.add(options.classes.backgroundInfo)
-  elementText.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
+  const elementText = textbox(text, [
+    options.classes.textbox,
+    options.classes.backgroundInfo
+  ])
 
-  const elementInput = document.createElement('input')
-  elementInput.classList.add(options.classes.inputField)
+  const elementInput = makeElement('input', [
+    options.classes.inputField
+  ])
 
   elementInput.setAttribute('autocapitalize', settings.autocapitalize || 'none')
   elementInput.setAttribute('autocomplete', settings.autocomplete || 'off')
@@ -362,29 +384,27 @@ export const input = ({
     }
   }
 
-  const elementButtonLeft = document.createElement('div')
-  elementButtonLeft.classList.add(options.classes.button)
-  elementButtonLeft.classList.add(options.classes.elementHalf)
-  elementButtonLeft.classList.add(options.classes.backgroundSuccess)
-  elementButtonLeft.innerHTML = submitText
-  elementButtonLeft.onclick = () => {
-    removeFromDocument(id, position)
+  const elementButtonLeft = button(submitText, [
+    options.classes.button,
+    options.classes.elementHalf,
+    options.classes.backgroundSuccess
+  ], () => {
+    removeFromDocument(element.id, position)
     removeOverlayFromDocument()
     if (submitCallback) submitCallback(elementInput.value)
     else if (submitCallbackArg) submitCallbackArg(elementInput.value)
-  }
+  })
 
-  const elementButtonRight = document.createElement('div')
-  elementButtonRight.classList.add(options.classes.button)
-  elementButtonRight.classList.add(options.classes.elementHalf)
-  elementButtonRight.classList.add(options.classes.backgroundError)
-  elementButtonRight.innerHTML = cancelText
-  elementButtonRight.onclick = () => {
-    removeFromDocument(id, position)
+  const elementButtonRight = button(cancelText, [
+    options.classes.button,
+    options.classes.elementHalf,
+    options.classes.backgroundError
+  ], () => {
+    removeFromDocument(element.id, position)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback(elementInput.value)
     else if (cancelCallbackArg) cancelCallbackArg(elementInput.value)
-  }
+  })
 
   element.appendChild(elementText)
   element.appendChild(elementInput)
@@ -413,22 +433,21 @@ export const select = ({
   blur()
   hideAlerts()
 
-  const element = document.createElement('div')
-  const id = generateRandomId()
-  element.id = id
+  const element = div()
 
-  const elementText = document.createElement('div')
-  elementText.classList.add(options.classes.textbox)
-  elementText.classList.add(options.classes.backgroundInfo)
-  elementText.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
+  const elementText = textbox(text, [
+    options.classes.textbox,
+    options.classes.backgroundInfo
+  ])
 
   element.appendChild(elementText)
 
   choices.forEach(({ type = 1, text, handler }, index) => {
-    const elementChoice = document.createElement('div')
-    elementChoice.classList.add(typeToClassLookup[type])
-    elementChoice.classList.add(options.classes.button)
-    elementChoice.classList.add(options.classes.selectChoice)
+    const elementChoice = div([
+      typeToClassLookup[type],
+      options.classes.button,
+      options.classes.selectChoice
+    ])
 
     const nextChoice = choices[index + 1]
     if (nextChoice && !nextChoice.type) nextChoice.type = 1
@@ -438,7 +457,7 @@ export const select = ({
 
     elementChoice.innerHTML = text
     elementChoice.onclick = () => {
-      removeFromDocument(id, position)
+      removeFromDocument(element.id, position)
       removeOverlayFromDocument()
       handler()
     }
@@ -446,16 +465,15 @@ export const select = ({
     element.appendChild(elementChoice)
   })
 
-  const elementCancel = document.createElement('div')
-  elementCancel.classList.add(options.classes.backgroundNeutral)
-  elementCancel.classList.add(options.classes.button)
-  elementCancel.innerHTML = cancelText
-  elementCancel.onclick = () => {
-    removeFromDocument(id, position)
+  const elementCancel = button(cancelText, [
+    options.classes.backgroundNeutral,
+    options.classes.button
+  ], () => {
+    removeFromDocument(element.id, position)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback()
     else if (cancelCallbackArg) cancelCallbackArg()
-  }
+  })
 
   element.appendChild(elementCancel)
 
@@ -481,9 +499,14 @@ export const date = ({
 
   const arrow = '&#9662'
 
-  const elementDateMonth = document.createElement('div')
-  const elementDateDay = document.createElement('div')
-  const elementDateYear = document.createElement('div')
+  const elementDateThird = () => div([
+    options.classes.element,
+    options.classes.elementThird
+  ])
+
+  const elementDateMonth = elementDateThird()
+  const elementDateDay = elementDateThird()
+  const elementDateYear = elementDateThird()
 
   const setValueHTML = date => {
     elementDateMonth.innerHTML = options.dateMonths[date.getMonth()]
@@ -543,97 +566,62 @@ export const date = ({
     setValueHTML(value)
   }
 
-  const element = document.createElement('div')
-  const id = generateRandomId()
-  element.id = id
+  const element = div()
+  const elementDateSelector = div([options.classes.backgroundInfo])
+  const elementDateSelectorInner = div([options.classes.dateSelectorInner])
 
-  const elementDateSelector = document.createElement('div')
-  elementDateSelector.classList.add(options.classes.backgroundInfo)
+  const downButton = onclick => button(arrow, [
+    options.classes.button,
+    options.classes.elementThird
+  ], onclick)
 
-  const elementDateSelectorInner = document.createElement('div')
-  elementDateSelectorInner.classList.add(options.classes.dateSelectorInner)
+  const upButton = onclick => {
+    const element = downButton(onclick)
+    element.classList.add(options.classes.dateSelectorUp)
+    return element
+  }
 
-  const elementDateUpMonth = document.createElement('div')
-  elementDateUpMonth.classList.add(options.classes.button)
-  elementDateUpMonth.classList.add(options.classes.elementThird)
-  elementDateUpMonth.classList.add(options.classes.dateSelectorUp)
-  elementDateUpMonth.innerHTML = arrow
+  const elementDateUpMonth = upButton(() => updateMonth(1))
+  const elementDateUpDay = upButton(() => updateDay(1))
+  const elementDateUpYear = upButton(() => updateYear(1))
 
-  const elementDateUpDay = document.createElement('div')
-  elementDateUpDay.classList.add(options.classes.button)
-  elementDateUpDay.classList.add(options.classes.elementThird)
-  elementDateUpDay.classList.add(options.classes.dateSelectorUp)
-  elementDateUpDay.innerHTML = arrow
-
-  const elementDateUpYear = document.createElement('div')
-  elementDateUpYear.classList.add(options.classes.button)
-  elementDateUpYear.classList.add(options.classes.elementThird)
-  elementDateUpYear.classList.add(options.classes.dateSelectorUp)
-  elementDateUpYear.innerHTML = arrow
-
-  elementDateMonth.classList.add(options.classes.element)
-  elementDateMonth.classList.add(options.classes.elementThird)
   elementDateMonth.innerHTML = options.dateMonths[value.getMonth()]
 
-  elementDateDay.classList.add(options.classes.element)
-  elementDateDay.classList.add(options.classes.elementThird)
   elementDateDay.setAttribute('contentEditable', true)
   elementDateDay.addEventListener('input', handleDayInput)
   elementDateDay.addEventListener('blur', handleBlur)
   elementDateDay.innerHTML = value.getDate()
 
-  elementDateYear.classList.add(options.classes.element)
-  elementDateYear.classList.add(options.classes.elementThird)
   elementDateYear.setAttribute('contentEditable', true)
   elementDateYear.addEventListener('input', handleYearInput)
   elementDateYear.addEventListener('blur', handleBlur)
   elementDateYear.innerHTML = value.getFullYear()
 
-  const elementDateDownMonth = document.createElement('div')
-  elementDateDownMonth.classList.add(options.classes.button)
-  elementDateDownMonth.classList.add(options.classes.elementThird)
-  elementDateDownMonth.innerHTML = arrow
+  const elementDateDownMonth = downButton(() => updateMonth(-1))
+  const elementDateDownDay = downButton(() => updateDay(-1))
+  const elementDateDownYear = downButton(() => updateYear(-1))
 
-  const elementDateDownDay = document.createElement('div')
-  elementDateDownDay.classList.add(options.classes.button)
-  elementDateDownDay.classList.add(options.classes.elementThird)
-  elementDateDownDay.innerHTML = arrow
-
-  const elementDateDownYear = document.createElement('div')
-  elementDateDownYear.classList.add(options.classes.button)
-  elementDateDownYear.classList.add(options.classes.elementThird)
-  elementDateDownYear.innerHTML = arrow
-
-  elementDateUpMonth.onclick = () => updateMonth(1)
-  elementDateUpDay.onclick = () => updateDay(1)
-  elementDateUpYear.onclick = () => updateYear(1)
-  elementDateDownMonth.onclick = () => updateMonth(-1)
-  elementDateDownDay.onclick = () => updateDay(-1)
-  elementDateDownYear.onclick = () => updateYear(-1)
-
-  const elementButtonLeft = document.createElement('div')
-  elementButtonLeft.classList.add(options.classes.button)
-  elementButtonLeft.classList.add(options.classes.elementHalf)
-  elementButtonLeft.classList.add(options.classes.backgroundSuccess)
-  elementButtonLeft.innerHTML = submitText
-  elementButtonLeft.onclick = () => {
-    removeFromDocument(id, position)
+  const elementButtonLeft = button(submitText, [
+    options.classes.button,
+    options.classes.elementHalf,
+    options.classes.backgroundSuccess
+  ], () => {
+    removeFromDocument(element.id, position)
     removeOverlayFromDocument()
     if (submitCallback) submitCallback(value)
     else if (submitCallbackArg) submitCallbackArg(value)
-  }
+  })
 
-  const elementButtonRight = document.createElement('div')
-  elementButtonRight.classList.add(options.classes.button)
-  elementButtonRight.classList.add(options.classes.elementHalf)
-  elementButtonRight.classList.add(options.classes.backgroundError)
-  elementButtonRight.innerHTML = cancelText
-  elementButtonRight.onclick = () => {
-    removeFromDocument(id, position)
+  const elementButtonRight = button(cancelText, [
+    options.classes.button,
+    options.classes.elementHalf,
+    options.classes.backgroundError
+  ], () => {
+    removeFromDocument(element.id, position)
     removeOverlayFromDocument()
     if (cancelCallback) cancelCallback(value)
     else if (cancelCallbackArg) cancelCallbackArg(value)
-  }
+  })
 
   elementDateSelectorInner.appendChild(elementDateUpMonth)
   elementDateSelectorInner.appendChild(elementDateUpDay)

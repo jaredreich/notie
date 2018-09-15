@@ -205,6 +205,16 @@ var escapeClicked = function escapeClicked(event) {
   return event.keyCode === 27;
 };
 
+var makeElement = function makeElement(elemType, classes) {
+  var element = document.createElement(elemType);
+  if (classes) {
+    classes.forEach(function (c) {
+      return element.classList.add(c);
+    });
+  }
+  return element;
+};
+
 var addToDocument = function addToDocument(element, position) {
   element.classList.add(options.classes.container);
   element.style[position] = '-10000px';
@@ -232,10 +242,8 @@ var removeFromDocument = function removeFromDocument(id, position) {
 };
 
 var addOverlayToDocument = function addOverlayToDocument(owner, position) {
-  var element = document.createElement('div');
+  var element = makeElement('div', [options.classes.overlay, options.classes.backgroundOverlay]);
   element.id = options.ids.overlay;
-  element.classList.add(options.classes.overlay);
-  element.classList.add(options.classes.backgroundOverlay);
   element.style.opacity = 0;
   if (owner && options.overlayClickDismiss) {
     element.onclick = function () {
@@ -274,6 +282,29 @@ var hideAlerts = exports.hideAlerts = function hideAlerts(callback) {
 };
 
 // ====================
+// shared elements
+// ====================
+
+var div = function div(classes) {
+  var element = makeElement('div', classes);
+  element.id = generateRandomId();
+  return element;
+};
+
+var button = function button(innerHTML, classes, onclick) {
+  var element = makeElement('div', classes);
+  element.innerHTML = innerHTML;
+  element.onclick = onclick;
+  return element;
+};
+
+var textbox = function textbox(text, classes) {
+  var element = div(classes);
+  element.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
+  return element;
+};
+
+// ====================
 // exports
 // ====================
 
@@ -291,16 +322,10 @@ var alert = exports.alert = function alert(_ref) {
   blur();
   hideAlerts();
 
-  var element = document.createElement('div');
-  var id = generateRandomId();
-  element.id = id;
+  var element = textbox(text, [options.classes.textbox, typeToClassLookup[type], options.classes.alert]);
   element.position = position;
-  element.classList.add(options.classes.textbox);
-  element.classList.add(typeToClassLookup[type]);
-  element.classList.add(options.classes.alert);
-  element.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
   element.onclick = function () {
-    return removeFromDocument(id, position);
+    return removeFromDocument(element.id, position);
   };
 
   element.listener = function (event) {
@@ -311,7 +336,7 @@ var alert = exports.alert = function alert(_ref) {
 
   if (time && time < 1) time = 1;
   if (!stay && time) wait(time).then(function () {
-    return removeFromDocument(id, position);
+    return removeFromDocument(element.id, position);
   });
 };
 
@@ -328,24 +353,15 @@ var force = exports.force = function force(_ref2, callbackArg) {
   blur();
   hideAlerts();
 
-  var element = document.createElement('div');
-  var id = generateRandomId();
-  element.id = id;
+  var element = div();
 
-  var elementText = document.createElement('div');
-  elementText.classList.add(options.classes.textbox);
-  elementText.classList.add(options.classes.backgroundInfo);
-  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
+  var elementText = textbox(text, [options.classes.textbox, options.classes.backgroundInfo]);
 
-  var elementButton = document.createElement('div');
-  elementButton.classList.add(options.classes.button);
-  elementButton.classList.add(typeToClassLookup[type]);
-  elementButton.innerHTML = buttonText;
-  elementButton.onclick = function () {
-    removeFromDocument(id, position);
+  var elementButton = button(buttonText, [options.classes.button, typeToClassLookup[type]], function () {
+    removeFromDocument(element.id, position);
     removeOverlayFromDocument();
     if (callback) callback();else if (callbackArg) callbackArg();
-  };
+  });
 
   element.appendChild(elementText);
   element.appendChild(elementButton);
@@ -373,36 +389,21 @@ var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cance
   blur();
   hideAlerts();
 
-  var element = document.createElement('div');
-  var id = generateRandomId();
-  element.id = id;
+  var element = div();
 
-  var elementText = document.createElement('div');
-  elementText.classList.add(options.classes.textbox);
-  elementText.classList.add(options.classes.backgroundInfo);
-  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
+  var elementText = textbox(text, [options.classes.textbox, options.classes.backgroundInfo]);
 
-  var elementButtonLeft = document.createElement('div');
-  elementButtonLeft.classList.add(options.classes.button);
-  elementButtonLeft.classList.add(options.classes.elementHalf);
-  elementButtonLeft.classList.add(options.classes.backgroundSuccess);
-  elementButtonLeft.innerHTML = submitText;
-  elementButtonLeft.onclick = function () {
-    removeFromDocument(id, position);
+  var elementButtonLeft = button(submitText, [options.classes.button, options.classes.elementHalf, options.classes.backgroundSuccess], function () {
+    removeFromDocument(element.id, position);
     removeOverlayFromDocument();
     if (submitCallback) submitCallback();else if (submitCallbackArg) submitCallbackArg();
-  };
+  });
 
-  var elementButtonRight = document.createElement('div');
-  elementButtonRight.classList.add(options.classes.button);
-  elementButtonRight.classList.add(options.classes.elementHalf);
-  elementButtonRight.classList.add(options.classes.backgroundError);
-  elementButtonRight.innerHTML = cancelText;
-  elementButtonRight.onclick = function () {
-    removeFromDocument(id, position);
+  var elementButtonRight = button(cancelText, [options.classes.button, options.classes.elementHalf, options.classes.backgroundError], function () {
+    removeFromDocument(element.id, position);
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback();else if (cancelCallbackArg) cancelCallbackArg();
-  };
+  });
 
   element.appendChild(elementText);
   element.appendChild(elementButtonLeft);
@@ -432,17 +433,11 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   blur();
   hideAlerts();
 
-  var element = document.createElement('div');
-  var id = generateRandomId();
-  element.id = id;
+  var element = div();
 
-  var elementText = document.createElement('div');
-  elementText.classList.add(options.classes.textbox);
-  elementText.classList.add(options.classes.backgroundInfo);
-  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
+  var elementText = textbox(text, [options.classes.textbox, options.classes.backgroundInfo]);
 
-  var elementInput = document.createElement('input');
-  elementInput.classList.add(options.classes.inputField);
+  var elementInput = makeElement('input', [options.classes.inputField]);
 
   elementInput.setAttribute('autocapitalize', settings.autocapitalize || 'none');
   elementInput.setAttribute('autocomplete', settings.autocomplete || 'off');
@@ -479,27 +474,17 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
     };
   }
 
-  var elementButtonLeft = document.createElement('div');
-  elementButtonLeft.classList.add(options.classes.button);
-  elementButtonLeft.classList.add(options.classes.elementHalf);
-  elementButtonLeft.classList.add(options.classes.backgroundSuccess);
-  elementButtonLeft.innerHTML = submitText;
-  elementButtonLeft.onclick = function () {
-    removeFromDocument(id, position);
+  var elementButtonLeft = button(submitText, [options.classes.button, options.classes.elementHalf, options.classes.backgroundSuccess], function () {
+    removeFromDocument(element.id, position);
     removeOverlayFromDocument();
     if (submitCallback) submitCallback(elementInput.value);else if (submitCallbackArg) submitCallbackArg(elementInput.value);
-  };
+  });
 
-  var elementButtonRight = document.createElement('div');
-  elementButtonRight.classList.add(options.classes.button);
-  elementButtonRight.classList.add(options.classes.elementHalf);
-  elementButtonRight.classList.add(options.classes.backgroundError);
-  elementButtonRight.innerHTML = cancelText;
-  elementButtonRight.onclick = function () {
-    removeFromDocument(id, position);
+  var elementButtonRight = button(cancelText, [options.classes.button, options.classes.elementHalf, options.classes.backgroundError], function () {
+    removeFromDocument(element.id, position);
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback(elementInput.value);else if (cancelCallbackArg) cancelCallbackArg(elementInput.value);
-  };
+  });
 
   element.appendChild(elementText);
   element.appendChild(elementInput);
@@ -530,14 +515,9 @@ var select = exports.select = function select(_ref5, cancelCallbackArg) {
   blur();
   hideAlerts();
 
-  var element = document.createElement('div');
-  var id = generateRandomId();
-  element.id = id;
+  var element = div();
 
-  var elementText = document.createElement('div');
-  elementText.classList.add(options.classes.textbox);
-  elementText.classList.add(options.classes.backgroundInfo);
-  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
+  var elementText = textbox(text, [options.classes.textbox, options.classes.backgroundInfo]);
 
   element.appendChild(elementText);
 
@@ -547,10 +527,7 @@ var select = exports.select = function select(_ref5, cancelCallbackArg) {
         text = _ref6.text,
         handler = _ref6.handler;
 
-    var elementChoice = document.createElement('div');
-    elementChoice.classList.add(typeToClassLookup[type]);
-    elementChoice.classList.add(options.classes.button);
-    elementChoice.classList.add(options.classes.selectChoice);
+    var elementChoice = div([typeToClassLookup[type], options.classes.button, options.classes.selectChoice]);
 
     var nextChoice = choices[index + 1];
     if (nextChoice && !nextChoice.type) nextChoice.type = 1;
@@ -560,7 +537,7 @@ var select = exports.select = function select(_ref5, cancelCallbackArg) {
 
     elementChoice.innerHTML = text;
     elementChoice.onclick = function () {
-      removeFromDocument(id, position);
+      removeFromDocument(element.id, position);
       removeOverlayFromDocument();
       handler();
     };
@@ -568,15 +545,11 @@ var select = exports.select = function select(_ref5, cancelCallbackArg) {
     element.appendChild(elementChoice);
   });
 
-  var elementCancel = document.createElement('div');
-  elementCancel.classList.add(options.classes.backgroundNeutral);
-  elementCancel.classList.add(options.classes.button);
-  elementCancel.innerHTML = cancelText;
-  elementCancel.onclick = function () {
-    removeFromDocument(id, position);
+  var elementCancel = button(cancelText, [options.classes.backgroundNeutral, options.classes.button], function () {
+    removeFromDocument(element.id, position);
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback();else if (cancelCallbackArg) cancelCallbackArg();
-  };
+  });
 
   element.appendChild(elementCancel);
 
@@ -606,9 +579,13 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
 
   var arrow = '&#9662';
 
-  var elementDateMonth = document.createElement('div');
-  var elementDateDay = document.createElement('div');
-  var elementDateYear = document.createElement('div');
+  var elementDateThird = function elementDateThird() {
+    return div([options.classes.element, options.classes.elementThird]);
+  };
+
+  var elementDateMonth = elementDateThird();
+  var elementDateDay = elementDateThird();
+  var elementDateYear = elementDateThird();
 
   var setValueHTML = function setValueHTML(date) {
     elementDateMonth.innerHTML = options.dateMonths[date.getMonth()];
@@ -653,107 +630,63 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
     setValueHTML(value);
   };
 
-  var element = document.createElement('div');
-  var id = generateRandomId();
-  element.id = id;
+  var element = div();
+  var elementDateSelector = div([options.classes.backgroundInfo]);
+  var elementDateSelectorInner = div([options.classes.dateSelectorInner]);
 
-  var elementDateSelector = document.createElement('div');
-  elementDateSelector.classList.add(options.classes.backgroundInfo);
+  var downButton = function downButton(onclick) {
+    return button(arrow, [options.classes.button, options.classes.elementThird], onclick);
+  };
 
-  var elementDateSelectorInner = document.createElement('div');
-  elementDateSelectorInner.classList.add(options.classes.dateSelectorInner);
+  var upButton = function upButton(onclick) {
+    var element = downButton(onclick);
+    element.classList.add(options.classes.dateSelectorUp);
+    return element;
+  };
 
-  var elementDateUpMonth = document.createElement('div');
-  elementDateUpMonth.classList.add(options.classes.button);
-  elementDateUpMonth.classList.add(options.classes.elementThird);
-  elementDateUpMonth.classList.add(options.classes.dateSelectorUp);
-  elementDateUpMonth.innerHTML = arrow;
+  var elementDateUpMonth = upButton(function () {
+    return updateMonth(1);
+  });
+  var elementDateUpDay = upButton(function () {
+    return updateDay(1);
+  });
+  var elementDateUpYear = upButton(function () {
+    return updateYear(1);
+  });
 
-  var elementDateUpDay = document.createElement('div');
-  elementDateUpDay.classList.add(options.classes.button);
-  elementDateUpDay.classList.add(options.classes.elementThird);
-  elementDateUpDay.classList.add(options.classes.dateSelectorUp);
-  elementDateUpDay.innerHTML = arrow;
-
-  var elementDateUpYear = document.createElement('div');
-  elementDateUpYear.classList.add(options.classes.button);
-  elementDateUpYear.classList.add(options.classes.elementThird);
-  elementDateUpYear.classList.add(options.classes.dateSelectorUp);
-  elementDateUpYear.innerHTML = arrow;
-
-  elementDateMonth.classList.add(options.classes.element);
-  elementDateMonth.classList.add(options.classes.elementThird);
   elementDateMonth.innerHTML = options.dateMonths[value.getMonth()];
 
-  elementDateDay.classList.add(options.classes.element);
-  elementDateDay.classList.add(options.classes.elementThird);
   elementDateDay.setAttribute('contentEditable', true);
   elementDateDay.addEventListener('input', handleDayInput);
   elementDateDay.addEventListener('blur', handleBlur);
   elementDateDay.innerHTML = value.getDate();
 
-  elementDateYear.classList.add(options.classes.element);
-  elementDateYear.classList.add(options.classes.elementThird);
   elementDateYear.setAttribute('contentEditable', true);
   elementDateYear.addEventListener('input', handleYearInput);
   elementDateYear.addEventListener('blur', handleBlur);
   elementDateYear.innerHTML = value.getFullYear();
 
-  var elementDateDownMonth = document.createElement('div');
-  elementDateDownMonth.classList.add(options.classes.button);
-  elementDateDownMonth.classList.add(options.classes.elementThird);
-  elementDateDownMonth.innerHTML = arrow;
-
-  var elementDateDownDay = document.createElement('div');
-  elementDateDownDay.classList.add(options.classes.button);
-  elementDateDownDay.classList.add(options.classes.elementThird);
-  elementDateDownDay.innerHTML = arrow;
-
-  var elementDateDownYear = document.createElement('div');
-  elementDateDownYear.classList.add(options.classes.button);
-  elementDateDownYear.classList.add(options.classes.elementThird);
-  elementDateDownYear.innerHTML = arrow;
-
-  elementDateUpMonth.onclick = function () {
-    return updateMonth(1);
-  };
-  elementDateUpDay.onclick = function () {
-    return updateDay(1);
-  };
-  elementDateUpYear.onclick = function () {
-    return updateYear(1);
-  };
-  elementDateDownMonth.onclick = function () {
+  var elementDateDownMonth = downButton(function () {
     return updateMonth(-1);
-  };
-  elementDateDownDay.onclick = function () {
+  });
+  var elementDateDownDay = downButton(function () {
     return updateDay(-1);
-  };
-  elementDateDownYear.onclick = function () {
+  });
+  var elementDateDownYear = downButton(function () {
     return updateYear(-1);
-  };
+  });
 
-  var elementButtonLeft = document.createElement('div');
-  elementButtonLeft.classList.add(options.classes.button);
-  elementButtonLeft.classList.add(options.classes.elementHalf);
-  elementButtonLeft.classList.add(options.classes.backgroundSuccess);
-  elementButtonLeft.innerHTML = submitText;
-  elementButtonLeft.onclick = function () {
-    removeFromDocument(id, position);
+  var elementButtonLeft = button(submitText, [options.classes.button, options.classes.elementHalf, options.classes.backgroundSuccess], function () {
+    removeFromDocument(element.id, position);
     removeOverlayFromDocument();
     if (submitCallback) submitCallback(value);else if (submitCallbackArg) submitCallbackArg(value);
-  };
+  });
 
-  var elementButtonRight = document.createElement('div');
-  elementButtonRight.classList.add(options.classes.button);
-  elementButtonRight.classList.add(options.classes.elementHalf);
-  elementButtonRight.classList.add(options.classes.backgroundError);
-  elementButtonRight.innerHTML = cancelText;
-  elementButtonRight.onclick = function () {
-    removeFromDocument(id, position);
+  var elementButtonRight = button(cancelText, [options.classes.button, options.classes.elementHalf, options.classes.backgroundError], function () {
+    removeFromDocument(element.id, position);
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback(value);else if (cancelCallbackArg) cancelCallbackArg(value);
-  };
+  });
 
   elementDateSelectorInner.appendChild(elementDateUpMonth);
   elementDateSelectorInner.appendChild(elementDateUpDay);
