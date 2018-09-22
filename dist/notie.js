@@ -104,6 +104,7 @@ var positions = {
 
 var options = {
   alertTime: 3,
+  alertOverlay: false,
   dateMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   overlayClickDismiss: true,
   overlayOpacity: 0.75,
@@ -232,6 +233,7 @@ var removeFromDocument = function removeFromDocument(id, position) {
 };
 
 var addOverlayToDocument = function addOverlayToDocument(owner, position) {
+  removeOverlayFromDocument();
   var element = document.createElement('div');
   element.id = options.ids.overlay;
   element.classList.add(options.classes.overlay);
@@ -254,10 +256,12 @@ var addOverlayToDocument = function addOverlayToDocument(owner, position) {
 
 var removeOverlayFromDocument = function removeOverlayFromDocument() {
   var element = document.getElementById(options.ids.overlay);
-  element.style.opacity = 0;
-  wait(options.transitionDuration).then(function () {
-    if (element.parentNode) element.parentNode.removeChild(element);
-  });
+  if (element) {
+    element.style.opacity = 0;
+    wait(options.transitionDuration).then(function () {
+      if (element.parentNode) element.parentNode.removeChild(element);
+    });
+  }
 };
 
 var hideAlerts = exports.hideAlerts = function hideAlerts(callback) {
@@ -286,7 +290,9 @@ var alert = exports.alert = function alert(_ref) {
       _ref$stay = _ref.stay,
       stay = _ref$stay === undefined ? false : _ref$stay,
       _ref$position = _ref.position,
-      position = _ref$position === undefined ? options.positions.alert || position.top : _ref$position;
+      position = _ref$position === undefined ? options.positions.alert || position.top : _ref$position,
+      _ref$overlay = _ref.overlay,
+      overlay = _ref$overlay === undefined ? options.alertOverlay : _ref$overlay;
 
   blur();
   hideAlerts();
@@ -300,18 +306,24 @@ var alert = exports.alert = function alert(_ref) {
   element.classList.add(options.classes.alert);
   element.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
   element.onclick = function () {
-    return removeFromDocument(id, position);
+    removeOverlayFromDocument();
+    removeFromDocument(id, position);
   };
 
   element.listener = function (event) {
-    if (enterClicked(event) || escapeClicked(event)) hideAlerts();
+    if (enterClicked(event) || escapeClicked(event)) {
+      hideAlerts();
+    }
   };
 
   addToDocument(element, position);
 
+  if (overlay) addOverlayToDocument(element);
+
   if (time && time < 1) time = 1;
   if (!stay && time) wait(time).then(function () {
-    return removeFromDocument(id, position);
+    removeOverlayFromDocument();
+    removeFromDocument(id, position);
   });
 };
 

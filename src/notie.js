@@ -9,6 +9,7 @@ const positions = {
 
 let options = {
   alertTime: 3,
+  alertOverlay: false,
   dateMonths: ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'],
   overlayClickDismiss: true,
@@ -128,6 +129,7 @@ const removeFromDocument = (id, position) => {
 }
 
 const addOverlayToDocument = (owner, position) => {
+  removeOverlayFromDocument()
   const element = document.createElement('div')
   element.id = options.ids.overlay
   element.classList.add(options.classes.overlay)
@@ -150,10 +152,12 @@ const addOverlayToDocument = (owner, position) => {
 
 const removeOverlayFromDocument = () => {
   const element = document.getElementById(options.ids.overlay)
-  element.style.opacity = 0
-  wait(options.transitionDuration).then(() => {
-    if (element.parentNode) element.parentNode.removeChild(element)
-  })
+  if (element) {
+    element.style.opacity = 0
+    wait(options.transitionDuration).then(() => {
+      if (element.parentNode) element.parentNode.removeChild(element)
+    })
+  }
 }
 
 export const hideAlerts = callback => {
@@ -176,7 +180,8 @@ export const alert = ({
   text,
   time = options.alertTime,
   stay = false,
-  position = options.positions.alert || position.top
+  position = options.positions.alert || position.top,
+  overlay = options.alertOverlay
 }) => {
   blur()
   hideAlerts()
@@ -189,16 +194,26 @@ export const alert = ({
   element.classList.add(typeToClassLookup[type])
   element.classList.add(options.classes.alert)
   element.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
-  element.onclick = () => removeFromDocument(id, position)
+  element.onclick = () => {
+    removeOverlayFromDocument()
+    removeFromDocument(id, position)
+  }
 
   element.listener = event => {
-    if (enterClicked(event) || escapeClicked(event)) hideAlerts()
+    if (enterClicked(event) || escapeClicked(event)) {
+      hideAlerts()
+    }
   }
 
   addToDocument(element, position)
 
+  if (overlay) addOverlayToDocument(element)
+
   if (time && time < 1) time = 1
-  if (!stay && time) wait(time).then(() => removeFromDocument(id, position))
+  if (!stay && time) wait(time).then(() => {
+    removeOverlayFromDocument()
+    removeFromDocument(id, position)
+  })
 }
 
 export const force = ({
