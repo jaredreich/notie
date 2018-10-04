@@ -215,14 +215,22 @@ var addToDocument = function addToDocument(element, position) {
 
   tick().then(function () {
     element.style.transition = getTransition();
-    element.style[position] = 0;
+    if (position === "bottom") {
+      element.style.transform = 'translate3d(0, -' + element.offsetHeight + 'px, 0)';
+    } else {
+      element.style.transform = 'translate3d(0, ' + element.offsetHeight + 'px, 0)';
+    }
   });
 };
 
 var removeFromDocument = function removeFromDocument(id, position) {
   var element = document.getElementById(id);
   if (!element) return;
-  element.style[position] = '-' + element.offsetHeight + 'px';
+  if (position === "bottom") {
+    element.style.transform = 'translate3d(0, ' + element.offsetHeight + 'px, 0)';
+  } else {
+    element.style.transform = 'translate3d(0, -' + element.offsetHeight + 'px, 0)';
+  }
 
   if (element.listener) window.removeEventListener('keydown', element.listener);
 
