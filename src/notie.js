@@ -176,7 +176,8 @@ export const alert = ({
   text,
   time = options.alertTime,
   stay = false,
-  position = options.positions.alert || position.top
+  position = options.positions.alert || position.top,
+  callback
 }) => {
   blur()
   hideAlerts()
@@ -198,7 +199,7 @@ export const alert = ({
   addToDocument(element, position)
 
   if (time && time < 1) time = 1
-  if (!stay && time) wait(time).then(() => removeFromDocument(id, position))
+  if (!stay && time) wait(time).then(() => removeFromDocument(id, position)).then(() => typeof callback === 'function' && callback())
 }
 
 export const force = ({
