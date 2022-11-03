@@ -1,12 +1,15 @@
 // @ts-nocheck
-const Webpack = require('webpack');
 const gulp = require('gulp');
+
+const Webpack = require('webpack');
 const webpack = require('webpack-stream');
+const TerserPlugin = require("terser-webpack-plugin");
+const _banner = `Notie v.${require('./package.json').version}`
+
 const cleancss = require('gulp-clean-css');
 const rename = require('gulp-rename');
 const sass = require('gulp-sass')(require('sass'));
 const clean = require('gulp-clean');
-const run = require('run-sequence');
 
 gulp.task('clean', function(done) {
     gulp.src('./dist/**/*.*', { read: false, allowEmpty: true })
@@ -31,8 +34,24 @@ const webpackConfig = minimize => ({
             }
         ]
     },
+    plugins: [
+        new Webpack.BannerPlugin({
+            banner: _banner
+          })
+    ],
     optimization: {
-        minimize: minimize ? true : false
+        minimize: minimize ? true : false,
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    format: {
+                        comments: false,
+                        preamble: `/*! ${_banner} */`
+                    }
+                },
+                extractComments: false
+            })
+        ]
     }
 });
 
