@@ -7,92 +7,62 @@
 		exports["notie"] = factory();
 	else
 		root["notie"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-/******/
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
-/******/ })
+})(self, () => {
+return /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
+/******/ 	
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "alert": () => (/* binding */ alert),
+/* harmony export */   "confirm": () => (/* binding */ confirm),
+/* harmony export */   "date": () => (/* binding */ date),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "force": () => (/* binding */ force),
+/* harmony export */   "hideAlerts": () => (/* binding */ hideAlerts),
+/* harmony export */   "input": () => (/* binding */ input),
+/* harmony export */   "select": () => (/* binding */ select),
+/* harmony export */   "setOptions": () => (/* binding */ setOptions)
+/* harmony export */ });
+var _excluded = ["text", "submitText", "cancelText", "submitCallback", "cancelCallback", "position"];
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 // ====================
 // options
 // ====================
@@ -101,7 +71,6 @@ var positions = {
   top: 'top',
   bottom: 'bottom'
 };
-
 var options = {
   alertTime: 3,
   dateMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -143,12 +112,11 @@ var options = {
     date: positions.top
   }
 };
-
-var setOptions = exports.setOptions = function setOptions(newOptions) {
-  options = _extends({}, options, newOptions, {
-    classes: _extends({}, options.classes, newOptions.classes),
-    ids: _extends({}, options.ids, newOptions.ids),
-    positions: _extends({}, options.positions, newOptions.positions)
+var setOptions = function setOptions(newOptions) {
+  options = _objectSpread(_objectSpread(_objectSpread({}, options), newOptions), {}, {
+    classes: _objectSpread(_objectSpread({}, options.classes), newOptions.classes),
+    ids: _objectSpread(_objectSpread({}, options.ids), newOptions.ids),
+    positions: _objectSpread(_objectSpread({}, options.positions), newOptions.positions)
   });
 };
 
@@ -166,11 +134,9 @@ var wait = function wait(time) {
     return setTimeout(resolve, time * 1000);
   });
 };
-
 var blur = function blur() {
   document.activeElement && document.activeElement.blur();
 };
-
 var generateRandomId = function generateRandomId() {
   // RFC4122 version 4 compliant UUID
   var id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -178,9 +144,8 @@ var generateRandomId = function generateRandomId() {
     var v = c === 'x' ? r : r & 0x3 | 0x8;
     return v.toString(16);
   });
-  return 'notie-' + id;
+  return "notie-".concat(id);
 };
-
 var typeToClassLookup = {
   1: options.classes.backgroundSuccess,
   success: options.classes.backgroundSuccess,
@@ -193,44 +158,35 @@ var typeToClassLookup = {
   5: options.classes.backgroundNeutral,
   neutral: options.classes.backgroundNeutral
 };
-
 var getTransition = function getTransition() {
-  return options.transitionSelector + ' ' + options.transitionDuration + 's ' + options.transitionCurve;
+  return "".concat(options.transitionSelector, " ").concat(options.transitionDuration, "s ").concat(options.transitionCurve);
 };
-
 var enterClicked = function enterClicked(event) {
   return event.keyCode === 13;
 };
 var escapeClicked = function escapeClicked(event) {
   return event.keyCode === 27;
 };
-
 var addToDocument = function addToDocument(element, position) {
   element.classList.add(options.classes.container);
   element.style[position] = '-10000px';
   document.body.appendChild(element);
-  element.style[position] = '-' + element.offsetHeight + 'px';
-
+  element.style[position] = "-".concat(element.offsetHeight, "px");
   if (element.listener) window.addEventListener('keydown', element.listener);
-
   tick().then(function () {
     element.style.transition = getTransition();
     element.style[position] = 0;
   });
 };
-
 var removeFromDocument = function removeFromDocument(id, position) {
   var element = document.getElementById(id);
   if (!element) return;
-  element.style[position] = '-' + element.offsetHeight + 'px';
-
+  element.style[position] = "-".concat(element.offsetHeight, "px");
   if (element.listener) window.removeEventListener('keydown', element.listener);
-
   wait(options.transitionDuration).then(function () {
     if (element.parentNode) element.parentNode.removeChild(element);
   });
 };
-
 var addOverlayToDocument = function addOverlayToDocument(owner, position) {
   var element = document.createElement('div');
   element.id = options.ids.overlay;
@@ -243,15 +199,12 @@ var addOverlayToDocument = function addOverlayToDocument(owner, position) {
       removeOverlayFromDocument();
     };
   }
-
   document.body.appendChild(element);
-
   tick().then(function () {
     element.style.transition = getTransition();
     element.style.opacity = options.overlayOpacity;
   });
 };
-
 var removeOverlayFromDocument = function removeOverlayFromDocument() {
   var element = document.getElementById(options.ids.overlay);
   element.style.opacity = 0;
@@ -259,8 +212,7 @@ var removeOverlayFromDocument = function removeOverlayFromDocument() {
     if (element.parentNode) element.parentNode.removeChild(element);
   });
 };
-
-var hideAlerts = exports.hideAlerts = function hideAlerts(callback) {
+var hideAlerts = function hideAlerts(callback) {
   var alertsShowing = document.getElementsByClassName(options.classes.alert);
   if (alertsShowing.length) {
     for (var i = 0; i < alertsShowing.length; i++) {
@@ -277,20 +229,18 @@ var hideAlerts = exports.hideAlerts = function hideAlerts(callback) {
 // exports
 // ====================
 
-var alert = exports.alert = function alert(_ref) {
+var alert = function alert(_ref) {
   var _ref$type = _ref.type,
-      type = _ref$type === undefined ? 4 : _ref$type,
-      text = _ref.text,
-      _ref$time = _ref.time,
-      time = _ref$time === undefined ? options.alertTime : _ref$time,
-      _ref$stay = _ref.stay,
-      stay = _ref$stay === undefined ? false : _ref$stay,
-      _ref$position = _ref.position,
-      position = _ref$position === undefined ? options.positions.alert || position.top : _ref$position;
-
+    type = _ref$type === void 0 ? 4 : _ref$type,
+    text = _ref.text,
+    _ref$time = _ref.time,
+    time = _ref$time === void 0 ? options.alertTime : _ref$time,
+    _ref$stay = _ref.stay,
+    stay = _ref$stay === void 0 ? false : _ref$stay,
+    _ref$position = _ref.position,
+    position = _ref$position === void 0 ? options.positions.alert || position.top : _ref$position;
   blur();
   hideAlerts();
-
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
@@ -298,45 +248,37 @@ var alert = exports.alert = function alert(_ref) {
   element.classList.add(options.classes.textbox);
   element.classList.add(typeToClassLookup[type]);
   element.classList.add(options.classes.alert);
-  element.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
+  element.innerHTML = "<div class=\"".concat(options.classes.textboxInner, "\">").concat(text, "</div>");
   element.onclick = function () {
     return removeFromDocument(id, position);
   };
-
   element.listener = function (event) {
     if (enterClicked(event) || escapeClicked(event)) hideAlerts();
   };
-
   addToDocument(element, position);
-
   if (time && time < 1) time = 1;
   if (!stay && time) wait(time).then(function () {
     return removeFromDocument(id, position);
   });
 };
-
-var force = exports.force = function force(_ref2, callbackArg) {
+var force = function force(_ref2, callbackArg) {
   var _ref2$type = _ref2.type,
-      type = _ref2$type === undefined ? 5 : _ref2$type,
-      text = _ref2.text,
-      _ref2$buttonText = _ref2.buttonText,
-      buttonText = _ref2$buttonText === undefined ? 'OK' : _ref2$buttonText,
-      callback = _ref2.callback,
-      _ref2$position = _ref2.position,
-      position = _ref2$position === undefined ? options.positions.force || position.top : _ref2$position;
-
+    type = _ref2$type === void 0 ? 5 : _ref2$type,
+    text = _ref2.text,
+    _ref2$buttonText = _ref2.buttonText,
+    buttonText = _ref2$buttonText === void 0 ? 'OK' : _ref2$buttonText,
+    callback = _ref2.callback,
+    _ref2$position = _ref2.position,
+    position = _ref2$position === void 0 ? options.positions.force || position.top : _ref2$position;
   blur();
   hideAlerts();
-
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
-
   var elementText = document.createElement('div');
   elementText.classList.add(options.classes.textbox);
   elementText.classList.add(options.classes.backgroundInfo);
-  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
-
+  elementText.innerHTML = "<div class=\"".concat(options.classes.textboxInner, "\">").concat(text, "</div>");
   var elementButton = document.createElement('div');
   elementButton.classList.add(options.classes.button);
   elementButton.classList.add(typeToClassLookup[type]);
@@ -346,42 +288,33 @@ var force = exports.force = function force(_ref2, callbackArg) {
     removeOverlayFromDocument();
     if (callback) callback();else if (callbackArg) callbackArg();
   };
-
   element.appendChild(elementText);
   element.appendChild(elementButton);
-
   element.listener = function (event) {
     if (enterClicked(event)) elementButton.click();
   };
-
   addToDocument(element, position);
-
   addOverlayToDocument();
 };
-
-var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cancelCallbackArg) {
+var confirm = function confirm(_ref3, submitCallbackArg, cancelCallbackArg) {
   var text = _ref3.text,
-      _ref3$submitText = _ref3.submitText,
-      submitText = _ref3$submitText === undefined ? 'Yes' : _ref3$submitText,
-      _ref3$cancelText = _ref3.cancelText,
-      cancelText = _ref3$cancelText === undefined ? 'Cancel' : _ref3$cancelText,
-      submitCallback = _ref3.submitCallback,
-      cancelCallback = _ref3.cancelCallback,
-      _ref3$position = _ref3.position,
-      position = _ref3$position === undefined ? options.positions.confirm || position.top : _ref3$position;
-
+    _ref3$submitText = _ref3.submitText,
+    submitText = _ref3$submitText === void 0 ? 'Yes' : _ref3$submitText,
+    _ref3$cancelText = _ref3.cancelText,
+    cancelText = _ref3$cancelText === void 0 ? 'Cancel' : _ref3$cancelText,
+    submitCallback = _ref3.submitCallback,
+    cancelCallback = _ref3.cancelCallback,
+    _ref3$position = _ref3.position,
+    position = _ref3$position === void 0 ? options.positions.confirm || position.top : _ref3$position;
   blur();
   hideAlerts();
-
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
-
   var elementText = document.createElement('div');
   elementText.classList.add(options.classes.textbox);
   elementText.classList.add(options.classes.backgroundInfo);
-  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
-
+  elementText.innerHTML = "<div class=\"".concat(options.classes.textboxInner, "\">").concat(text, "</div>");
   var elementButtonLeft = document.createElement('div');
   elementButtonLeft.classList.add(options.classes.button);
   elementButtonLeft.classList.add(options.classes.elementHalf);
@@ -392,7 +325,6 @@ var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cance
     removeOverlayFromDocument();
     if (submitCallback) submitCallback();else if (submitCallbackArg) submitCallbackArg();
   };
-
   var elementButtonRight = document.createElement('div');
   elementButtonRight.classList.add(options.classes.button);
   elementButtonRight.classList.add(options.classes.elementHalf);
@@ -403,47 +335,37 @@ var confirm = exports.confirm = function confirm(_ref3, submitCallbackArg, cance
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback();else if (cancelCallbackArg) cancelCallbackArg();
   };
-
   element.appendChild(elementText);
   element.appendChild(elementButtonLeft);
   element.appendChild(elementButtonRight);
-
   element.listener = function (event) {
     if (enterClicked(event)) elementButtonLeft.click();else if (escapeClicked(event)) elementButtonRight.click();
   };
-
   addToDocument(element, position);
-
   addOverlayToDocument(element, position);
 };
-
 var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   var text = _ref4.text,
-      _ref4$submitText = _ref4.submitText,
-      submitText = _ref4$submitText === undefined ? 'Submit' : _ref4$submitText,
-      _ref4$cancelText = _ref4.cancelText,
-      cancelText = _ref4$cancelText === undefined ? 'Cancel' : _ref4$cancelText,
-      submitCallback = _ref4.submitCallback,
-      cancelCallback = _ref4.cancelCallback,
-      _ref4$position = _ref4.position,
-      position = _ref4$position === undefined ? options.positions.input || position.top : _ref4$position,
-      settings = _objectWithoutProperties(_ref4, ['text', 'submitText', 'cancelText', 'submitCallback', 'cancelCallback', 'position']);
-
+    _ref4$submitText = _ref4.submitText,
+    submitText = _ref4$submitText === void 0 ? 'Submit' : _ref4$submitText,
+    _ref4$cancelText = _ref4.cancelText,
+    cancelText = _ref4$cancelText === void 0 ? 'Cancel' : _ref4$cancelText,
+    submitCallback = _ref4.submitCallback,
+    cancelCallback = _ref4.cancelCallback,
+    _ref4$position = _ref4.position,
+    position = _ref4$position === void 0 ? options.positions.input || position.top : _ref4$position,
+    settings = _objectWithoutProperties(_ref4, _excluded);
   blur();
   hideAlerts();
-
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
-
   var elementText = document.createElement('div');
   elementText.classList.add(options.classes.textbox);
   elementText.classList.add(options.classes.backgroundInfo);
-  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
-
+  elementText.innerHTML = "<div class=\"".concat(options.classes.textboxInner, "\">").concat(text, "</div>");
   var elementInput = document.createElement('input');
   elementInput.classList.add(options.classes.inputField);
-
   elementInput.setAttribute('autocapitalize', settings.autocapitalize || 'none');
   elementInput.setAttribute('autocomplete', settings.autocomplete || 'off');
   elementInput.setAttribute('autocorrect', settings.autocorrect || 'off');
@@ -457,13 +379,12 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   elementInput.setAttribute('spellcheck', settings.spellcheck || 'default');
   elementInput.setAttribute('step', settings.step || 'any');
   elementInput.setAttribute('type', settings.type || 'text');
-
   elementInput.value = settings.value || '';
 
   // As-you-type input restrictions
   if (settings.allowed) {
     elementInput.oninput = function () {
-      var regex = void 0;
+      var regex;
       if (Array.isArray(settings.allowed)) {
         var regexString = '';
         var allowed = settings.allowed;
@@ -471,14 +392,13 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
           if (allowed[i] === 'an') regexString += '0-9a-zA-Z';else if (allowed[i] === 'a') regexString += 'a-zA-Z';else if (allowed[i] === 'n') regexString += '0-9';
           if (allowed[i] === 's') regexString += ' ';
         }
-        regex = new RegExp('[^' + regexString + ']', 'g');
+        regex = new RegExp("[^".concat(regexString, "]"), 'g');
       } else if (_typeof(settings.allowed) === 'object') {
         regex = settings.allowed;
       }
       elementInput.value = elementInput.value.replace(regex, '');
     };
   }
-
   var elementButtonLeft = document.createElement('div');
   elementButtonLeft.classList.add(options.classes.button);
   elementButtonLeft.classList.add(options.classes.elementHalf);
@@ -489,7 +409,6 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
     removeOverlayFromDocument();
     if (submitCallback) submitCallback(elementInput.value);else if (submitCallbackArg) submitCallbackArg(elementInput.value);
   };
-
   var elementButtonRight = document.createElement('div');
   elementButtonRight.classList.add(options.classes.button);
   elementButtonRight.classList.add(options.classes.elementHalf);
@@ -500,74 +419,57 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback(elementInput.value);else if (cancelCallbackArg) cancelCallbackArg(elementInput.value);
   };
-
   element.appendChild(elementText);
   element.appendChild(elementInput);
   element.appendChild(elementButtonLeft);
   element.appendChild(elementButtonRight);
-
   element.listener = function (event) {
     if (enterClicked(event)) elementButtonLeft.click();else if (escapeClicked(event)) elementButtonRight.click();
   };
-
   addToDocument(element, position);
-
   elementInput.focus();
-
   addOverlayToDocument(element, position);
 };
-
-exports.input = input;
-var select = exports.select = function select(_ref5, cancelCallbackArg) {
+var select = function select(_ref5, cancelCallbackArg) {
   var text = _ref5.text,
-      _ref5$cancelText = _ref5.cancelText,
-      cancelText = _ref5$cancelText === undefined ? 'Cancel' : _ref5$cancelText,
-      cancelCallback = _ref5.cancelCallback,
-      choices = _ref5.choices,
-      _ref5$position = _ref5.position,
-      position = _ref5$position === undefined ? options.positions.select || position.top : _ref5$position;
-
+    _ref5$cancelText = _ref5.cancelText,
+    cancelText = _ref5$cancelText === void 0 ? 'Cancel' : _ref5$cancelText,
+    cancelCallback = _ref5.cancelCallback,
+    choices = _ref5.choices,
+    _ref5$position = _ref5.position,
+    position = _ref5$position === void 0 ? options.positions.select || position.top : _ref5$position;
   blur();
   hideAlerts();
-
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
-
   var elementText = document.createElement('div');
   elementText.classList.add(options.classes.textbox);
   elementText.classList.add(options.classes.backgroundInfo);
-  elementText.innerHTML = '<div class="' + options.classes.textboxInner + '">' + text + '</div>';
-
+  elementText.innerHTML = "<div class=\"".concat(options.classes.textboxInner, "\">").concat(text, "</div>");
   element.appendChild(elementText);
-
   choices.forEach(function (_ref6, index) {
     var _ref6$type = _ref6.type,
-        type = _ref6$type === undefined ? 1 : _ref6$type,
-        text = _ref6.text,
-        handler = _ref6.handler;
-
+      type = _ref6$type === void 0 ? 1 : _ref6$type,
+      text = _ref6.text,
+      handler = _ref6.handler;
     var elementChoice = document.createElement('div');
     elementChoice.classList.add(typeToClassLookup[type]);
     elementChoice.classList.add(options.classes.button);
     elementChoice.classList.add(options.classes.selectChoice);
-
     var nextChoice = choices[index + 1];
     if (nextChoice && !nextChoice.type) nextChoice.type = 1;
     if (nextChoice && nextChoice.type === type) {
       elementChoice.classList.add(options.classes.selectChoiceRepeated);
     }
-
     elementChoice.innerHTML = text;
     elementChoice.onclick = function () {
       removeFromDocument(id, position);
       removeOverlayFromDocument();
       handler();
     };
-
     element.appendChild(elementChoice);
   });
-
   var elementCancel = document.createElement('div');
   elementCancel.classList.add(options.classes.backgroundNeutral);
   elementCancel.classList.add(options.classes.button);
@@ -577,45 +479,35 @@ var select = exports.select = function select(_ref5, cancelCallbackArg) {
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback();else if (cancelCallbackArg) cancelCallbackArg();
   };
-
   element.appendChild(elementCancel);
-
   element.listener = function (event) {
     if (escapeClicked(event)) elementCancel.click();
   };
-
   addToDocument(element, position);
-
   addOverlayToDocument(element, position);
 };
-
-var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
+var date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
   var _ref7$value = _ref7.value,
-      value = _ref7$value === undefined ? new Date() : _ref7$value,
-      _ref7$submitText = _ref7.submitText,
-      submitText = _ref7$submitText === undefined ? 'OK' : _ref7$submitText,
-      _ref7$cancelText = _ref7.cancelText,
-      cancelText = _ref7$cancelText === undefined ? 'Cancel' : _ref7$cancelText,
-      submitCallback = _ref7.submitCallback,
-      cancelCallback = _ref7.cancelCallback,
-      _ref7$position = _ref7.position,
-      position = _ref7$position === undefined ? options.positions.date || position.top : _ref7$position;
-
+    value = _ref7$value === void 0 ? new Date() : _ref7$value,
+    _ref7$submitText = _ref7.submitText,
+    submitText = _ref7$submitText === void 0 ? 'OK' : _ref7$submitText,
+    _ref7$cancelText = _ref7.cancelText,
+    cancelText = _ref7$cancelText === void 0 ? 'Cancel' : _ref7$cancelText,
+    submitCallback = _ref7.submitCallback,
+    cancelCallback = _ref7.cancelCallback,
+    _ref7$position = _ref7.position,
+    position = _ref7$position === void 0 ? options.positions.date || position.top : _ref7$position;
   blur();
   hideAlerts();
-
   var arrow = '&#9662';
-
   var elementDateMonth = document.createElement('div');
   var elementDateDay = document.createElement('div');
   var elementDateYear = document.createElement('div');
-
   var setValueHTML = function setValueHTML(date) {
     elementDateMonth.innerHTML = options.dateMonths[date.getMonth()];
     elementDateDay.innerHTML = date.getDate();
     elementDateYear.innerHTML = date.getFullYear();
   };
-
   var handleDayInput = function handleDayInput(event) {
     var daysInMonth = new Date(value.getFullYear(), value.getMonth() + 1, 0).getDate();
     var day = event.target.textContent.replace(/^0+/, '').replace(/[^\d]/g, '').slice(0, 2);
@@ -624,96 +516,78 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
     if (Number(day) < 1) day = '1';
     value.setDate(Number(day));
   };
-
   var handleYearInput = function handleYearInput(event) {
     var year = event.target.textContent.replace(/^0+/, '').replace(/[^\d]/g, '').slice(0, 4);
     event.target.textContent = year;
     value.setFullYear(Number(year));
   };
-
   var handleBlur = function handleBlur(event) {
     setValueHTML(value);
   };
-
   var updateMonth = function updateMonth(amount) {
     var daysInNextMonth = new Date(value.getFullYear(), value.getMonth() + amount + 1, 0).getDate();
     if (value.getDate() > daysInNextMonth) value.setDate(daysInNextMonth);
     value.setMonth(value.getMonth() + amount);
     setValueHTML(value);
   };
-
   var updateDay = function updateDay(amount) {
     value.setDate(value.getDate() + amount);
     setValueHTML(value);
   };
-
   var updateYear = function updateYear(amount) {
     var nextYear = value.getFullYear() + amount;
     if (nextYear < 0) value.setFullYear(0);else value.setFullYear(value.getFullYear() + amount);
     setValueHTML(value);
   };
-
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
-
   var elementDateSelector = document.createElement('div');
   elementDateSelector.classList.add(options.classes.backgroundInfo);
-
   var elementDateSelectorInner = document.createElement('div');
   elementDateSelectorInner.classList.add(options.classes.dateSelectorInner);
-
   var elementDateUpMonth = document.createElement('div');
   elementDateUpMonth.classList.add(options.classes.button);
   elementDateUpMonth.classList.add(options.classes.elementThird);
   elementDateUpMonth.classList.add(options.classes.dateSelectorUp);
   elementDateUpMonth.innerHTML = arrow;
-
   var elementDateUpDay = document.createElement('div');
   elementDateUpDay.classList.add(options.classes.button);
   elementDateUpDay.classList.add(options.classes.elementThird);
   elementDateUpDay.classList.add(options.classes.dateSelectorUp);
   elementDateUpDay.innerHTML = arrow;
-
   var elementDateUpYear = document.createElement('div');
   elementDateUpYear.classList.add(options.classes.button);
   elementDateUpYear.classList.add(options.classes.elementThird);
   elementDateUpYear.classList.add(options.classes.dateSelectorUp);
   elementDateUpYear.innerHTML = arrow;
-
   elementDateMonth.classList.add(options.classes.element);
   elementDateMonth.classList.add(options.classes.elementThird);
   elementDateMonth.innerHTML = options.dateMonths[value.getMonth()];
-
   elementDateDay.classList.add(options.classes.element);
   elementDateDay.classList.add(options.classes.elementThird);
   elementDateDay.setAttribute('contentEditable', true);
   elementDateDay.addEventListener('input', handleDayInput);
   elementDateDay.addEventListener('blur', handleBlur);
   elementDateDay.innerHTML = value.getDate();
-
   elementDateYear.classList.add(options.classes.element);
   elementDateYear.classList.add(options.classes.elementThird);
   elementDateYear.setAttribute('contentEditable', true);
   elementDateYear.addEventListener('input', handleYearInput);
   elementDateYear.addEventListener('blur', handleBlur);
   elementDateYear.innerHTML = value.getFullYear();
-
   var elementDateDownMonth = document.createElement('div');
   elementDateDownMonth.classList.add(options.classes.button);
   elementDateDownMonth.classList.add(options.classes.elementThird);
   elementDateDownMonth.innerHTML = arrow;
-
   var elementDateDownDay = document.createElement('div');
   elementDateDownDay.classList.add(options.classes.button);
   elementDateDownDay.classList.add(options.classes.elementThird);
   elementDateDownDay.innerHTML = arrow;
-
   var elementDateDownYear = document.createElement('div');
   elementDateDownYear.classList.add(options.classes.button);
   elementDateDownYear.classList.add(options.classes.elementThird);
   elementDateDownYear.innerHTML = arrow;
-
   elementDateUpMonth.onclick = function () {
     return updateMonth(1);
   };
@@ -732,7 +606,6 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
   elementDateDownYear.onclick = function () {
     return updateYear(-1);
   };
-
   var elementButtonLeft = document.createElement('div');
   elementButtonLeft.classList.add(options.classes.button);
   elementButtonLeft.classList.add(options.classes.elementHalf);
@@ -743,7 +616,6 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
     removeOverlayFromDocument();
     if (submitCallback) submitCallback(value);else if (submitCallbackArg) submitCallbackArg(value);
   };
-
   var elementButtonRight = document.createElement('div');
   elementButtonRight.classList.add(options.classes.button);
   elementButtonRight.classList.add(options.classes.elementHalf);
@@ -754,7 +626,6 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
     removeOverlayFromDocument();
     if (cancelCallback) cancelCallback(value);else if (cancelCallbackArg) cancelCallbackArg(value);
   };
-
   elementDateSelectorInner.appendChild(elementDateUpMonth);
   elementDateSelectorInner.appendChild(elementDateUpDay);
   elementDateSelectorInner.appendChild(elementDateUpYear);
@@ -768,17 +639,13 @@ var date = exports.date = function date(_ref7, submitCallbackArg, cancelCallback
   element.appendChild(elementDateSelector);
   element.appendChild(elementButtonLeft);
   element.appendChild(elementButtonRight);
-
   element.listener = function (event) {
     if (enterClicked(event)) elementButtonLeft.click();else if (escapeClicked(event)) elementButtonRight.click();
   };
-
   addToDocument(element, position);
-
   addOverlayToDocument(element, position);
 };
-
-exports.default = {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   alert: alert,
   force: force,
   confirm: confirm,
@@ -787,8 +654,8 @@ exports.default = {
   date: date,
   setOptions: setOptions,
   hideAlerts: hideAlerts
-};
-
-/***/ })
-/******/ ]);
+});
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
 });
