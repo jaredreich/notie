@@ -137,6 +137,21 @@ var wait = function wait(time) {
 var blur = function blur() {
   document.activeElement && document.activeElement.blur();
 };
+var currNotieElt = null; //Keeps track of the current notie element shown
+var currNotieFocusedCtrl = null; //The last focused element inside the notie element
+
+//keeps the focus under control, on the notie dialog, while it's shown (for accesibility)
+var tameFocus = function tameFocus(ev) {
+  //If there's a notie element shown...
+  if (currNotieElt) {
+    //And the focus has gone inside the notie element...
+    if (currNotieElt.contains(ev.target))
+      //Keep track of the last focused element inside the notie element
+      currNotieFocusedCtrl = ev.target;else
+      //...if the focus has gone outside the notie element, focus the notie element
+      currNotieFocusedCtrl.focus();
+  }
+};
 var generateRandomId = function generateRandomId() {
   // RFC4122 version 4 compliant UUID
   var id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -168,10 +183,15 @@ var escapeClicked = function escapeClicked(event) {
   return event.keyCode === 27;
 };
 var addToDocument = function addToDocument(element, position) {
+  //Keep track of the current notie element shown
+  currNotieElt = element;
   element.classList.add(options.classes.container);
   element.style[position] = '-10000px';
   document.body.appendChild(element);
   element.style[position] = "-".concat(element.offsetHeight, "px");
+  element.setAttribute('role', 'alert');
+  element.setAttribute('aria-modal', 'true');
+  element.setAttribute('tabindex', '-1');
   if (element.listener) window.addEventListener('keydown', element.listener);
   tick().then(function () {
     element.style.transition = getTransition();
@@ -179,6 +199,8 @@ var addToDocument = function addToDocument(element, position) {
   });
 };
 var removeFromDocument = function removeFromDocument(id, position) {
+  //Keep track of the current notie element shown, which now is null
+  currNotieElt = null;
   var element = document.getElementById(id);
   if (!element) return;
   element.style[position] = "-".concat(element.offsetHeight, "px");
@@ -200,6 +222,9 @@ var addOverlayToDocument = function addOverlayToDocument(owner, position) {
     };
   }
   document.body.appendChild(element);
+
+  //Keep focus under control when is a modal dialog (for accesibility)
+  document.addEventListener('focusin', tameFocus);
   tick().then(function () {
     element.style.transition = getTransition();
     element.style.opacity = options.overlayOpacity;
@@ -209,7 +234,11 @@ var removeOverlayFromDocument = function removeOverlayFromDocument() {
   var element = document.getElementById(options.ids.overlay);
   element.style.opacity = 0;
   wait(options.transitionDuration).then(function () {
-    if (element.parentNode) element.parentNode.removeChild(element);
+    if (element.parentNode) {
+      element.parentNode.removeChild(element);
+      //Prevent the overlay to loose focus (for accesibility)
+      document.removeEventListener('focusin', tameFocus);
+    }
   });
 };
 var hideAlerts = function hideAlerts(callback) {
@@ -278,10 +307,12 @@ var force = function force(_ref2, callbackArg) {
   var elementText = document.createElement('div');
   elementText.classList.add(options.classes.textbox);
   elementText.classList.add(options.classes.backgroundInfo);
-  elementText.innerHTML = "<div class=\"".concat(options.classes.textboxInner, "\">").concat(text, "</div>");
+  elementText.innerHTML = "<div class=\"".concat(options.classes.textboxInner, "'>").concat(text, "</div>");
   var elementButton = document.createElement('div');
   elementButton.classList.add(options.classes.button);
   elementButton.classList.add(typeToClassLookup[type]);
+  elementButton.setAttribute('role', 'button');
+  elementButton.setAttribute('tabindex', '0');
   elementButton.innerHTML = buttonText;
   elementButton.onclick = function () {
     removeFromDocument(id, position);
@@ -291,10 +322,11 @@ var force = function force(_ref2, callbackArg) {
   element.appendChild(elementText);
   element.appendChild(elementButton);
   element.listener = function (event) {
-    if (enterClicked(event)) elementButton.click();
+    if (enterClicked(event) || escapeClicked(event)) elementButton.click();
   };
   addToDocument(element, position);
   addOverlayToDocument();
+  elementButton.focus();
 };
 var confirm = function confirm(_ref3, submitCallbackArg, cancelCallbackArg) {
   var text = _ref3.text,
@@ -319,6 +351,8 @@ var confirm = function confirm(_ref3, submitCallbackArg, cancelCallbackArg) {
   elementButtonLeft.classList.add(options.classes.button);
   elementButtonLeft.classList.add(options.classes.elementHalf);
   elementButtonLeft.classList.add(options.classes.backgroundSuccess);
+  elementButtonLeft.setAttribute('role', 'button');
+  elementButtonLeft.setAttribute('tabindex', '0');
   elementButtonLeft.innerHTML = submitText;
   elementButtonLeft.onclick = function () {
     removeFromDocument(id, position);
@@ -329,6 +363,8 @@ var confirm = function confirm(_ref3, submitCallbackArg, cancelCallbackArg) {
   elementButtonRight.classList.add(options.classes.button);
   elementButtonRight.classList.add(options.classes.elementHalf);
   elementButtonRight.classList.add(options.classes.backgroundError);
+  elementButtonRight.setAttribute('role', 'button');
+  elementButtonRight.setAttribute('tabindex', '0');
   elementButtonRight.innerHTML = cancelText;
   elementButtonRight.onclick = function () {
     removeFromDocument(id, position);
@@ -339,10 +375,11 @@ var confirm = function confirm(_ref3, submitCallbackArg, cancelCallbackArg) {
   element.appendChild(elementButtonLeft);
   element.appendChild(elementButtonRight);
   element.listener = function (event) {
-    if (enterClicked(event)) elementButtonLeft.click();else if (escapeClicked(event)) elementButtonRight.click();
+    if (enterClicked(event)) document.activeElement.click();else if (escapeClicked(event)) elementButtonRight.click();
   };
   addToDocument(element, position);
   addOverlayToDocument(element, position);
+  elementButtonLeft.focus();
 };
 var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   var text = _ref4.text,
@@ -403,6 +440,8 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   elementButtonLeft.classList.add(options.classes.button);
   elementButtonLeft.classList.add(options.classes.elementHalf);
   elementButtonLeft.classList.add(options.classes.backgroundSuccess);
+  elementButtonLeft.setAttribute('role', 'button');
+  elementButtonLeft.setAttribute('tabindex', '0');
   elementButtonLeft.innerHTML = submitText;
   elementButtonLeft.onclick = function () {
     removeFromDocument(id, position);
@@ -413,6 +452,8 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   elementButtonRight.classList.add(options.classes.button);
   elementButtonRight.classList.add(options.classes.elementHalf);
   elementButtonRight.classList.add(options.classes.backgroundError);
+  elementButtonRight.setAttribute('role', 'button');
+  elementButtonRight.setAttribute('tabindex', '0');
   elementButtonRight.innerHTML = cancelText;
   elementButtonRight.onclick = function () {
     removeFromDocument(id, position);
@@ -424,10 +465,11 @@ var input = function input(_ref4, submitCallbackArg, cancelCallbackArg) {
   element.appendChild(elementButtonLeft);
   element.appendChild(elementButtonRight);
   element.listener = function (event) {
-    if (enterClicked(event)) elementButtonLeft.click();else if (escapeClicked(event)) elementButtonRight.click();
+    if (enterClicked(event)) {
+      if (document.activeElement === elementInput) elementButtonLeft.click();else document.activeElement.click();
+    } else if (escapeClicked(event)) elementButtonRight.click();
   };
   addToDocument(element, position);
-  elementInput.focus();
   addOverlayToDocument(element, position);
 };
 var select = function select(_ref5, cancelCallbackArg) {
@@ -457,6 +499,8 @@ var select = function select(_ref5, cancelCallbackArg) {
     elementChoice.classList.add(typeToClassLookup[type]);
     elementChoice.classList.add(options.classes.button);
     elementChoice.classList.add(options.classes.selectChoice);
+    elementChoice.setAttribute('role', 'button');
+    elementChoice.setAttribute('tabindex', '0');
     var nextChoice = choices[index + 1];
     if (nextChoice && !nextChoice.type) nextChoice.type = 1;
     if (nextChoice && nextChoice.type === type) {
@@ -473,6 +517,8 @@ var select = function select(_ref5, cancelCallbackArg) {
   var elementCancel = document.createElement('div');
   elementCancel.classList.add(options.classes.backgroundNeutral);
   elementCancel.classList.add(options.classes.button);
+  elementCancel.setAttribute('role', 'button');
+  elementCancel.setAttribute('tabindex', '0');
   elementCancel.innerHTML = cancelText;
   elementCancel.onclick = function () {
     removeFromDocument(id, position);
@@ -481,10 +527,11 @@ var select = function select(_ref5, cancelCallbackArg) {
   };
   element.appendChild(elementCancel);
   element.listener = function (event) {
-    if (escapeClicked(event)) elementCancel.click();
+    if (enterClicked(event)) document.activeElement.click();else if (escapeClicked(event)) elementCancel.click();
   };
   addToDocument(element, position);
   addOverlayToDocument(element, position);
+  element.focus();
 };
 var date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
   var _ref7$value = _ref7.value,
@@ -499,7 +546,8 @@ var date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
     position = _ref7$position === void 0 ? options.positions.date || position.top : _ref7$position;
   blur();
   hideAlerts();
-  var arrow = '&#9662';
+  var arrowUp = '&#9652';
+  var arrowDown = '&#9662';
   var elementDateMonth = document.createElement('div');
   var elementDateDay = document.createElement('div');
   var elementDateYear = document.createElement('div');
@@ -542,6 +590,7 @@ var date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
   var element = document.createElement('div');
   var id = generateRandomId();
   element.id = id;
+  element.setAttribute('aria-label', 'Select date');
   var elementDateSelector = document.createElement('div');
   elementDateSelector.classList.add(options.classes.backgroundInfo);
   var elementDateSelectorInner = document.createElement('div');
@@ -550,44 +599,74 @@ var date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
   elementDateUpMonth.classList.add(options.classes.button);
   elementDateUpMonth.classList.add(options.classes.elementThird);
   elementDateUpMonth.classList.add(options.classes.dateSelectorUp);
-  elementDateUpMonth.innerHTML = arrow;
+  elementDateUpMonth.setAttribute('aria-label', 'Change month up');
+  elementDateUpMonth.setAttribute('role', 'button');
+  elementDateUpMonth.setAttribute('tabindex', '0');
+  elementDateUpMonth.innerHTML = arrowUp;
   var elementDateUpDay = document.createElement('div');
   elementDateUpDay.classList.add(options.classes.button);
   elementDateUpDay.classList.add(options.classes.elementThird);
   elementDateUpDay.classList.add(options.classes.dateSelectorUp);
-  elementDateUpDay.innerHTML = arrow;
+  elementDateUpDay.setAttribute('aria-label', 'Change day up');
+  elementDateUpDay.setAttribute('role', 'button');
+  elementDateUpDay.setAttribute('tabindex', '0');
+  elementDateUpDay.innerHTML = arrowUp;
   var elementDateUpYear = document.createElement('div');
   elementDateUpYear.classList.add(options.classes.button);
   elementDateUpYear.classList.add(options.classes.elementThird);
   elementDateUpYear.classList.add(options.classes.dateSelectorUp);
-  elementDateUpYear.innerHTML = arrow;
+  elementDateUpYear.setAttribute('aria-label', 'Change day up');
+  elementDateUpYear.setAttribute('role', 'button');
+  elementDateUpYear.setAttribute('tabindex', '0');
+  elementDateUpYear.innerHTML = arrowUp;
   elementDateMonth.classList.add(options.classes.element);
   elementDateMonth.classList.add(options.classes.elementThird);
+  elementDateMonth.setAttribute('aria-label', 'Month');
+  elementDateMonth.setAttribute('aria-live', 'assertive');
   elementDateMonth.innerHTML = options.dateMonths[value.getMonth()];
   elementDateDay.classList.add(options.classes.element);
   elementDateDay.classList.add(options.classes.elementThird);
-  elementDateDay.setAttribute('contentEditable', true);
+  elementDateDay.setAttribute('contentEditable', 'true');
+  elementDateDay.setAttribute('role', 'textbox');
+  elementDateDay.setAttribute('aria-multiline', 'false');
+  elementDateDay.setAttribute('aria-label', 'Day');
+  elementDateDay.setAttribute('aria-live', 'assertive');
+  elementDateDay.setAttribute('tabindex', '0');
   elementDateDay.addEventListener('input', handleDayInput);
   elementDateDay.addEventListener('blur', handleBlur);
   elementDateDay.innerHTML = value.getDate();
   elementDateYear.classList.add(options.classes.element);
   elementDateYear.classList.add(options.classes.elementThird);
-  elementDateYear.setAttribute('contentEditable', true);
+  elementDateYear.setAttribute('contentEditable', 'true');
+  elementDateYear.setAttribute('role', 'textbox');
+  elementDateYear.setAttribute('aria-multiline', 'false');
+  elementDateYear.setAttribute('aria-label', 'Year');
+  elementDateYear.setAttribute('aria-live', 'assertive');
+  elementDateYear.setAttribute('tabindex', '0');
   elementDateYear.addEventListener('input', handleYearInput);
   elementDateYear.addEventListener('blur', handleBlur);
   elementDateYear.innerHTML = value.getFullYear();
   var elementDateDownMonth = document.createElement('div');
   elementDateDownMonth.classList.add(options.classes.button);
   elementDateDownMonth.classList.add(options.classes.elementThird);
-  elementDateDownMonth.innerHTML = arrow;
+  elementDateDownMonth.setAttribute('aria-label', 'Change month down');
+  elementDateDownMonth.setAttribute('role', 'button');
+  elementDateDownMonth.setAttribute('tabindex', '0');
+  elementDateDownMonth.innerHTML = arrowDown;
   var elementDateDownDay = document.createElement('div');
   elementDateDownDay.classList.add(options.classes.button);
   elementDateDownDay.classList.add(options.classes.elementThird);
-  elementDateDownDay.innerHTML = arrow;
+  elementDateDownDay.setAttribute('aria-label', 'Change day down');
+  elementDateDownDay.setAttribute('role', 'button');
+  elementDateDownDay.setAttribute('tabindex', '0');
+  elementDateDownDay.innerHTML = arrowDown;
   var elementDateDownYear = document.createElement('div');
   elementDateDownYear.classList.add(options.classes.button);
   elementDateDownYear.classList.add(options.classes.elementThird);
-  elementDateDownYear.innerHTML = arrow;
+  elementDateDownYear.setAttribute('aria-label', 'Change year down');
+  elementDateDownYear.setAttribute('role', 'button');
+  elementDateDownYear.setAttribute('tabindex', '0');
+  elementDateDownYear.innerHTML = arrowDown;
   elementDateUpMonth.onclick = function () {
     return updateMonth(1);
   };
@@ -610,6 +689,8 @@ var date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
   elementButtonLeft.classList.add(options.classes.button);
   elementButtonLeft.classList.add(options.classes.elementHalf);
   elementButtonLeft.classList.add(options.classes.backgroundSuccess);
+  elementButtonLeft.setAttribute('role', 'button');
+  elementButtonLeft.setAttribute('tabindex', '0');
   elementButtonLeft.innerHTML = submitText;
   elementButtonLeft.onclick = function () {
     removeFromDocument(id, position);
@@ -620,6 +701,8 @@ var date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
   elementButtonRight.classList.add(options.classes.button);
   elementButtonRight.classList.add(options.classes.elementHalf);
   elementButtonRight.classList.add(options.classes.backgroundError);
+  elementButtonRight.setAttribute('role', 'button');
+  elementButtonRight.setAttribute('tabindex', '0');
   elementButtonRight.innerHTML = cancelText;
   elementButtonRight.onclick = function () {
     removeFromDocument(id, position);
@@ -640,10 +723,14 @@ var date = function date(_ref7, submitCallbackArg, cancelCallbackArg) {
   element.appendChild(elementButtonLeft);
   element.appendChild(elementButtonRight);
   element.listener = function (event) {
-    if (enterClicked(event)) elementButtonLeft.click();else if (escapeClicked(event)) elementButtonRight.click();
+    if (enterClicked(event)) {
+      var _document$activeEleme;
+      if (((_document$activeEleme = document.activeElement) === null || _document$activeEleme === void 0 ? void 0 : _document$activeEleme.getAttribute('role')) === 'button') document.activeElement.click();else elementButtonLeft.click();
+    } else if (escapeClicked(event)) elementButtonRight.click();
   };
   addToDocument(element, position);
   addOverlayToDocument(element, position);
+  element.focus();
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   alert: alert,

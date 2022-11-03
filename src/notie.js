@@ -71,6 +71,23 @@ const blur = () => {
   document.activeElement && document.activeElement.blur()
 }
 
+let currNotieElt = null; //Keeps track of the current notie element shown
+let currNotieFocusedCtrl = null;    //The last focused element inside the notie element
+
+//keeps the focus under control, on the notie dialog, while it's shown (for accesibility)
+const tameFocus = (ev) => {
+    //If there's a notie element shown...
+    if (currNotieElt) {
+        //And the focus has gone inside the notie element...
+        if (currNotieElt.contains(ev.target))
+            //Keep track of the last focused element inside the notie element
+            currNotieFocusedCtrl = ev.target;
+        else
+            //...if the focus has gone outside the notie element, focus the notie element
+            currNotieFocusedCtrl.focus();
+    }
+}
+
 const generateRandomId = () => {
   // RFC4122 version 4 compliant UUID
   const id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -102,10 +119,15 @@ const enterClicked = event => event.keyCode === 13
 const escapeClicked = event => event.keyCode === 27
 
 const addToDocument = (element, position) => {
+  //Keep track of the current notie element shown
+  currNotieElt = element
   element.classList.add(options.classes.container)
   element.style[position] = '-10000px'
   document.body.appendChild(element)
   element.style[position] = `-${element.offsetHeight}px`
+  element.setAttribute('role', 'alert')
+  element.setAttribute('aria-modal', 'true')
+  element.setAttribute('tabindex', '-1')
 
   if (element.listener) window.addEventListener('keydown', element.listener)
 
@@ -116,6 +138,8 @@ const addToDocument = (element, position) => {
 }
 
 const removeFromDocument = (id, position) => {
+  //Keep track of the current notie element shown, which now is null
+  currNotieElt = null
   const element = document.getElementById(id)
   if (!element) return
   element.style[position] = `-${element.offsetHeight}px`
@@ -140,7 +164,11 @@ const addOverlayToDocument = (owner, position) => {
     }
   }
 
+
   document.body.appendChild(element)
+
+  //Keep focus under control when is a modal dialog (for accesibility)
+  document.addEventListener('focusin', tameFocus)
 
   tick().then(() => {
     element.style.transition = getTransition()
@@ -152,7 +180,11 @@ const removeOverlayFromDocument = () => {
   const element = document.getElementById(options.ids.overlay)
   element.style.opacity = 0
   wait(options.transitionDuration).then(() => {
-    if (element.parentNode) element.parentNode.removeChild(element)
+    if (element.parentNode) {
+        element.parentNode.removeChild(element)
+        //Prevent the overlay to loose focus (for accesibility)
+        document.removeEventListener('focusin', tameFocus)
+    }
   })
 }
 
@@ -218,11 +250,13 @@ export const force = ({
   const elementText = document.createElement('div')
   elementText.classList.add(options.classes.textbox)
   elementText.classList.add(options.classes.backgroundInfo)
-  elementText.innerHTML = `<div class="${options.classes.textboxInner}">${text}</div>`
+  elementText.innerHTML = `<div class="${options.classes.textboxInner}'>${text}</div>`
 
   const elementButton = document.createElement('div')
   elementButton.classList.add(options.classes.button)
   elementButton.classList.add(typeToClassLookup[type])
+  elementButton.setAttribute('role', 'button')
+  elementButton.setAttribute('tabindex', '0')
   elementButton.innerHTML = buttonText
   elementButton.onclick = () => {
     removeFromDocument(id, position)
@@ -235,12 +269,13 @@ export const force = ({
   element.appendChild(elementButton)
 
   element.listener = event => {
-    if (enterClicked(event)) elementButton.click()
+    if (enterClicked(event) || escapeClicked(event)) elementButton.click()
   }
 
   addToDocument(element, position)
 
   addOverlayToDocument()
+  elementButton.focus()
 }
 
 export const confirm = ({
@@ -267,6 +302,8 @@ export const confirm = ({
   elementButtonLeft.classList.add(options.classes.button)
   elementButtonLeft.classList.add(options.classes.elementHalf)
   elementButtonLeft.classList.add(options.classes.backgroundSuccess)
+  elementButtonLeft.setAttribute('role', 'button')
+  elementButtonLeft.setAttribute('tabindex', '0')
   elementButtonLeft.innerHTML = submitText
   elementButtonLeft.onclick = () => {
     removeFromDocument(id, position)
@@ -279,6 +316,8 @@ export const confirm = ({
   elementButtonRight.classList.add(options.classes.button)
   elementButtonRight.classList.add(options.classes.elementHalf)
   elementButtonRight.classList.add(options.classes.backgroundError)
+  elementButtonRight.setAttribute('role', 'button')
+  elementButtonRight.setAttribute('tabindex', '0')
   elementButtonRight.innerHTML = cancelText
   elementButtonRight.onclick = () => {
     removeFromDocument(id, position)
@@ -292,13 +331,14 @@ export const confirm = ({
   element.appendChild(elementButtonRight)
 
   element.listener = event => {
-    if (enterClicked(event)) elementButtonLeft.click()
+    if (enterClicked(event)) document.activeElement.click()
     else if (escapeClicked(event)) elementButtonRight.click()
   }
 
   addToDocument(element, position)
 
   addOverlayToDocument(element, position)
+  elementButtonLeft.focus()
 }
 
 export const input = ({
@@ -366,6 +406,8 @@ export const input = ({
   elementButtonLeft.classList.add(options.classes.button)
   elementButtonLeft.classList.add(options.classes.elementHalf)
   elementButtonLeft.classList.add(options.classes.backgroundSuccess)
+  elementButtonLeft.setAttribute('role', 'button')
+  elementButtonLeft.setAttribute('tabindex', '0')
   elementButtonLeft.innerHTML = submitText
   elementButtonLeft.onclick = () => {
     removeFromDocument(id, position)
@@ -378,6 +420,8 @@ export const input = ({
   elementButtonRight.classList.add(options.classes.button)
   elementButtonRight.classList.add(options.classes.elementHalf)
   elementButtonRight.classList.add(options.classes.backgroundError)
+  elementButtonRight.setAttribute('role', 'button')
+  elementButtonRight.setAttribute('tabindex', '0')
   elementButtonRight.innerHTML = cancelText
   elementButtonRight.onclick = () => {
     removeFromDocument(id, position)
@@ -392,14 +436,16 @@ export const input = ({
   element.appendChild(elementButtonRight)
 
   element.listener = event => {
-    if (enterClicked(event)) elementButtonLeft.click()
+    if (enterClicked(event)) {
+        if (document.activeElement === elementInput)
+            elementButtonLeft.click()
+        else
+            document.activeElement.click()
+    }
     else if (escapeClicked(event)) elementButtonRight.click()
   }
 
   addToDocument(element, position)
-
-  elementInput.focus()
-
   addOverlayToDocument(element, position)
 }
 
@@ -429,6 +475,8 @@ export const select = ({
     elementChoice.classList.add(typeToClassLookup[type])
     elementChoice.classList.add(options.classes.button)
     elementChoice.classList.add(options.classes.selectChoice)
+    elementChoice.setAttribute('role', 'button')
+    elementChoice.setAttribute('tabindex', '0')
 
     const nextChoice = choices[index + 1]
     if (nextChoice && !nextChoice.type) nextChoice.type = 1
@@ -449,6 +497,8 @@ export const select = ({
   const elementCancel = document.createElement('div')
   elementCancel.classList.add(options.classes.backgroundNeutral)
   elementCancel.classList.add(options.classes.button)
+  elementCancel.setAttribute('role', 'button')
+  elementCancel.setAttribute('tabindex', '0')
   elementCancel.innerHTML = cancelText
   elementCancel.onclick = () => {
     removeFromDocument(id, position)
@@ -460,12 +510,15 @@ export const select = ({
   element.appendChild(elementCancel)
 
   element.listener = event => {
-    if (escapeClicked(event)) elementCancel.click()
+    if (enterClicked(event)) document.activeElement.click();
+    else if (escapeClicked(event)) elementCancel.click()
   }
 
   addToDocument(element, position)
 
   addOverlayToDocument(element, position)
+
+  element.focus()
 }
 
 export const date = ({
@@ -479,7 +532,8 @@ export const date = ({
   blur()
   hideAlerts()
 
-  const arrow = '&#9662'
+  var arrowUp = '&#9652';
+  var arrowDown = '&#9662';
 
   const elementDateMonth = document.createElement('div')
   const elementDateDay = document.createElement('div')
@@ -546,6 +600,7 @@ export const date = ({
   const element = document.createElement('div')
   const id = generateRandomId()
   element.id = id
+  element.setAttribute ('aria-label', 'Select date')
 
   const elementDateSelector = document.createElement('div')
   elementDateSelector.classList.add(options.classes.backgroundInfo)
@@ -557,34 +612,55 @@ export const date = ({
   elementDateUpMonth.classList.add(options.classes.button)
   elementDateUpMonth.classList.add(options.classes.elementThird)
   elementDateUpMonth.classList.add(options.classes.dateSelectorUp)
-  elementDateUpMonth.innerHTML = arrow
+  elementDateUpMonth.setAttribute('aria-label', 'Change month up')
+  elementDateUpMonth.setAttribute('role', 'button')
+  elementDateUpMonth.setAttribute('tabindex', '0')
+  elementDateUpMonth.innerHTML = arrowUp
 
   const elementDateUpDay = document.createElement('div')
   elementDateUpDay.classList.add(options.classes.button)
   elementDateUpDay.classList.add(options.classes.elementThird)
   elementDateUpDay.classList.add(options.classes.dateSelectorUp)
-  elementDateUpDay.innerHTML = arrow
+  elementDateUpDay.setAttribute('aria-label', 'Change day up')
+  elementDateUpDay.setAttribute('role', 'button')
+  elementDateUpDay.setAttribute('tabindex', '0')
+  elementDateUpDay.innerHTML = arrowUp
 
   const elementDateUpYear = document.createElement('div')
   elementDateUpYear.classList.add(options.classes.button)
   elementDateUpYear.classList.add(options.classes.elementThird)
   elementDateUpYear.classList.add(options.classes.dateSelectorUp)
-  elementDateUpYear.innerHTML = arrow
+  elementDateUpYear.setAttribute('aria-label','Change day up');
+  elementDateUpYear.setAttribute('role','button');
+  elementDateUpYear.setAttribute('tabindex','0');
+  elementDateUpYear.innerHTML = arrowUp;
 
   elementDateMonth.classList.add(options.classes.element)
   elementDateMonth.classList.add(options.classes.elementThird)
+  elementDateMonth.setAttribute('aria-label', 'Month')
+  elementDateMonth.setAttribute('aria-live', 'assertive')
   elementDateMonth.innerHTML = options.dateMonths[value.getMonth()]
 
   elementDateDay.classList.add(options.classes.element)
   elementDateDay.classList.add(options.classes.elementThird)
-  elementDateDay.setAttribute('contentEditable', true)
+  elementDateDay.setAttribute('contentEditable', 'true')
+  elementDateDay.setAttribute('role', 'textbox')
+  elementDateDay.setAttribute('aria-multiline', 'false')
+  elementDateDay.setAttribute('aria-label', 'Day')
+  elementDateDay.setAttribute('aria-live', 'assertive')
+  elementDateDay.setAttribute('tabindex', '0')
   elementDateDay.addEventListener('input', handleDayInput)
   elementDateDay.addEventListener('blur', handleBlur)
   elementDateDay.innerHTML = value.getDate()
 
   elementDateYear.classList.add(options.classes.element)
   elementDateYear.classList.add(options.classes.elementThird)
-  elementDateYear.setAttribute('contentEditable', true)
+  elementDateYear.setAttribute('contentEditable', 'true')
+  elementDateYear.setAttribute('role','textbox');
+  elementDateYear.setAttribute('aria-multiline', 'false')
+  elementDateYear.setAttribute('aria-label', 'Year')
+  elementDateYear.setAttribute('aria-live', 'assertive')
+  elementDateYear.setAttribute('tabindex', '0')
   elementDateYear.addEventListener('input', handleYearInput)
   elementDateYear.addEventListener('blur', handleBlur)
   elementDateYear.innerHTML = value.getFullYear()
@@ -592,17 +668,26 @@ export const date = ({
   const elementDateDownMonth = document.createElement('div')
   elementDateDownMonth.classList.add(options.classes.button)
   elementDateDownMonth.classList.add(options.classes.elementThird)
-  elementDateDownMonth.innerHTML = arrow
+  elementDateDownMonth.setAttribute('aria-label', 'Change month down')
+  elementDateDownMonth.setAttribute('role', 'button')
+  elementDateDownMonth.setAttribute('tabindex', '0')
+  elementDateDownMonth.innerHTML = arrowDown
 
   const elementDateDownDay = document.createElement('div')
   elementDateDownDay.classList.add(options.classes.button)
   elementDateDownDay.classList.add(options.classes.elementThird)
-  elementDateDownDay.innerHTML = arrow
+  elementDateDownDay.setAttribute('aria-label', 'Change day down')
+  elementDateDownDay.setAttribute('role', 'button')
+  elementDateDownDay.setAttribute('tabindex', '0')
+  elementDateDownDay.innerHTML = arrowDown;
 
   const elementDateDownYear = document.createElement('div')
   elementDateDownYear.classList.add(options.classes.button)
   elementDateDownYear.classList.add(options.classes.elementThird)
-  elementDateDownYear.innerHTML = arrow
+  elementDateDownYear.setAttribute('aria-label', 'Change year down')
+  elementDateDownYear.setAttribute('role', 'button')
+  elementDateDownYear.setAttribute('tabindex', '0')
+  elementDateDownYear.innerHTML = arrowDown
 
   elementDateUpMonth.onclick = () => updateMonth(1)
   elementDateUpDay.onclick = () => updateDay(1)
@@ -615,6 +700,8 @@ export const date = ({
   elementButtonLeft.classList.add(options.classes.button)
   elementButtonLeft.classList.add(options.classes.elementHalf)
   elementButtonLeft.classList.add(options.classes.backgroundSuccess)
+  elementButtonLeft.setAttribute('role', 'button')
+  elementButtonLeft.setAttribute('tabindex', '0')
   elementButtonLeft.innerHTML = submitText
   elementButtonLeft.onclick = () => {
     removeFromDocument(id, position)
@@ -627,6 +714,8 @@ export const date = ({
   elementButtonRight.classList.add(options.classes.button)
   elementButtonRight.classList.add(options.classes.elementHalf)
   elementButtonRight.classList.add(options.classes.backgroundError)
+  elementButtonRight.setAttribute('role', 'button')
+  elementButtonRight.setAttribute('tabindex', '0')
   elementButtonRight.innerHTML = cancelText
   elementButtonRight.onclick = () => {
     removeFromDocument(id, position)
@@ -650,13 +739,19 @@ export const date = ({
   element.appendChild(elementButtonRight)
 
   element.listener = event => {
-    if (enterClicked(event)) elementButtonLeft.click()
+    if (enterClicked(event)) {
+        if (document.activeElement?.getAttribute('role') === 'button')
+            document.activeElement.click()
+        else
+            elementButtonLeft.click()
+    }
     else if (escapeClicked(event)) elementButtonRight.click()
   }
 
   addToDocument(element, position)
 
   addOverlayToDocument(element, position)
+  element.focus()
 }
 
 export default {

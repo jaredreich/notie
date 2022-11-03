@@ -30,7 +30,7 @@
 }
 
 .notie-background-success {
-  background-color: #57BF57;
+  background-color: #008800;
 }
 
 .notie-background-warning {
@@ -38,15 +38,15 @@
 }
 
 .notie-background-error {
-  background-color: #E1715B;
+  background-color: #CC0000;
 }
 
 .notie-background-info {
-  background-color: #4D82D6;
+  background-color: #0066FF;
 }
 
 .notie-background-neutral {
-  background-color: #A0A0A0;
+  background-color: #757575;
 }
 
 .notie-background-overlay {
@@ -128,8 +128,4 @@
 }
 .notie-date-selector-inner [contenteditable], .notie-date-selector-inner [contenteditable]:focus {
   outline: 0px solid transparent;
-}
-
-.notie-date-selector-up {
-  transform: rotate(180deg);
 }
