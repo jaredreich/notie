@@ -10,8 +10,7 @@
   ],
   "scripts": {
     "dev": "gulp",
-    "build": "gulp clean && gulp script && gulp style",
-    "test": "gulp style"
+    "build": "gulp clean && gulp script && gulp style"
   },
   "repository": {
     "type": "git",
