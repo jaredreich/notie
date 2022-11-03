@@ -41,8 +41,8 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-rename": "2.0.0",
     "gulp-sass": "5.1.0",
-    "run-sequence": "2.2.1",
     "sass": "^1.55.0",
+    "terser-webpack-plugin": "^5.3.6",
     "webpack": "5.74.0",
     "webpack-stream": "^7.0.0"
   }
