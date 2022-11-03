@@ -8,11 +8,11 @@ $notie-font-size-tablet: 1.2rem !default;
 $notie-font-size-desktop: 1.4rem !default;
 $notie-font-size-widescreen: 1.6rem !default;
 $notie-color-text: #FFFFFF !default;
-$notie-color-success: #57BF57 !default;
+$notie-color-success: #008800 !default;
 $notie-color-warning: #D6A14D !default;
-$notie-color-error: #E1715B !default;
-$notie-color-info: #4D82D6 !default;
-$notie-color-neutral: #A0A0A0 !default;
+$notie-color-error: #CC0000 !default;
+$notie-color-info: #0066FF !default;
+$notie-color-neutral: #757575 !default;
 $notie-color-white: #FFFFFF !default;
 $notie-color-overlay: #FFFFFF !default;
 $notie-content-width: 900px !default;
@@ -164,8 +164,4 @@ $notie-z-index: 2147483647 !default;
   [contenteditable], [contenteditable]:focus {
     outline: 0px solid transparent;
   }
-}
-
-.notie-date-selector-up {
-  transform: rotate(180deg)
 }
