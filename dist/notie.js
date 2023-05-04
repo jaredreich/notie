@@ -199,11 +199,18 @@ var getTransition = function getTransition() {
 };
 
 var enterClicked = function enterClicked(event) {
-  return event.keyCode === 13;
+  if (callKeyFunctions) {
+    return event.keyCode === 13;
+  }
+  return false;
 };
 var escapeClicked = function escapeClicked(event) {
-  return event.keyCode === 27;
+  if (callKeyFunctions) {
+    return event.keyCode === 27;
+  }
+  return false;
 };
+
 
 var addToDocument = function addToDocument(element, position) {
   element.classList.add(options.classes.container);
